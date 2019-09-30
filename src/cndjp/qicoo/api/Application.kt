@@ -2,7 +2,7 @@ package cndjp.qicoo.api
 
 import cndjp.qicoo.api.controller.healthcheck.healthCheckController
 import cndjp.qicoo.api.controller.question.questionController
-import cndjp.qicoo.rdb.context.initMysqlClient
+import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty

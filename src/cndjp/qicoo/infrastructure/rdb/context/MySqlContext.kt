@@ -1,4 +1,4 @@
-package cndjp.qicoo.rdb.context
+package cndjp.qicoo.infrastructure.rdb.context
 
 class MySqlContext {
 }
