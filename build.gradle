@@ -1,17 +1,26 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'org.junit.platform:junit-platform-gradle-plugin:1.2.0'
     }
 }
 
+apply plugin: 'org.junit.platform.gradle.plugin'
 apply plugin: 'kotlin'
 apply plugin: 'application'
 
-group 'cndjp.qicoo.api'
+test {
+    useJUnitPlatform {
+        includeEngines 'junit-jupiter', 'spek2'
+    }
+}
+
+group 'main.qicoo.api'
 version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 
@@ -24,7 +33,9 @@ sourceSets {
 
 repositories {
     mavenLocal()
+    mavenCentral()
     jcenter()
+    maven { url "https://dl.bintray.com/spekframework/spek" }
 }
 
 dependencies {
@@ -32,6 +43,13 @@ dependencies {
     compile "io.ktor:ktor-server-netty:$ktor_version"
     compile "ch.qos.logback:logback-classic:$logback_version"
     testCompile "io.ktor:ktor-server-tests:$ktor_version"
+    testCompile "io.ktor:ktor-server-tests:$ktor_version"
     compile "org.jetbrains.exposed:exposed:$exposed_version"
     compile "mysql:mysql-connector-java:8.0.11"
+    compile 'org.junit.jupiter:junit-jupiter-api:5.3.1'
+    compile 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+    compile "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
+    compile "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+    // spek requires kotlin-reflect, can be omitted if already in the classpath
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
