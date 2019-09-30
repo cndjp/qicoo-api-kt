@@ -5,7 +5,7 @@ DOTENV_EXISTS := `if [ -f ./.env ]; then echo 0; else echo 1; fi`
 
 MYSQL_DOCKER := "qicoo-test-mysql"
 MYSQL_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi; docker ps --format "{{ .Names }}" --filter "name=qicoo-test-mysql" | wc -l`
-MYSQL_VERSION := "8.0.12"
+MYSQL_VERSION := "8.0.11"
 
 version:
     #!/bin/bash
@@ -78,4 +78,18 @@ lunch-mysql-db: load_dotenv
             -p ${MYSQL_PORT}:${MYSQL_PORT} mysql:{{ MYSQL_VERSION }} \
             --character-set-server=utf8mb4 \
             --collation-server=utf8mb4_unicode_ci
+    fi
+
+setup-mysql-db: load_dotenv
+    echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci" | mysql -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} 2>/dev/null
+    echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} 2>/dev/null
+
+run-mysql-db: lunch-mysql-db check-mysql-db setup-mysql-db
+
+clean-mysql-db:
+    #!/bin/bash
+    if [ {{ MYSQL_DOCKER_EXISTS_FLAG }} = 0 ]; then
+        echo "{{ MYSQL_DOCKER }} is not exists. Not work."
+    else
+        docker kill {{ MYSQL_DOCKER }} > /dev/null && echo 'clean up the mysql docker'
     fi
