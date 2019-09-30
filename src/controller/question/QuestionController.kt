@@ -1,4 +1,4 @@
-package cndjp.qicoo.controller.question
+package cndjp.qicoo.api.controller.question
 
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

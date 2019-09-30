@@ -1,4 +1,4 @@
-package cndjp.qicoo.controller.healthcheck
+package cndjp.qicoo.api.controller.healthcheck
 
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

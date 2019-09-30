@@ -1,7 +1,7 @@
-package cndjp.qicoo
+package cndjp.qicoo.api
 
-import cndjp.qicoo.controller.healthcheck.healthCheckController
-import cndjp.qicoo.controller.question.questionController
+import cndjp.qicoo.api.controller.healthcheck.healthCheckController
+import cndjp.qicoo.api.controller.question.questionController
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
