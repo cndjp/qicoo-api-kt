@@ -1,10 +1,7 @@
-package com.example
+package cndjp.qicoo
 
-import io.ktor.application.*
-import io.ktor.http.HttpStatusCode
-import io.ktor.response.*
-import io.ktor.request.*
-import io.ktor.routing.get
+import cndjp.qicoo.controller.healthcheck.healthCheckController
+import cndjp.qicoo.controller.question.questionController
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
@@ -12,9 +9,8 @@ import io.ktor.server.netty.Netty
 fun main(args: Array<String>) {
     val server = embeddedServer(Netty, 8080) {
         routing {
-            get("/") {
-                call.respond(HttpStatusCode.OK,"Hello, Kotlin")
-            }
+            questionController()
+            healthCheckController()
         }
     }
     server.start()
