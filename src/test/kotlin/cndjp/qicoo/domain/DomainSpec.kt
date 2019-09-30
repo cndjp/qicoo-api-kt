@@ -47,10 +47,8 @@ object DomainSpec: Spek({
                     it[updated] = now
                 }
 
-                val q = question.select {question.created eq now}.map{it.toQuestion()}.firstOrNull()
-                if (q != null) {
-                    assert(q.created == now)
-                }
+                val q = question.select {question.created eq now}.map{it.toQuestion()}.first()
+                assert(q.created == now)
 
                 SchemaUtils.drop(
                     question,
