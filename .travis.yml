@@ -14,6 +14,13 @@ env:
     - MYSQL_DB="qicoo2db"
     - MYSQL_PORT="3306"
 
+before_install:
+  - curl -s api.sdkman.io | bash
+  - source /home/travis/.sdkman/bin/sdkman-init.sh # ターミナル上での表示結果
+  - sdk list gradle
+  - sdk install gradle 4.10 # gradle version 4.2.1 以降を使う
+  - sdk default gradle 4.10
+
 before_script:
   - curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /usr/local/bin
   - expose PATH=/usr/local/bin:$PATH
