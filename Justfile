@@ -14,11 +14,15 @@ test: load_dotenv
     #!/bin/bash
     ./gradlew test
 
+build: load_dotenv
+    #!/bin/bash
+    ./gradlew build
+
 create_dotenv:
     #!/bin/bash
     if [ ! {{ DOTENV_EXISTS }} = 0 ]; then
         echo 'MYSQL_USER="root"' >> ./.env
-        echo 'MYSQL_PASSWORD="my-pw"' >> ./.env
+        echo 'MYSQL_PASSWORD=""' >> ./.env
         echo 'MYSQL_PORT="3306"' >> ./.env
         echo 'MYSQL_DB="qicoo2db"' >> ./.env
         echo 'MYSQL_OPTS="prefer_socket=false&timeout=30s&parseTime=true&loc=Asia%2FTokyo"' >> ./.env
@@ -77,15 +81,15 @@ lunch-mysql-db: load_dotenv
         docker run --name {{ MYSQL_DOCKER }} \
             --rm \
             -d \
-            -e MYSQL_ROOT_PASSWORD=${MYSQL_PASSWORD} \
+            -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
             -p ${MYSQL_PORT}:${MYSQL_PORT} mysql:{{ MYSQL_VERSION }} \
             --character-set-server=utf8mb4 \
             --collation-server=utf8mb4_unicode_ci
     fi
 
 setup-mysql-db: load_dotenv
-    echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci" | mysql -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} 2>/dev/null
-    echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -u${MYSQL_USER} -p${MYSQL_PASSWORD} 2>/dev/null
+    echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci" | mysql -h${MYSQL_HOST} -u${MYSQL_USER} 2>/dev/null
+    echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -u${MYSQL_USER} 2>/dev/null
 
 run-mysql-db: lunch-mysql-db check-mysql-db setup-mysql-db
 
