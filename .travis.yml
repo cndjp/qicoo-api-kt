@@ -24,7 +24,7 @@ before_install:
 before_script:
   - mkdir /opt/bin
   - curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /opt/bin/
-  - expose PATH=/opt/bin/bin:$PATH
+  - expose PATH=/opt/bin:$PATH
   - just version
 
 script:
