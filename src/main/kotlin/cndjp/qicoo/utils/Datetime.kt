@@ -9,15 +9,15 @@ fun getNowDateTimeJst(): DateTime {
     return DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
 }
 
-fun String.toDatetimeUtc(): DateTime {
+fun String.toDateTimeUtc(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC().parseDateTime(this)
 }
 
-fun String.toDatetimeJst(): DateTime {
+fun String.toDateTimeJst(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(DateTimeZone.forID("Asia/Tokyo")).parseDateTime(this)
 }
 
-fun String.toDatetimeLocal(): DateTime {
+fun String.toDateTimeLocal(): DateTime {
     val localDateTime = LocalDateTime.parse(this, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))
     return localDateTime.toDateTime()
 }

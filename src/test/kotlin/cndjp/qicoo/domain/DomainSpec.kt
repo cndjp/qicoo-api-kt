@@ -8,7 +8,7 @@ import main.kotlin.cndjp.qicoo.domain.entity.question.Question
 import main.kotlin.cndjp.qicoo.domain.entity.question.toEntity as toQuestion
 import main.kotlin.cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import main.kotlin.cndjp.qicoo.utils.getNowDateTimeJst
-import main.kotlin.cndjp.qicoo.utils.toDatetimeJst
+import main.kotlin.cndjp.qicoo.utils.toDateTimeJst
 import main.kotlin.cndjp.qicoo.utils.toJST
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -78,10 +78,10 @@ object DomainSpec: Spek({
             val now = getNowDateTimeJst()
             val oneMilliSecondAgo = now + Duration(1)
             val yesterday = now.minusDays(1)
-            val event1StartAt = "2018-01-01 19:00:00".toDatetimeJst()
-            val event1EndAt = "2018-01-01 19:00:00".toDatetimeJst()
-            val event2StartAt = "2018-02-01 19:00:00".toDatetimeJst()
-            val event2EndAt = "2018-02-01 19:00:00".toDatetimeJst()
+            val event1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
+            val event1EndAt = "2018-01-01 19:00:00".toDateTimeJst()
+            val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
+            val event2EndAt = "2018-02-01 19:00:00".toDateTimeJst()
 
             transaction {
                 SchemaUtils.create(
