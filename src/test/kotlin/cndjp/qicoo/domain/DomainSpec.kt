@@ -7,6 +7,7 @@ import main.kotlin.cndjp.qicoo.domain.entity.event.toEntity as toEvent
 import main.kotlin.cndjp.qicoo.domain.entity.question.Question
 import main.kotlin.cndjp.qicoo.domain.entity.question.toEntity as toQuestion
 import main.kotlin.cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
+import main.kotlin.cndjp.qicoo.utils.getDateTiemJst
 import main.kotlin.cndjp.qicoo.utils.toDatetimeJst
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -20,7 +21,7 @@ object DomainSpec: Spek({
     group("mysqlのテスト") {
         test("questionのCRUDテスト") {
             initMysqlClient()
-            val now = DateTime.now()
+            val now = getDateTiemJst()
             val oneMilliSecondAgo = now + Duration(1)
             val yesterday = now.minusDays(1)
 
@@ -73,7 +74,7 @@ object DomainSpec: Spek({
         }
         test("eventのCRUDテスト") {
             initMysqlClient()
-            val now = DateTime.now()
+            val now = getDateTiemJst()
             val oneMilliSecondAgo = now + Duration(1)
             val yesterday = now.minusDays(1)
             val event1StartAt = "2018-01-01 19:00:00".toDatetimeJst()
