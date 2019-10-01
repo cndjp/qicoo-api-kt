@@ -17,7 +17,7 @@ RUN curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey
 ENV PATH=/opt/bin:$PATH
 RUN just build
 
-FROM openjdk:8-jre
+FROM openjdk:11-jre
 # set up timezone to Asia/Tokyo
 ENV DEBIAN_FRONTEND=noninteractive
 RUN set -eux; \
