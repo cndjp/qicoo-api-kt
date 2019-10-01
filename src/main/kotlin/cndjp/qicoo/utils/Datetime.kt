@@ -5,7 +5,7 @@ import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
-fun getDateTiemJst(): DateTime {
+fun getNowDateTimeJst(): DateTime {
     return DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
 }
 
