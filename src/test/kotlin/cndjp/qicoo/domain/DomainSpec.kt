@@ -100,7 +100,6 @@ object DomainSpec: Spek({
                     it[updated] = yesterday
                 }
 
-
                 val r1 = event.select {event.created eq now}.map{it.toEvent()}.first()
                 assertEquals(r1.start_at, event1StartAt)
                 assertEquals(r1.end_at, event1EndAt)

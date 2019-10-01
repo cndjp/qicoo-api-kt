@@ -12,7 +12,7 @@ version:
 
 test: load_dotenv
     #!/bin/bash
-    ./gradlew test
+    ./gradlew test --stacktrace --info
 
 build: load_dotenv
     #!/bin/bash
