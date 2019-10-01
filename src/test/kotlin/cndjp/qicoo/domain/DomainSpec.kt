@@ -1,22 +1,23 @@
-package test.kotlin.cndjp.qicoo.domain
+package domain
 
-import main.kotlin.cndjp.qicoo.domain.dao.event.event
-import main.kotlin.cndjp.qicoo.domain.dao.question.question
-import main.kotlin.cndjp.qicoo.domain.entity.event.Event
-import main.kotlin.cndjp.qicoo.domain.entity.event.toEntity as toEvent
-import main.kotlin.cndjp.qicoo.domain.entity.question.Question
-import main.kotlin.cndjp.qicoo.domain.entity.question.toEntity as toQuestion
-import main.kotlin.cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
-import main.kotlin.cndjp.qicoo.utils.getNowDateTimeJst
-import main.kotlin.cndjp.qicoo.utils.toDateTimeJst
-import main.kotlin.cndjp.qicoo.utils.toJST
+import domain.dao.event.event
+import domain.dao.question.question
+import domain.entity.event.Event
+import domain.entity.event.toEntity as toEvent
+import domain.entity.question.Question
+import domain.entity.question.toEntity as toQuestion
+import infrastructure.rdb.client.initMysqlClient
+import domain.dao.user.user
+import domain.entity.user.User
+import domain.entity.user.toEntity as toUser
+import utils.getNowDateTimeJst
+import utils.toDateTimeJst
+import utils.toJST
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
-import org.joda.time.DateTime
 import org.joda.time.Duration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.spekframework.spek2.Spek
-import java.util.*
 
 object DomainSpec: Spek({
     group("mysqlのテスト") {
@@ -41,16 +42,16 @@ object DomainSpec: Spek({
                     it[updated] = yesterday
                 }
 
-                val r1 = question.select {question.created eq now}.map{it.toQuestion()}.first()
+                val r1 = question.select { question.created eq now}.map{it.toQuestion()}.first()
                 assertEquals(now, r1.created.toJST())
                 assertEquals(now, r1.updated.toJST())
 
-                val updatedCount = question.update({question.created eq now}) {
+                val updatedCount = question.update({ question.created eq now}) {
                     it[updated] = oneMilliSecondAgo
                 }
                 assertEquals(updatedCount,1)
 
-                val r2 = question.select {question.updated eq oneMilliSecondAgo}.map{it.toQuestion()}.first()
+                val r2 = question.select { question.updated eq oneMilliSecondAgo}.map{it.toQuestion()}.first()
                 assertEquals(now, r2.created.toJST())
                 assertEquals(oneMilliSecondAgo, r2.updated.toJST())
 
@@ -102,18 +103,18 @@ object DomainSpec: Spek({
                     it[updated] = yesterday
                 }
 
-                val r1 = event.select {event.created eq now}.map{it.toEvent()}.first()
+                val r1 = event.select { event.created eq now}.map{it.toEvent()}.first()
                 assertEquals(event1StartAt, r1.start_at.toJST())
                 assertEquals(event1EndAt, r1.end_at.toJST())
                 assertEquals(now, r1.created.toJST())
                 assertEquals(now, r1.updated.toJST())
 
-                val updatedCount = event.update({event.created eq now}) {
+                val updatedCount = event.update({ event.created eq now}) {
                     it[updated] = oneMilliSecondAgo
                 }
                 assertEquals(1, updatedCount)
 
-                val r2 = event.select {event.updated eq oneMilliSecondAgo}.map{it.toEvent()}.first()
+                val r2 = event.select { event.updated eq oneMilliSecondAgo}.map{it.toEvent()}.first()
                 assertEquals(event1StartAt, r2.start_at.toJST())
                 assertEquals(event1EndAt, r2.end_at.toJST())
                 assertEquals(now, r2.created.toJST())
@@ -139,6 +140,48 @@ object DomainSpec: Spek({
 
                 SchemaUtils.drop(
                     event
+                )
+            }
+        }
+        test("userのCRDテスト") {
+            initMysqlClient()
+            val now = getNowDateTimeJst()
+            val oneMilliSecondAgo = now + Duration(1)
+            val yesterday = now.minusDays(1)
+
+            transaction {
+                SchemaUtils.create(
+                    user
+                )
+
+                user.insert {
+                    it[created] = now
+                }
+
+                user.insert {
+                    it[created] = yesterday
+                }
+
+                val r1 = user.select { user.created eq now}.map{it.toUser()}.first()
+                assertEquals(now, r1.created.toJST())
+
+                val r2 = user.select { user.created eq yesterday}.map{it.toUser()}.first()
+                assertEquals(yesterday, r2.created.toJST())
+
+                val rl: MutableList<User> =  mutableListOf()
+                user.selectAll().orderBy(user.created).forEach{
+                    rl.add(it.toUser())
+                }
+                assertEquals(now, rl[1].created.toJST())
+                assertEquals(yesterday, rl[0].created.toJST())
+
+                val deleteCount1 = user.deleteWhere { user.created eq now }
+                assertEquals(1, deleteCount1)
+                val deleteCount2 = user.deleteWhere { user.created eq yesterday }
+                assertEquals(1, deleteCount2)
+
+                SchemaUtils.drop(
+                    user
                 )
             }
         }

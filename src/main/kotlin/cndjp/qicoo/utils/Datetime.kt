@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.utils
+package utils
 
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone

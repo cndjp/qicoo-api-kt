@@ -1,6 +1,6 @@
-package main.kotlin.cndjp.qicoo.domain.dao.linked_user
+package domain.dao.linked_user
 
-import main.kotlin.cndjp.qicoo.domain.dao.user.user
+import domain.dao.user.user
 import org.jetbrains.exposed.sql.Table
 
 object linked_user: Table() {

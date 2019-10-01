@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.infrastructure.rdb.client
+package infrastructure.rdb.client
 
 import org.jetbrains.exposed.sql.Database
 

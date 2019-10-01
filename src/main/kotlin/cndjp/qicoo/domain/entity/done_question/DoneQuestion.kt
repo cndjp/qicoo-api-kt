@@ -1,9 +1,8 @@
-package main.kotlin.cndjp.qicoo.domain.entity.done_question
+package domain.entity.done_question
 
-import main.kotlin.cndjp.qicoo.domain.dao.done_question.done_question
+import domain.dao.done_question.done_question
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
-import org.joda.time.DateTime
 import java.util.*
 
 

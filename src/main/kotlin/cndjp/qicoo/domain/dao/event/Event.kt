@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.domain.dao.event
+package domain.dao.event
 
 import org.jetbrains.exposed.dao.UUIDTable
 

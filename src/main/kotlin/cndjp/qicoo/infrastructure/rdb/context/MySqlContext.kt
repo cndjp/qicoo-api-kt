@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.infrastructure.rdb.context
+package infrastructure.rdb.context
 
 class MySqlContext {
 }

@@ -1,6 +1,6 @@
-package main.kotlin.cndjp.qicoo.domain.dao.reply
+package domain.dao.reply
 
-import main.kotlin.cndjp.qicoo.domain.dao.question.question
+import domain.dao.question.question
 import org.jetbrains.exposed.dao.UUIDTable
 
 object reply: UUIDTable() {

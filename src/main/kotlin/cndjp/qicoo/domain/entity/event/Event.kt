@@ -1,13 +1,13 @@
-package main.kotlin.cndjp.qicoo.domain.entity.event
+package domain.entity.event
 
-import main.kotlin.cndjp.qicoo.domain.dao.event.event
+import domain.dao.event.event
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 import java.util.*
 
 data class Event(
-    val question_id: EntityID<UUID>,
+    val id: EntityID<UUID>,
     val start_at: DateTime,
     val end_at: DateTime,
     val created: DateTime,

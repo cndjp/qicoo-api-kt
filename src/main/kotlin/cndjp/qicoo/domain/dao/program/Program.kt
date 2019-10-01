@@ -1,6 +1,6 @@
-package main.kotlin.cndjp.qicoo.domain.dao.program
+package domain.dao.program
 
-import main.kotlin.cndjp.qicoo.domain.dao.event.event
+import domain.dao.event.event
 import org.jetbrains.exposed.dao.UUIDTable
 
 object program: UUIDTable() {

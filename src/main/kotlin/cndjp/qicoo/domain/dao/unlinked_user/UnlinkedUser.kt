@@ -1,6 +1,6 @@
-package main.kotlin.cndjp.qicoo.domain.dao.unlinked_user
+package domain.dao.unlinked_user
 
-import main.kotlin.cndjp.qicoo.domain.dao.user.user
+import domain.dao.user.user
 import org.jetbrains.exposed.sql.Table
 
 object unlinked_user: Table() {

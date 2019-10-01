@@ -1,15 +1,15 @@
-package main.kotlin.cndjp.qicoo.migration.clean
+package migration.clean
 
-import main.kotlin.cndjp.qicoo.domain.dao.done_question.done_question
-import main.kotlin.cndjp.qicoo.domain.dao.event.event
-import main.kotlin.cndjp.qicoo.domain.dao.linked_user.linked_user
-import main.kotlin.cndjp.qicoo.domain.dao.program.program
-import main.kotlin.cndjp.qicoo.domain.dao.question.question
-import main.kotlin.cndjp.qicoo.domain.dao.reply.reply
-import main.kotlin.cndjp.qicoo.domain.dao.todo_question.todo_question
-import main.kotlin.cndjp.qicoo.domain.dao.unlinked_user.unlinked_user
-import main.kotlin.cndjp.qicoo.domain.dao.user.user
-import main.kotlin.cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
+import domain.dao.done_question.done_question
+import domain.dao.event.event
+import domain.dao.linked_user.linked_user
+import domain.dao.program.program
+import domain.dao.question.question
+import domain.dao.reply.reply
+import domain.dao.todo_question.todo_question
+import domain.dao.unlinked_user.unlinked_user
+import domain.dao.user.user
+import infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.transaction
 

@@ -1,6 +1,6 @@
-package main.kotlin.cndjp.qicoo.domain.entity.question
+package domain.entity.question
 
-import main.kotlin.cndjp.qicoo.domain.dao.question.question
+import domain.dao.question.question
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime

@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.domain.dao.question
+package domain.dao.question
 
 import org.jetbrains.exposed.dao.UUIDTable
 

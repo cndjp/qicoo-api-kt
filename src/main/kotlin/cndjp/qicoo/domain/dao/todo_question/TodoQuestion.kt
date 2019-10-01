@@ -1,8 +1,8 @@
-package main.kotlin.cndjp.qicoo.domain.dao.todo_question
+package domain.dao.todo_question
 
 
-import main.kotlin.cndjp.qicoo.domain.dao.program.program
-import main.kotlin.cndjp.qicoo.domain.dao.question.question
+import domain.dao.program.program
+import domain.dao.question.question
 import org.jetbrains.exposed.sql.Table
 
 object todo_question: Table() {
