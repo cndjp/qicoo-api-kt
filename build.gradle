@@ -26,10 +26,6 @@ sourceSets {
     test.resources.srcDirs = ['testresources']
 }
 
-ext {
-    dockerImagePrefix = 'bufferings'
-}
-
 repositories {
     mavenLocal()
     mavenCentral()
