@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.api.controller.healthcheck
+package api.controller.healthcheck
 
 import io.ktor.application.call
 import io.ktor.response.respondText

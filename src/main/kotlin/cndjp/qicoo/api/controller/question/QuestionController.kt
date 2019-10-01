@@ -1,4 +1,4 @@
-package main.kotlin.cndjp.qicoo.api.controller.question
+package api.controller.question
 
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode

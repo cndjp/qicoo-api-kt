@@ -6,6 +6,9 @@ MYSQL_DOCKER := "qicoo-test-mysql"
 MYSQL_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi; docker ps --format "{{ .Names }}" --filter "name=qicoo-test-mysql" | wc -l`
 MYSQL_VERSION := "8.0.11"
 
+DOCKER_NAME := "qicoo-api-kt"
+DOCKER_TAG := `git rev-parse HEAD`
+
 version:
     #!/bin/bash
     ./gradlew --version
@@ -16,7 +19,15 @@ test: load_dotenv
 
 build: load_dotenv
     #!/bin/bash
-    ./gradlew build
+    ./gradlew --gradle-user-home=.gradle shadowJar
+
+docker-build: load_dotenv
+    #!/bin/bash
+    docker build -t cndjp/qicoo/qpi:{{ DOCKER_TAG }} .
+
+docker-run: load_dotenv
+    #!/bin/bash
+    docker run --name {{ DOCKER_NAME }} -it --rm -p 8080:8080 cndjp/qicoo/qpi:{{ DOCKER_TAG }} .
 
 create_dotenv:
     #!/bin/bash

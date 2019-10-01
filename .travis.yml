@@ -30,3 +30,5 @@ before_script:
 
 script:
   - just test
+  - just build
+  - just docker-build
