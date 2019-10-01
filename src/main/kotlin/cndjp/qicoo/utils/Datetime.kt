@@ -21,3 +21,7 @@ fun String.toDatetimeLocal(): DateTime {
     val localDateTime = LocalDateTime.parse(this, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))
     return localDateTime.toDateTime()
 }
+
+fun DateTime.toJST(): DateTime {
+    return this.toDateTime(DateTimeZone.forID("Asia/Tokyo"))
+}

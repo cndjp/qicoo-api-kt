@@ -27,7 +27,6 @@ before_script:
   - export PATH=/opt/bin:$PATH
   - just version
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
-  - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
 
 script:
   - just test

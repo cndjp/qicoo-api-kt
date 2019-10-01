@@ -9,6 +9,7 @@ import main.kotlin.cndjp.qicoo.domain.entity.question.toEntity as toQuestion
 import main.kotlin.cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import main.kotlin.cndjp.qicoo.utils.getNowDateTimeJst
 import main.kotlin.cndjp.qicoo.utils.toDatetimeJst
+import main.kotlin.cndjp.qicoo.utils.toJST
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.DateTime
@@ -41,8 +42,8 @@ object DomainSpec: Spek({
                 }
 
                 val r1 = question.select {question.created eq now}.map{it.toQuestion()}.first()
-                assertEquals(now, r1.created)
-                assertEquals(now, r1.updated)
+                assertEquals(now, r1.created.toJST())
+                assertEquals(now, r1.updated.toJST())
 
                 val updatedCount = question.update({question.created eq now}) {
                     it[updated] = oneMilliSecondAgo
@@ -50,17 +51,17 @@ object DomainSpec: Spek({
                 assertEquals(updatedCount,1)
 
                 val r2 = question.select {question.updated eq oneMilliSecondAgo}.map{it.toQuestion()}.first()
-                assertEquals(now, r2.created)
-                assertEquals(oneMilliSecondAgo, r2.updated)
+                assertEquals(now, r2.created.toJST())
+                assertEquals(oneMilliSecondAgo, r2.updated.toJST())
 
                 val rl: MutableList<Question> =  mutableListOf()
                 question.selectAll().orderBy(question.created).forEach{
                     rl.add(it.toQuestion())
                 }
-                assertEquals(now, rl[1].created)
-                assertEquals(oneMilliSecondAgo, rl[1].updated)
-                assertEquals(yesterday, rl[0].created)
-                assertEquals(yesterday, rl[0].updated)
+                assertEquals(now, rl[1].created.toJST())
+                assertEquals(oneMilliSecondAgo, rl[1].updated.toJST())
+                assertEquals(yesterday, rl[0].created.toJST())
+                assertEquals(yesterday, rl[0].updated.toJST())
 
                 val deleteCount1 = question.deleteWhere { question.created eq now }
                 assertEquals(1, deleteCount1)
@@ -102,10 +103,10 @@ object DomainSpec: Spek({
                 }
 
                 val r1 = event.select {event.created eq now}.map{it.toEvent()}.first()
-                assertEquals(event1StartAt, r1.start_at)
-                assertEquals(event1EndAt, r1.end_at)
-                assertEquals(now, r1.created)
-                assertEquals(now, r1.updated)
+                assertEquals(event1StartAt, r1.start_at.toJST())
+                assertEquals(event1EndAt, r1.end_at.toJST())
+                assertEquals(now, r1.created.toJST())
+                assertEquals(now, r1.updated.toJST())
 
                 val updatedCount = event.update({event.created eq now}) {
                     it[updated] = oneMilliSecondAgo
@@ -113,23 +114,23 @@ object DomainSpec: Spek({
                 assertEquals(1, updatedCount)
 
                 val r2 = event.select {event.updated eq oneMilliSecondAgo}.map{it.toEvent()}.first()
-                assertEquals(event1StartAt, r2.start_at)
-                assertEquals(event1EndAt, r2.end_at)
-                assertEquals(now, r2.created)
-                assertEquals(oneMilliSecondAgo, r2.updated)
+                assertEquals(event1StartAt, r2.start_at.toJST())
+                assertEquals(event1EndAt, r2.end_at.toJST())
+                assertEquals(now, r2.created.toJST())
+                assertEquals(oneMilliSecondAgo, r2.updated.toJST())
 
                 val rl: MutableList<Event> =  mutableListOf()
                 event.selectAll().orderBy(event.created).forEach{
                     rl.add(it.toEvent())
                 }
-                assertEquals(event1StartAt, rl[1].start_at)
-                assertEquals(event1EndAt, rl[1].end_at)
-                assertEquals(now, rl[1].created)
-                assertEquals(oneMilliSecondAgo, rl[1].updated)
-                assertEquals(event2StartAt, rl[0].start_at)
-                assertEquals(event2EndAt, rl[0].end_at)
-                assertEquals(yesterday, rl[0].created)
-                assertEquals(yesterday, rl[0].updated)
+                assertEquals(event1StartAt, rl[1].start_at.toJST())
+                assertEquals(event1EndAt, rl[1].end_at.toJST())
+                assertEquals(now, rl[1].created.toJST())
+                assertEquals(oneMilliSecondAgo, rl[1].updated.toJST())
+                assertEquals(event2StartAt, rl[0].start_at.toJST())
+                assertEquals(event2EndAt, rl[0].end_at.toJST())
+                assertEquals(yesterday, rl[0].created.toJST())
+                assertEquals(yesterday, rl[0].updated.toJST())
 
                 val deleteCount1 = event.deleteWhere { event.created eq now }
                 assertEquals(1, deleteCount1)
