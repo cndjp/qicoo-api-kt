@@ -10,7 +10,7 @@ version:
     #!/bin/bash
     ./gradlew --version
 
-test:
+test: load_dotenv
     #!/bin/bash
     ./gradlew test
 
@@ -26,7 +26,7 @@ create_dotenv:
 
 load_dotenv: create_dotenv
     #!/bin/bash
-    if [ ! -z ${CIRCLECI:-} ]; then
+    if [ ! -z ${TRAVIS:-} ]; then
         echo 'Do not load dotenv'
         exit 0
     fi
