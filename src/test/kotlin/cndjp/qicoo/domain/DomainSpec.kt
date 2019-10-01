@@ -41,8 +41,8 @@ object DomainSpec: Spek({
                 }
 
                 val r1 = question.select {question.created eq now}.map{it.toQuestion()}.first()
-                assertEquals(r1.created, now)
-                assertEquals(r1.updated,now)
+                assertEquals(now, r1.created)
+                assertEquals(now, r1.updated)
 
                 val updatedCount = question.update({question.created eq now}) {
                     it[updated] = oneMilliSecondAgo
@@ -50,22 +50,22 @@ object DomainSpec: Spek({
                 assertEquals(updatedCount,1)
 
                 val r2 = question.select {question.updated eq oneMilliSecondAgo}.map{it.toQuestion()}.first()
-                assertEquals(r2.created, now)
-                assertEquals(r2.updated, oneMilliSecondAgo)
+                assertEquals(now, r2.created)
+                assertEquals(oneMilliSecondAgo, r2.updated)
 
                 val rl: MutableList<Question> =  mutableListOf()
                 question.selectAll().orderBy(question.created).forEach{
                     rl.add(it.toQuestion())
                 }
-                assertEquals(rl[1].created, now)
-                assertEquals(rl[1].updated, oneMilliSecondAgo)
-                assertEquals(rl[0].created, yesterday)
-                assertEquals(rl[0].updated, yesterday)
+                assertEquals(now, rl[1].created)
+                assertEquals(oneMilliSecondAgo, rl[1].updated)
+                assertEquals(yesterday, rl[0].created)
+                assertEquals(yesterday, rl[0].updated)
 
                 val deleteCount1 = question.deleteWhere { question.created eq now }
-                assertEquals(deleteCount1, 1)
+                assertEquals(1, deleteCount1)
                 val deleteCount2 = question.deleteWhere { question.created eq yesterday }
-                assertEquals(deleteCount2, 1)
+                assertEquals(1, deleteCount2)
 
                 SchemaUtils.drop(
                     question
@@ -102,39 +102,39 @@ object DomainSpec: Spek({
                 }
 
                 val r1 = event.select {event.created eq now}.map{it.toEvent()}.first()
-                assertEquals(r1.start_at, event1StartAt)
-                assertEquals(r1.end_at, event1EndAt)
-                assertEquals(r1.created, now)
-                assertEquals(r1.updated, now)
+                assertEquals(event1StartAt, r1.start_at)
+                assertEquals(event1EndAt, r1.end_at)
+                assertEquals(now, r1.created)
+                assertEquals(now, r1.updated)
 
                 val updatedCount = event.update({event.created eq now}) {
                     it[updated] = oneMilliSecondAgo
                 }
-                assertEquals(updatedCount, 1)
+                assertEquals(1, updatedCount)
 
                 val r2 = event.select {event.updated eq oneMilliSecondAgo}.map{it.toEvent()}.first()
-                assertEquals(r2.start_at, event1StartAt)
-                assertEquals(r2.end_at, event1EndAt)
-                assertEquals(r2.created, now)
-                assertEquals(r2.updated, oneMilliSecondAgo)
+                assertEquals(event1StartAt, r2.start_at)
+                assertEquals(event1EndAt, r2.end_at)
+                assertEquals(now, r2.created)
+                assertEquals(oneMilliSecondAgo, r2.updated)
 
                 val rl: MutableList<Event> =  mutableListOf()
                 event.selectAll().orderBy(event.created).forEach{
                     rl.add(it.toEvent())
                 }
-                assertEquals(rl[1].start_at, event1StartAt)
-                assertEquals(rl[1].end_at, event1EndAt)
-                assertEquals(rl[1].created, now)
-                assertEquals(rl[1].updated, oneMilliSecondAgo)
-                assertEquals(rl[0].start_at, event2StartAt)
-                assertEquals(rl[0].end_at, event2EndAt)
-                assertEquals(rl[0].created, yesterday)
-                assertEquals(rl[0].updated, yesterday)
+                assertEquals(event1StartAt, rl[1].start_at)
+                assertEquals(event1EndAt, rl[1].end_at)
+                assertEquals(now, rl[1].created)
+                assertEquals(oneMilliSecondAgo, rl[1].updated)
+                assertEquals(event2StartAt, rl[0].start_at)
+                assertEquals(event2EndAt, rl[0].end_at)
+                assertEquals(yesterday, rl[0].created)
+                assertEquals(yesterday, rl[0].updated)
 
                 val deleteCount1 = event.deleteWhere { event.created eq now }
-                assertEquals(deleteCount1, 1)
+                assertEquals(1, deleteCount1)
                 val deleteCount2 = event.deleteWhere { event.created eq yesterday }
-                assertEquals(deleteCount2, 1)
+                assertEquals(1, deleteCount2)
 
                 SchemaUtils.drop(
                     event
