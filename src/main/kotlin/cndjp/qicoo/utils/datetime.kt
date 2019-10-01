@@ -1,22 +1,8 @@
 package main.kotlin.cndjp.qicoo.utils
 
-import java.text.ParseException
-import java.lang.IllegalArgumentException
-import java.text.SimpleDateFormat
-import java.util.Date
+import org.joda.time.DateTime
+import org.joda.time.format.DateTimeFormat
 
-fun String.toDate(pattern: String = "yyyy/MM/dd HH:mm:ss"): Date? {
-    val sdFormat = try {
-        SimpleDateFormat(pattern)
-    } catch (e: IllegalArgumentException) {
-        null
-    }
-    val date = sdFormat?.let {
-        try {
-            it.parse(this)
-        } catch (e: ParseException){
-            null
-        }
-    }
-    return date
+fun String.toDatetime(): DateTime {
+    return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC().parseDateTime(this)
 }

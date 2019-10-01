@@ -1,16 +1,25 @@
 package main.kotlin.cndjp.qicoo.domain.entity.done_question
 
+import main.kotlin.cndjp.qicoo.domain.dao.done_question.done_question
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.ResultRow
+import org.joda.time.DateTime
+import java.util.*
 
-class DoneQuestion(question_id: ByteArray, program_id: Long, display_name: String, like_count: Long, comment: String) {
-    companion object {
-        fun new(question_id: ByteArray, program_id: Long, display_name: String, like_count: Long, comment: String): DoneQuestion {
-            return DoneQuestion(
-                question_id,
-                program_id,
-                display_name,
-                like_count,
-                comment
-            )
-        }
-    }
-}
+
+data class DoneQuestion(
+    val question_id: EntityID<UUID>,
+    val program_id: EntityID<UUID>,
+    val display_name: String,
+    val like_count: Int,
+    val comment: String
+)
+
+fun ResultRow.toEntity(): DoneQuestion =
+    DoneQuestion(
+        this[done_question.question_id],
+        this[done_question.program_id],
+        this[done_question.display_name],
+        this[done_question.like_count],
+        this[done_question.comment]
+    )
