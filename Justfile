@@ -1,5 +1,4 @@
 NAME := "qicoo-api-kt"
-VERSION := `echo -n $(git rev-parse HEAD)`
 
 DOTENV_EXISTS := `if [ -f ./.env ]; then echo 0; else echo 1; fi`
 
@@ -9,7 +8,11 @@ MYSQL_VERSION := "8.0.11"
 
 version:
     #!/bin/bash
-    echo -n {{ VERSION }}
+    ./gradlew --version
+
+test:
+    #!/bin/bash
+    ./gradlew test
 
 create_dotenv:
     #!/bin/bash

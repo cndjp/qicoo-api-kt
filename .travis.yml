@@ -1,0 +1,23 @@
+language: java
+jdk:
+  - openjdk11
+
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - MYSQL_USER="root"
+    - MYSQL_HOST="127.0.0.1"
+    - MYSQL_DB="qicoo2db"
+    - MYSQL_PORT="3306"
+
+before_script:
+  - curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /usr/local/bin
+  - expose PATH=/usr/local/bin:$PATH
+  - just version
+
+script:
+  - just test
