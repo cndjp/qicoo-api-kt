@@ -55,8 +55,6 @@ object DomainSpec: Spek({
                 }
                 assertEquals(updatedCount,1)
 
-                val r2 = question.select { question.updated eq oneMilliSecondAgo}.map{it.toQuestion()}.first()
-
                 val rl: MutableList<Question> =  mutableListOf()
                 question.selectAll().orderBy(question.created to SortOrder.DESC).forEach{
                     rl.add(it.toQuestion())
@@ -115,8 +113,6 @@ object DomainSpec: Spek({
                     it[updated] = oneMilliSecondAgo
                 }
                 assertEquals(1, updatedCount)
-
-                val r2 = event.select { event.updated eq oneMilliSecondAgo}.map{it.toEvent()}.first()
 
                 val rl: MutableList<Event> =  mutableListOf()
                 event.selectAll().orderBy(event.created to SortOrder.DESC).forEach{
@@ -216,8 +212,6 @@ object DomainSpec: Spek({
                 }
                 assertEquals(1, updatedCount)
 
-                val r2 = program.select { program.updated eq oneMilliSecondAgo}.map{it.toProgram()}.first()
-
                 val srl: MutableList<Program> =  mutableListOf()
                 program.selectAll().orderBy(program.created to SortOrder.DESC).forEach{
                     srl.add(it.toProgram())
@@ -266,8 +260,6 @@ object DomainSpec: Spek({
 
                 val r1 = user.select { user.created eq now}.map{it.toUser()}.first()
                 assertEquals(now, r1.created.toJST())
-
-                val r2 = user.select { user.created eq yesterday}.map{it.toUser()}.first()
 
                 val rl: MutableList<User> =  mutableListOf()
                 user.selectAll().orderBy(user.created to SortOrder.DESC).forEach{
