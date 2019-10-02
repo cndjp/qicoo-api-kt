@@ -17,7 +17,7 @@ class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinA
     override fun getAll(): List<QuestionDTO> =
         questionRepository.findAll().map {
             val program = programRepository.findById(it.program_id.value)
-            val event = program?.let{p: Program ->  p.event_id.value}?.let { eid: UUID -> eventRepository.findById(eid) }
+            val event = program?.let{p: Program -> eventRepository.findById(p.event_id.value) }
             val eventName = event?.name ?: ""
             QuestionDTO(
                 program?.name,
