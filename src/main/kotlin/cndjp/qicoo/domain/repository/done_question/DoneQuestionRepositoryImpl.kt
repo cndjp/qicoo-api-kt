@@ -15,12 +15,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class DoneQuestionRepositoryImpl: DoneQuestionRepository {
-    override fun findAll(): List<QuestionContext> = transaction { done_question.selectAll().map {
-            it.toDoneQuestion()
-        }.map{
-            it.factory(question.select { question.id eq it.question_id }.map{ q -> q.toQuestion() }.first())
-        }
-    }
+    override fun findAll(): List<QuestionContext> = TODO()
     override fun findById(): QuestionContext? {
         TODO()
     }
