@@ -1,14 +1,26 @@
 package domain.dao.program
 
-import domain.dao.event.event
-import org.jetbrains.exposed.dao.UUIDTable
+import domain.model.program.program
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.ResultRow
+import org.joda.time.DateTime
+import java.util.*
 
-object program: UUIDTable() {
-    val event_id = (entityId("event_id",
-        event
-    ) references event.id)
-    val start_at = datetime("start_at")
-    val end_at = datetime("end_at")
-    val created = datetime("created")
-    val updated = datetime("updated")
-}
+data class Program(
+    val id: EntityID<UUID>,
+    val event_id: EntityID<UUID>,
+    val start_at: DateTime,
+    val end_at: DateTime,
+    val created: DateTime,
+    val updated: DateTime
+)
+
+fun ResultRow.toProgram(): Program =
+    Program(
+        this[program.id],
+        this[program.event_id],
+        this[program.start_at],
+        this[program.end_at],
+        this[program.created],
+        this[program.updated]
+    )

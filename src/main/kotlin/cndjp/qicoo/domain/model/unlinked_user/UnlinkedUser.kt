@@ -1,6 +1,6 @@
-package domain.dao.unlinked_user
+package domain.model.unlinked_user
 
-import domain.dao.user.user
+import domain.model.user.user
 import org.jetbrains.exposed.sql.Table
 
 object unlinked_user: Table() {

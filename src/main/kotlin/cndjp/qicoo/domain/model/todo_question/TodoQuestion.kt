@@ -1,8 +1,8 @@
-package domain.dao.todo_question
+package domain.model.todo_question
 
 
-import domain.dao.program.program
-import domain.dao.question.question
+import domain.model.program.program
+import domain.model.question.question
 import org.jetbrains.exposed.sql.Table
 
 object todo_question: Table() {

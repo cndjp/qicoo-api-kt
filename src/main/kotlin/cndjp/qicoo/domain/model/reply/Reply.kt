@@ -1,6 +1,6 @@
-package domain.dao.reply
+package domain.model.reply
 
-import domain.dao.question.question
+import domain.model.question.question
 import org.jetbrains.exposed.dao.UUIDTable
 
 object reply: UUIDTable() {

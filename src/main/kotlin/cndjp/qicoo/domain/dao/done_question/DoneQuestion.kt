@@ -1,17 +1,24 @@
 package domain.dao.done_question
 
-import domain.dao.program.program
-import domain.dao.question.question
-import org.jetbrains.exposed.sql.*
+import domain.model.done_question.done_question
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.ResultRow
+import java.util.*
 
-object done_question: Table() {
-    val question_id = (entityId("question_id",
-        question
-    ) references question.id).primaryKey()
-    val program_id = (entityId("program_id",
-        program
-    ) references program.id)
-    val display_name = varchar("display_name", 255).default("anonymous")
-    val like_count = integer("like_count").default(0)
-    val comment = varchar("comment", 255).default("")
-}
+
+data class DoneQuestion(
+    val question_id: EntityID<UUID>,
+    val program_id: EntityID<UUID>,
+    val display_name: String,
+    val like_count: Int,
+    val comment: String
+)
+
+fun ResultRow.toEntity(): DoneQuestion =
+    DoneQuestion(
+        this[done_question.question_id],
+        this[done_question.program_id],
+        this[done_question.display_name],
+        this[done_question.like_count],
+        this[done_question.comment]
+    )

@@ -1,19 +1,22 @@
 package domain
 
-import domain.dao.event.event
-import domain.dao.program.program
-import domain.entity.program.Program
-import domain.entity.program.toEntity as toProgram
-import domain.dao.question.question
-import domain.entity.event.Event
-import domain.entity.event.toEntity as toEvent
-import domain.entity.question.Question
-import domain.entity.question.toEntity as toQuestion
+import domain.model.event.event
+import domain.model.program.program
+import domain.dao.program.Program
+import domain.dao.program.toProgram
+import domain.model.question.question
+import domain.dao.event.Event
+import domain.dao.event.toEvent
+import domain.dao.question.Question
+import domain.dao.question.toQuestion
 import infrastructure.rdb.client.initMysqlClient
-import domain.dao.user.user
-import domain.entity.done_question.DoneQuestion
-import domain.entity.user.User
-import domain.entity.user.toEntity as toUser
+import domain.model.user.user
+import domain.dao.event.NewEvent
+import domain.dao.program.NewProgram
+import domain.dao.question.NewQuestion
+import domain.dao.user.NewUser
+import domain.dao.user.User
+import domain.dao.user.toUser
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
 import utils.toJST
@@ -36,14 +39,14 @@ object DomainSpec: Spek({
                     question
                 )
 
-                question.insert {
-                    it[created] = now
-                    it[updated] = now
+                NewQuestion.new {
+                    created = now
+                    updated = now
                 }
 
-                question.insert {
-                    it[created] = yesterday
-                    it[updated] = yesterday
+                NewQuestion.new {
+                    created = yesterday
+                    updated = yesterday
                 }
 
                 val r1 = question.select { question.created eq now}.map{it.toQuestion()}.first()
@@ -89,19 +92,20 @@ object DomainSpec: Spek({
                     event
                 )
 
-                event.insert {
-                    it[start_at] = event1StartAt
-                    it[end_at]  = event1EndAt
-                    it[created] = now
-                    it[updated] = now
+                NewEvent.new {
+                    start_at = event1StartAt
+                    end_at  = event1EndAt
+                    created = now
+                    updated = now
                 }
 
-                event.insert {
-                    it[start_at] = event2StartAt
-                    it[end_at]  = event2EndAt
-                    it[created] = yesterday
-                    it[updated] = yesterday
+                NewEvent.new {
+                    start_at = event2StartAt
+                    end_at = event2EndAt
+                    created = yesterday
+                    updated = yesterday
                 }
+
 
                 val r1 = event.select { event.created eq now}.map{it.toEvent()}.first()
                 assertEquals(event1StartAt, r1.start_at.toJST())
@@ -157,51 +161,39 @@ object DomainSpec: Spek({
                     program
                 )
 
-                event.insert {
-                    it[start_at] = event1StartAt
-                    it[end_at]  = event1EndAt
-                    it[created] = now
-                    it[updated] = now
+                val e1 = NewEvent.new {
+                    start_at = event1StartAt
+                    end_at = event1EndAt
+                    created = now
+                    updated = now
                 }
 
-                event.insert {
-                    it[start_at] = event2StartAt
-                    it[end_at]  = event2EndAt
-                    it[created] = yesterday
-                    it[updated] = yesterday
+                val e2 = NewEvent.new {
+                    start_at = event2StartAt
+                    end_at = event2EndAt
+                    created = yesterday
+                    updated = yesterday
                 }
 
-                val rl: MutableList<Event> =  mutableListOf()
-                event.selectAll().orderBy(event.created to SortOrder.DESC).forEach{
-                    rl.add(it.toEvent())
-                }
-                assertEquals(event1StartAt, rl[0].start_at.toJST())
-                assertEquals(event1EndAt, rl[0].end_at.toJST())
-                assertEquals(now, rl[0].created.toJST())
-                assertEquals(now, rl[0].updated.toJST())
-                assertEquals(event2StartAt, rl[1].start_at.toJST())
-                assertEquals(event2EndAt, rl[1].end_at.toJST())
-                assertEquals(yesterday, rl[1].created.toJST())
-                assertEquals(yesterday, rl[1].updated.toJST())
 
-                program.insert {
-                    it[event_id] = rl[0].id
-                    it[start_at] = program1StartAt
-                    it[end_at]  = program1EndAt
-                    it[created] = now
-                    it[updated] = now
+                NewProgram.new {
+                    event_id = e1.id
+                    start_at = program1StartAt
+                    end_at  = program1EndAt
+                    created = now
+                    updated = now
                 }
 
-                program.insert {
-                    it[event_id] = rl[1].id
-                    it[start_at] = program2StartAt
-                    it[end_at]  = program2EndAt
-                    it[created] = yesterday
-                    it[updated] = yesterday
+                NewProgram.new {
+                    event_id = e2.id
+                    start_at = program2StartAt
+                    end_at  = program2EndAt
+                    created = yesterday
+                    updated = yesterday
                 }
 
                 val r1 = program.select { program.created eq now}.map{it.toProgram()}.first()
-                assertEquals(rl[0].id, r1.event_id)
+                assertEquals(e1.id, r1.event_id)
                 assertEquals(program1StartAt, r1.start_at.toJST())
                 assertEquals(program1EndAt, r1.end_at.toJST())
                 assertEquals(now, r1.created.toJST())
@@ -216,12 +208,12 @@ object DomainSpec: Spek({
                 program.selectAll().orderBy(program.created to SortOrder.DESC).forEach{
                     srl.add(it.toProgram())
                 }
-                assertEquals(rl[0].id, srl[0].event_id)
+                assertEquals(e1.id, srl[0].event_id)
                 assertEquals(program1StartAt, srl[0].start_at.toJST())
                 assertEquals(program1EndAt, srl[0].end_at.toJST())
                 assertEquals(now, srl[0].created.toJST())
                 assertEquals(oneMilliSecondAgo, srl[0].updated.toJST())
-                assertEquals(rl[1].id, srl[1].event_id)
+                assertEquals(e2.id, srl[1].event_id)
                 assertEquals(program2StartAt, srl[1].start_at.toJST())
                 assertEquals(program2EndAt, srl[1].end_at.toJST())
                 assertEquals(yesterday, srl[1].created.toJST())
@@ -250,12 +242,12 @@ object DomainSpec: Spek({
                     user
                 )
 
-                user.insert {
-                    it[created] = now
+                NewUser.new {
+                    created = now
                 }
 
-                user.insert {
-                    it[created] = yesterday
+                NewUser.new {
+                    created = yesterday
                 }
 
                 val r1 = user.select { user.created eq now}.map{it.toUser()}.first()

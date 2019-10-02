@@ -1,6 +1,6 @@
-package domain.dao.linked_user
+package domain.model.linked_user
 
-import domain.dao.user.user
+import domain.model.user.user
 import org.jetbrains.exposed.sql.Table
 
 object linked_user: Table() {
