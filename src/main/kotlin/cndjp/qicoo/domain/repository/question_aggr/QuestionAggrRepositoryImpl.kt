@@ -32,8 +32,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 onColumn = { id }
             )
             .slice(question.id, event.name, program.name, done_question.display_name, done_question.like_count, done_question.comment, question.created, question.updated)
-            .selectAll().map {it.toDoneQuestionAggr()}
-            .map{it.factory()}
+            .selectAll().map {it.toDoneQuestionAggr().factory()}
         val todo_aggr = question
             .innerJoin(
                 otherTable = todo_question.innerJoin(
@@ -49,8 +48,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 onColumn = { id }
             )
             .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.like_count, todo_question.comment, question.created, question.updated)
-            .selectAll().map {it.toTodoQuestionAggr()}
-            .map{it.factory()}
+            .selectAll().map {it.toTodoQuestionAggr().factory()}
 
         when (Pair(done_aggr.isNotEmpty(), todo_aggr.isNotEmpty())) {
             Pair(first = true, second = true) -> done_aggr merge todo_aggr
