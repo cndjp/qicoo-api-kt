@@ -86,8 +86,8 @@ object DomainSpec: Spek({
             val now = getNowDateTimeJst()
             val oneMilliSecondAgo = now + Duration(1)
             val yesterday = now.minusDays(1)
-            val comment1 = "からの？"
-            val comment2 = "とはいえ"
+            val comment1 = "what is this?"
+            val comment2 = "where is from?"
 
             transaction {
                 SchemaUtils.create(
