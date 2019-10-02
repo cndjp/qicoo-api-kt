@@ -14,9 +14,13 @@ import domain.model.user.user
 import domain.dao.event.NewEvent
 import domain.dao.program.NewProgram
 import domain.dao.question.NewQuestion
+import domain.dao.reply.NewReply
+import domain.dao.reply.Reply
+import domain.dao.reply.toReply
 import domain.dao.user.NewUser
 import domain.dao.user.User
 import domain.dao.user.toUser
+import domain.model.reply.reply
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
 import utils.toJST
@@ -74,6 +78,79 @@ object DomainSpec: Spek({
 
                 SchemaUtils.drop(
                     question
+                )
+            }
+        }
+        test("replyのCRUDテスト") {
+            initMysqlClient()
+            val now = getNowDateTimeJst()
+            val oneMilliSecondAgo = now + Duration(1)
+            val yesterday = now.minusDays(1)
+            val comment1 = "からの？"
+            val comment2 = "とはいえ"
+
+            transaction {
+                SchemaUtils.create(
+                    question,
+                    reply
+                )
+
+                val q1 = NewQuestion.new {
+                    created = now
+                    updated = now
+                }
+
+                val q2 = NewQuestion.new {
+                    created = yesterday
+                    updated = yesterday
+                }
+
+                NewReply.new {
+                    question_id = q1.id
+                    comment = comment1
+                    created = now
+                    updated = now
+                }
+
+                NewReply.new {
+                    question_id = q2.id
+                    comment = comment2
+                    created = yesterday
+                    updated = yesterday
+                }
+
+                val r1 = reply.select { reply.created eq now }.map { it.toReply() }.first()
+                assertEquals(q1.id, r1.question_id)
+                assertEquals(comment1, r1.comment)
+                assertEquals(now, r1.created.toJST())
+                assertEquals(now, r1.updated.toJST())
+
+                val updatedCount = reply.update({ reply.created eq now }) {
+                    it[updated] = oneMilliSecondAgo
+                }
+                assertEquals(updatedCount, 1)
+
+                val rl: MutableList<Reply> = mutableListOf()
+                reply.selectAll().orderBy(reply.created to SortOrder.DESC).forEach {
+                    rl.add(it.toReply())
+                }
+                assertEquals(q1.id, rl[0].question_id)
+                assertEquals(comment1, rl[0].comment)
+                assertEquals(now, rl[0].created.toJST())
+                assertEquals(oneMilliSecondAgo, rl[0].updated.toJST())
+                assertEquals(q2.id, rl[1].question_id)
+                assertEquals(comment2, rl[1].comment)
+                assertEquals(yesterday, rl[1].created.toJST())
+                assertEquals(yesterday, rl[1].updated.toJST())
+
+                val deleteCount1 = reply.deleteWhere { reply.created eq now }
+                assertEquals(1, deleteCount1)
+                val deleteCount2 = reply.deleteWhere { reply.created eq yesterday }
+                assertEquals(1, deleteCount2)
+
+                SchemaUtils.drop(
+                    question,
+                    reply
                 )
             }
         }
