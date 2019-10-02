@@ -1,9 +1,9 @@
 package domain
 
 import domain.dao.done_question.DoneQuestion
+import domain.dao.done_question.toDoneQuestion
 import domain.dao.done_question.NewDoneQuestion
 import domain.dao.done_question.NewTodoQuestion
-import domain.dao.done_question.toDoneQuestion
 import domain.model.event.event
 import domain.model.program.program
 import domain.dao.program.Program
@@ -169,7 +169,7 @@ object DomainSpec: Spek({
                 NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, like_count = d1likes, comment = d1comment)
                 NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, like_count = d2likes, comment = d2comment)
 
-                val r1 = done_question.select { done_question.question_id eq q1.id}.map{it.toDoneQuestion()}.first()
+                val r1 = done_question.select { done_question.question_id eq q1.id}.map{ it.toDoneQuestion() }.first()
                 assertEquals(p1.id, r1.program_id)
                 assertEquals(d1name, r1.display_name)
                 assertEquals(d1likes, r1.like_count)

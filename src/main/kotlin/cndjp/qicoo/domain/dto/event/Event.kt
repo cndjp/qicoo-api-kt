@@ -1,4 +1,4 @@
-package domain.dto.event
+package domain.dao.event
 
 import domain.model.event.event
 import org.jetbrains.exposed.dao.EntityID

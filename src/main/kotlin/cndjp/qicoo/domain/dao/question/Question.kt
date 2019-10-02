@@ -1,5 +1,6 @@
 package domain.dao.question
 
+import domain.dao.done_question.DoneQuestion
 import domain.model.question.question
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
