@@ -1,5 +1,8 @@
 package domain
 
+import domain.dao.done_question.DoneQuestion
+import domain.dao.done_question.NewDoneQuestion
+import domain.dao.done_question.toDoneQuestion
 import domain.model.event.event
 import domain.model.program.program
 import domain.dao.program.Program
@@ -20,6 +23,7 @@ import domain.dao.reply.toReply
 import domain.dao.user.NewUser
 import domain.dao.user.User
 import domain.dao.user.toUser
+import domain.model.done_question.done_question
 import domain.model.reply.reply
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
@@ -78,6 +82,115 @@ object DomainSpec: Spek({
 
                 SchemaUtils.drop(
                     question
+                )
+            }
+        }
+        test("done_questionのCRUDテスト") {
+            initMysqlClient()
+            val now = getNowDateTimeJst()
+            val yesterday = now.minusDays(1)
+            val event1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
+            val event1EndAt = "2018-01-02 19:00:00".toDateTimeJst()
+            val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
+            val event2EndAt = "2018-02-02 19:00:00".toDateTimeJst()
+            val program1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
+            val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
+            val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
+            val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
+            val d1name = "nyan"
+            val d1likes = 10
+            val d1likesUpdated = 111
+            val d1comment = "what is qicoo"
+            val d2name = "hyon"
+            val d2likes = 200
+            val d2comment = "what is mayo"
+
+
+            transaction {
+                SchemaUtils.create(
+                    event,
+                    question,
+                    done_question,
+                    program
+                )
+
+                val e1 = NewEvent.new {
+                    start_at = event1StartAt
+                    end_at = event1EndAt
+                    created = now
+                    updated = now
+                }
+
+                val e2 = NewEvent.new {
+                    start_at = event2StartAt
+                    end_at = event2EndAt
+                    created = yesterday
+                    updated = yesterday
+                }
+
+
+                val p1 = NewProgram.new {
+                    event_id = e1.id
+                    start_at = program1StartAt
+                    end_at  = program1EndAt
+                    created = now
+                    updated = now
+                }
+
+                val p2 = NewProgram.new {
+                    event_id = e2.id
+                    start_at = program2StartAt
+                    end_at  = program2EndAt
+                    created = yesterday
+                    updated = yesterday
+                }
+                val q1 = NewQuestion.new {
+                    created = now
+                    updated = now
+                }
+
+                val q2 = NewQuestion.new {
+                    created = yesterday
+                    updated = yesterday
+                }
+
+                val d1 = NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, like_count = d1likes, comment = d1comment)
+                val d2 = NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, like_count = d2likes, comment = d2comment)
+
+                val r1 = done_question.select { done_question.question_id eq q1.id}.map{it.toDoneQuestion()}.first()
+                assertEquals(p1.id, r1.program_id)
+                assertEquals(d1name, r1.display_name)
+                assertEquals(d1likes, r1.like_count)
+                assertEquals(d1comment, r1.comment)
+
+                val updatedCount = done_question.update({ done_question.question_id eq q1.id}) {
+                    it[like_count] = d1likesUpdated
+                }
+                assertEquals(updatedCount,1)
+
+                val rl: MutableList<DoneQuestion> =  mutableListOf()
+                done_question.selectAll().orderBy(done_question.like_count to SortOrder.ASC).forEach{
+                    rl.add(it.toDoneQuestion())
+                }
+                assertEquals(p1.id, rl[0].program_id)
+                assertEquals(d1name, rl[0].display_name)
+                assertEquals(d1likesUpdated, rl[0].like_count)
+                assertEquals(d1comment, rl[0].comment)
+                assertEquals(p2.id, rl[1].program_id)
+                assertEquals(d2name, rl[1].display_name)
+                assertEquals(d2likes, rl[1].like_count)
+                assertEquals(d2comment, rl[1].comment)
+
+                val deleteCount1 = done_question.deleteWhere { done_question.question_id eq q1.id }
+                assertEquals(1, deleteCount1)
+                val deleteCount2 = done_question.deleteWhere { done_question.question_id eq q2.id }
+                assertEquals(1, deleteCount2)
+
+                SchemaUtils.drop(
+                    event,
+                    question,
+                    done_question,
+                    program
                 )
             }
         }

@@ -14,7 +14,7 @@ data class DoneQuestion(
     val comment: String
 )
 
-fun ResultRow.toEntity(): DoneQuestion =
+fun ResultRow.toDoneQuestion(): DoneQuestion =
     DoneQuestion(
         this[done_question.question_id],
         this[done_question.program_id],
