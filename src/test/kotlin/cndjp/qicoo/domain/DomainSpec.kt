@@ -154,8 +154,8 @@ object DomainSpec: Spek({
                     updated = yesterday
                 }
 
-                val d1 = NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, like_count = d1likes, comment = d1comment)
-                val d2 = NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, like_count = d2likes, comment = d2comment)
+                NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, like_count = d1likes, comment = d1comment)
+                NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, like_count = d2likes, comment = d2comment)
 
                 val r1 = done_question.select { done_question.question_id eq q1.id}.map{it.toDoneQuestion()}.first()
                 assertEquals(p1.id, r1.program_id)
