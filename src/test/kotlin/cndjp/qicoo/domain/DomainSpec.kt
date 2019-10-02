@@ -16,6 +16,9 @@ import domain.dao.question.toQuestion
 import infrastructure.rdb.client.initMysqlClient
 import domain.model.user.user
 import domain.dao.event.NewEvent
+import domain.dao.linked_user.LinkedUser
+import domain.dao.linked_user.NewLinkedUser
+import domain.dao.linked_user.toLinkedUser
 import domain.dao.program.NewProgram
 import domain.dao.question.NewQuestion
 import domain.dao.reply.NewReply
@@ -23,12 +26,17 @@ import domain.dao.reply.Reply
 import domain.dao.reply.toReply
 import domain.dao.todo_question.TodoQuestion
 import domain.dao.todo_question.toTodoQuestion
+import domain.dao.unlinked_user.NewUnlinkedUser
+import domain.dao.unlinked_user.UnlinkedUser
+import domain.dao.unlinked_user.toUnlinkedUser
 import domain.dao.user.NewUser
 import domain.dao.user.User
 import domain.dao.user.toUser
 import domain.model.done_question.done_question
+import domain.model.linked_user.linked_user
 import domain.model.reply.reply
 import domain.model.todo_question.todo_question
+import domain.model.unlinked_user.unlinked_user
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
 import utils.toJST
@@ -570,6 +578,106 @@ object DomainSpec: Spek({
 
                 SchemaUtils.drop(
                     user
+                )
+            }
+        }
+        test("linked_userのCRDテスト") {
+            initMysqlClient()
+            val now = getNowDateTimeJst()
+            val yesterday = now.minusDays(1)
+            val tid1 = "@hogehoge"
+            val tname1 = "ホゲホゲ"
+            val tid2 = "@hugahuga"
+            val tname2 = "フガフガ"
+
+            transaction {
+                SchemaUtils.create(
+                    user,
+                    linked_user
+                )
+
+                val u1 = NewUser.new {
+                    created = now
+                }
+
+                val u2 = NewUser.new {
+                    created = yesterday
+                }
+
+                NewLinkedUser(user_id = u1.id, twitter_account_id = tid1, twitter_account_name = tname1)
+                NewLinkedUser(user_id = u2.id, twitter_account_id = tid2, twitter_account_name = tname2)
+
+                val r1 = linked_user.select { linked_user.twitter_account_id eq tid1}.map{it.toLinkedUser()}.first()
+                assertEquals(u1.id, r1.user_id)
+                assertEquals(tname1, r1.twitter_account_name)
+
+                val rl: MutableList<LinkedUser> =  mutableListOf()
+                linked_user.selectAll().orderBy(linked_user.twitter_account_id to SortOrder.ASC).forEach{
+                    rl.add(it.toLinkedUser())
+                }
+                assertEquals(u1.id, rl[0].user_id)
+                assertEquals(tname1, rl[0].twitter_account_name)
+                assertEquals(u2.id, rl[1].user_id)
+                assertEquals(tname2, rl[1].twitter_account_name)
+
+                val deleteCount1 = linked_user.deleteWhere { linked_user.twitter_account_id eq tid1 }
+                assertEquals(1, deleteCount1)
+                val deleteCount2 = linked_user.deleteWhere { linked_user.twitter_account_id eq tid2 }
+                assertEquals(1, deleteCount2)
+
+                SchemaUtils.drop(
+                    user,
+                    linked_user
+                )
+            }
+        }
+        test("unlinked_userのCRDテスト") {
+            initMysqlClient()
+            val now = getNowDateTimeJst()
+            val yesterday = now.minusDays(1)
+            val tid1 = "@hogehoge"
+            val tname1 = "ホゲホゲ"
+            val tid2 = "@hugahuga"
+            val tname2 = "フガフガ"
+
+            transaction {
+                SchemaUtils.create(
+                    user,
+                    unlinked_user
+                )
+
+                val u1 = NewUser.new {
+                    created = now
+                }
+
+                val u2 = NewUser.new {
+                    created = yesterday
+                }
+
+                NewUnlinkedUser(user_id = u1.id, twitter_account_id = tid1, twitter_account_name = tname1)
+                NewUnlinkedUser(user_id = u2.id, twitter_account_id = tid2, twitter_account_name = tname2)
+
+                val r1 = unlinked_user.select { unlinked_user.twitter_account_id eq tid1}.map{it.toUnlinkedUser()}.first()
+                assertEquals(u1.id, r1.user_id)
+                assertEquals(tname1, r1.twitter_account_name)
+
+                val rl: MutableList<UnlinkedUser> =  mutableListOf()
+                unlinked_user.selectAll().orderBy(unlinked_user.twitter_account_id to SortOrder.ASC).forEach{
+                    rl.add(it.toUnlinkedUser())
+                }
+                assertEquals(u1.id, rl[0].user_id)
+                assertEquals(tname1, rl[0].twitter_account_name)
+                assertEquals(u2.id, rl[1].user_id)
+                assertEquals(tname2, rl[1].twitter_account_name)
+
+                val deleteCount1 = unlinked_user.deleteWhere { unlinked_user.twitter_account_id eq tid1 }
+                assertEquals(1, deleteCount1)
+                val deleteCount2 = unlinked_user.deleteWhere { unlinked_user.twitter_account_id eq tid2 }
+                assertEquals(1, deleteCount2)
+
+                SchemaUtils.drop(
+                    user,
+                    unlinked_user
                 )
             }
         }
