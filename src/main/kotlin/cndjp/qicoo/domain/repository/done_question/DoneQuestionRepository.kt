@@ -1,9 +1,8 @@
 package domain.repository.done_question
 
-import domain.dao.done_question.DoneQuestion
-import domain.dao.question.Question
+import domain.dao.question_context.QuestionContext
 
 interface DoneQuestionRepository {
-    fun findAll(): List<DoneQuestion>
-    fun findById(): DoneQuestion?
+    fun findAll(): List<QuestionContext>
+    fun findById(): QuestionContext?
 }

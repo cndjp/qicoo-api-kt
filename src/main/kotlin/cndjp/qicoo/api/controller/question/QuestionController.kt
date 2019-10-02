@@ -32,7 +32,7 @@ fun Route.questionController(kodein: Kodein) {
 
     route("/question") {
         get {
-            call.respond(service.getAll().factory())
+            call.respond(HttpStatusCode.OK, service.getAll().factory())
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")

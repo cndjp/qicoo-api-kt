@@ -11,6 +11,8 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
 
+fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
+
 fun Application.main() {
     val _client = initMysqlClient()
     install(CallLogging)

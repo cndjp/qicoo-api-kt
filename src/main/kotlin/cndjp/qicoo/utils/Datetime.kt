@@ -5,9 +5,8 @@ import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
 
-fun getNowDateTimeJst(): DateTime {
-    return DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
-}
+fun getNowDateTimeJst(): DateTime = DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
+
 
 fun String.toDateTimeUtc(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC().parseDateTime(this)
@@ -22,6 +21,6 @@ fun String.toDateTimeLocal(): DateTime {
     return localDateTime.toDateTime()
 }
 
-fun DateTime.toJST(): DateTime {
-    return this.toDateTime(DateTimeZone.forID("Asia/Tokyo"))
-}
+fun DateTime.toJST(): DateTime = this.toDateTime(DateTimeZone.forID("Asia/Tokyo"))
+
+fun DateTime.toFomatString(): String = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").print(this)
