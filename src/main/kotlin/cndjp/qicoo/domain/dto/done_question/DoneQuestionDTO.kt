@@ -13,8 +13,6 @@ data class DoneQuestionDTOUnit(
     val updated: DateTime?
 )
 
-class DoneQuestionDTO(
+data class DoneQuestionDTO(
     val value: List<DoneQuestionDTOUnit>
-) {
-    companion object
-}
+)

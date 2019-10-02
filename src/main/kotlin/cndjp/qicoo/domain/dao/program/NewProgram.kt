@@ -9,6 +9,7 @@ import java.util.*
 class NewProgram(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewProgram>(program)
 
+    var name by program.name
     var event_id by program.event_id
     var start_at by program.start_at
     var end_at by program.end_at

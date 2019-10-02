@@ -4,6 +4,7 @@ import domain.model.event.event
 import org.jetbrains.exposed.dao.UUIDTable
 
 object program: UUIDTable() {
+    val name = varchar("name", 255)
     val event_id = (entityId("event_id",
         event
     ) references event.id)

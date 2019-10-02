@@ -1,4 +1,4 @@
-package domain.dao.event
+package domain.dto.event
 
 import domain.model.event.event
 import org.jetbrains.exposed.dao.EntityID
@@ -6,7 +6,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 import java.util.*
 
-data class Event(
+data class EventDTO(
     val id: EntityID<UUID>,
     val start_at: DateTime,
     val end_at: DateTime,
@@ -14,8 +14,8 @@ data class Event(
     val updated: DateTime
 )
 
-fun ResultRow.toEvent(): Event =
-    Event(
+fun ResultRow.toEvent(): EventDTO =
+    EventDTO(
         this[event.id],
         this[event.start_at],
         this[event.end_at],

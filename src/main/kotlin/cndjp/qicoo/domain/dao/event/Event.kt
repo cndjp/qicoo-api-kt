@@ -1,4 +1,4 @@
-package domain.dto.event
+package domain.dao.event
 
 import domain.model.event.event
 import org.jetbrains.exposed.dao.EntityID
@@ -8,6 +8,7 @@ import java.util.*
 
 data class Event(
     val id: EntityID<UUID>,
+    val name: String,
     val start_at: DateTime,
     val end_at: DateTime,
     val created: DateTime,
@@ -17,6 +18,7 @@ data class Event(
 fun ResultRow.toEvent(): Event =
     Event(
         this[event.id],
+        this[event.name],
         this[event.start_at],
         this[event.end_at],
         this[event.created],

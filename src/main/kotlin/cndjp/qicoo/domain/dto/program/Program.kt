@@ -8,6 +8,7 @@ import java.util.*
 
 data class Program(
     val id: EntityID<UUID>,
+    val name: String,
     val event_id: EntityID<UUID>,
     val start_at: DateTime,
     val end_at: DateTime,
@@ -18,6 +19,7 @@ data class Program(
 fun ResultRow.toProgram(): Program =
     Program(
         this[program.id],
+        this[program.name],
         this[program.event_id],
         this[program.start_at],
         this[program.end_at],

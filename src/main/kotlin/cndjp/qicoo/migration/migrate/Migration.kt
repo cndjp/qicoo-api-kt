@@ -46,6 +46,10 @@ suspend fun main(args: Array<String>) {
         val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
         val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
         val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
+        val e1name = "poe"
+        val e2name = "fae"
+        val p1name = "poke"
+        val p2name = "moka"
         val d1name = "nyan"
         val d1likes = 10
         val d1likesUpdated = 111
@@ -64,6 +68,7 @@ suspend fun main(args: Array<String>) {
             )
 
             val e1 = NewEvent.new {
+                name = e1name
                 start_at = event1StartAt
                 end_at = event1EndAt
                 created = now
@@ -71,6 +76,7 @@ suspend fun main(args: Array<String>) {
             }
 
             val e2 = NewEvent.new {
+                name = e2name
                 start_at = event2StartAt
                 end_at = event2EndAt
                 created = yesterday
@@ -79,6 +85,7 @@ suspend fun main(args: Array<String>) {
 
 
             val p1 = NewProgram.new {
+                name = p1name
                 event_id = e1.id
                 start_at = program1StartAt
                 end_at = program1EndAt
@@ -87,6 +94,7 @@ suspend fun main(args: Array<String>) {
             }
 
             val p2 = NewProgram.new {
+                name = p2name
                 event_id = e2.id
                 start_at = program2StartAt
                 end_at = program2EndAt

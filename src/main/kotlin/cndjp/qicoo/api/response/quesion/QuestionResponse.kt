@@ -8,7 +8,8 @@ data class QuestionResponse (
     )
 
 data class QuestionResponseUnit (
-    val program_id: String,
+    val program_name: String?,
+    val event_name: String?,
     val display_name: String,
     val like_count: Int,
     val comment: String,
@@ -17,6 +18,6 @@ data class QuestionResponseUnit (
 )
 
 
-fun QuestionDTO.factory(): QuestionResponse = QuestionResponse(
-        value = this.questionContext.map{QuestionResponseUnit(it.program_id.value.toString(), it.display_name, it.like_count, it.comment, it.created.toFomatString(), it.updated.toFomatString())}
+fun List<QuestionDTO>.factory(): QuestionResponse = QuestionResponse(
+        value = this.map{QuestionResponseUnit(it.program_name, it.event_name, it.display_name, it.like_count, it.comment, it.created?.toFomatString() ?: "", it.updated?.toFomatString() ?: "")}
     )

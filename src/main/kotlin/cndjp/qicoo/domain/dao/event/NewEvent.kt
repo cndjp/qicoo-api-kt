@@ -9,6 +9,7 @@ import java.util.*
 class NewEvent(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewEvent>(event)
 
+    var name by event.name
     var start_at by event.start_at
     var end_at by event.end_at
     var created by event.created
