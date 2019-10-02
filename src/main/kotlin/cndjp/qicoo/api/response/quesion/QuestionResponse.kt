@@ -1,6 +1,6 @@
 package api.response.quesion
 
-import domain.dto.question.QuestionDTO
+import domain.dto.question_aggr.QuestionAggrDTO
 import utils.toFomatString
 
 data class QuestionResponse (
@@ -8,16 +8,16 @@ data class QuestionResponse (
     )
 
 data class QuestionResponseUnit (
-    val program_name: String?,
-    val event_name: String?,
+    val program_name: String,
+    val event_name: String,
     val display_name: String,
     val like_count: Int,
     val comment: String,
-    val created: String?,
-    val updated: String?
+    val created: String,
+    val updated: String
 )
 
 
-fun List<QuestionDTO>.factory(): QuestionResponse = QuestionResponse(
+fun List<QuestionAggrDTO>.factory(): QuestionResponse = QuestionResponse(
         value = this.map{QuestionResponseUnit(it.program_name, it.event_name, it.display_name, it.like_count, it.comment, it.created?.toFomatString() ?: "", it.updated?.toFomatString() ?: "")}
     )

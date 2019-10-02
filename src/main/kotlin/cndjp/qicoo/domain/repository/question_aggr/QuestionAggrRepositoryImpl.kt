@@ -3,6 +3,7 @@ package domain.repository.question_aggr
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.factory
 import domain.dao.question_aggr.toDoneQuestionAggr
+import domain.dao.question_aggr.toTodoQuestionAggr
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.program.program
@@ -48,7 +49,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 { question.id }
             )
             .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.like_count, todo_question.comment, question.created, question.updated)
-            .selectAll().map {it.toDoneQuestionAggr()}
+            .selectAll().map {it.toTodoQuestionAggr()}
             .map{it.factory()}
 
         when (Pair(done_aggr.isNotEmpty(), todo_aggr.isNotEmpty())) {

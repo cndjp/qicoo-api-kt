@@ -1,7 +1,7 @@
 package api.service.question
 
-import domain.dto.question.QuestionDTO
+import domain.dto.question_aggr.QuestionAggrDTO
 
 interface QuestionService {
-    fun getAll(): List<QuestionDTO>
+    fun getAll(): List<QuestionAggrDTO>
 }
