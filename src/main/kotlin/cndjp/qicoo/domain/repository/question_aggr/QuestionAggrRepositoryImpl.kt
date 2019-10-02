@@ -19,34 +19,34 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     override fun findAll(): List<QuestionAggr> = transaction {
         val done_aggr = question
             .innerJoin(
-                done_question.innerJoin(
-                    program.innerJoin(
-                        event,
-                        { event_id },
-                        { id }
+                otherTable = done_question.innerJoin(
+                    otherTable = program.innerJoin(
+                        otherTable = event,
+                        otherColumn = { program.event_id },
+                        onColumn = { event.id }
                     ),
-                    { program_id },
-                    { program.id }
+                    otherColumn = { done_question.program_id },
+                    onColumn = { program.id }
                 ),
-                { done_question.question_id },
-                { question.id }
+                otherColumn = { done_question.question_id },
+                onColumn = { id }
             )
             .slice(question.id, event.name, program.name, done_question.display_name, done_question.like_count, done_question.comment, question.created, question.updated)
             .selectAll().map {it.toDoneQuestionAggr()}
             .map{it.factory()}
         val todo_aggr = question
             .innerJoin(
-                todo_question.innerJoin(
-                    program.innerJoin(
-                        event,
-                        { event_id },
-                        { id }
+                otherTable = todo_question.innerJoin(
+                    otherTable = program.innerJoin(
+                        otherTable = event,
+                        otherColumn = { program.event_id },
+                        onColumn = { event.id }
                     ),
-                    { program_id },
-                    { program.id }
+                    otherColumn = { todo_question.program_id },
+                    onColumn = { program.id }
                 ),
-                { todo_question.question_id },
-                { question.id }
+                otherColumn = { todo_question.question_id },
+                onColumn = { id }
             )
             .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.like_count, todo_question.comment, question.created, question.updated)
             .selectAll().map {it.toTodoQuestionAggr()}
