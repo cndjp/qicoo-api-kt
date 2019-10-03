@@ -1,4 +1,4 @@
-package domain.dto.question_aggr
+package domain.dto.question
 
 import org.joda.time.DateTime
 

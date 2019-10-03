@@ -1,6 +1,6 @@
 package api.response.quesion
 
-import domain.dto.question_aggr.QuestionDTO
+import domain.dto.question.QuestionDTO
 import utils.toFomatString
 
 class QuestionResponse(questionDTO: QuestionDTO) {

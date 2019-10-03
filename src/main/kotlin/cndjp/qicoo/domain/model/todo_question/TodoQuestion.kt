@@ -1,6 +1,7 @@
 package domain.model.todo_question
 
 
+import domain.model.done_question.done_question.nullable
 import domain.model.program.program
 import domain.model.question.question
 import org.jetbrains.exposed.sql.Table

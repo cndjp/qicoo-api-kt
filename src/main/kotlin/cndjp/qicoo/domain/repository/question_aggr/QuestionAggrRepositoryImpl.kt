@@ -1,17 +1,26 @@
 package domain.repository.question_aggr
 
+import domain.dao.done_question.NewTodoQuestion
+import domain.dao.program.toProgram
+import domain.dao.question.NewQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.toDoneQuestionAggr
 import domain.dao.question_aggr.toTodoQuestionAggr
+import domain.dao.todo_question.TodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
+import org.jetbrains.exposed.dao.EntityID
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.innerJoin
+import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
+import utils.getNowDateTimeJst
 import utils.merge
+import utils.zeroUUID
 import java.util.*
 
 // ExposedにUNIONとかWITHないからkotlinで行結合する。
@@ -60,5 +69,23 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     }
     override fun findById(id: UUID): QuestionAggr? {
         TODO()
+    }
+    override fun insert(comment: String): NewTodoQuestion? = transaction {
+        val now = getNowDateTimeJst()
+        val nowProgram = program.select{
+            (program.start_at greaterEq now) and (program.end_at lessEq now)
+        }.firstOrNull()
+        nowProgram?.let{
+            val question = NewQuestion.new {
+                created = now
+                updated = now
+            }
+            NewTodoQuestion(
+                question_id = question.id,
+                program_id = it.toProgram().id,
+                display_name = "", // TODO
+                comment = comment
+            )
+        }
     }
 }

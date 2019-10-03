@@ -1,11 +1,13 @@
 package api.service.question
 
-import domain.dto.question_aggr.QuestionDTO
+import domain.dto.question.QuestionDTO
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import utils.NotfoundEntityException
+import utils.RetResult
 
 class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
@@ -22,5 +24,11 @@ class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinA
                 it.created,
                 it.updated
             )
+        }
+
+    override fun create(comment: String): RetResult =
+        when (questionAggrRepository.insert(comment)) {
+            null -> RetResult.NotFoundEntityFailure
+            else -> RetResult.Success
         }
 }
