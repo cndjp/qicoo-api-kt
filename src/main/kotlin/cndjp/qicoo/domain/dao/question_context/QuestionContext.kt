@@ -11,7 +11,6 @@ data class QuestionContext(
     val question_id: EntityID<UUID>,
     val program_id: EntityID<UUID>,
     val display_name: String,
-    val like_count: Int,
     val comment: String,
     val created: DateTime,
     val updated: DateTime
@@ -21,7 +20,6 @@ fun DoneQuestion.factory(mother: Question): QuestionContext = QuestionContext(
     this.question_id,
     this.program_id,
     this.display_name,
-    this.like_count,
     this.comment,
     mother.created,
     mother.updated
@@ -31,7 +29,6 @@ fun TodoQuestion.factory(mother: Question): QuestionContext = QuestionContext(
     this.question_id,
     this.program_id,
     this.display_name,
-    this.like_count,
     this.comment,
     mother.created,
     mother.updated

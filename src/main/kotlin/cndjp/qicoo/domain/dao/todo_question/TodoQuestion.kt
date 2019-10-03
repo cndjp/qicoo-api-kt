@@ -10,7 +10,6 @@ data class TodoQuestion(
     val question_id: EntityID<UUID>,
     val program_id: EntityID<UUID>,
     val display_name: String,
-    val like_count: Int,
     val comment: String
 )
 
@@ -19,6 +18,5 @@ fun ResultRow.toTodoQuestion(): TodoQuestion =
         this[todo_question.question_id],
         this[todo_question.program_id],
         this[todo_question.display_name],
-        this[todo_question.like_count],
         this[todo_question.comment]
     )

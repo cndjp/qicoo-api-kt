@@ -15,7 +15,6 @@ class QuestionAggr {
     val event_name: String
     val program_name: String
     val display_name: String
-    val like_count: Int
     val comment: String
     val created: DateTime
     val updated: DateTime
@@ -25,7 +24,6 @@ class QuestionAggr {
         this.event_name = aggr.event_name
         this.program_name = aggr.program_name
         this.display_name = aggr.display_name
-        this.like_count = aggr.like_count
         this.comment = aggr.comment
         this.created = aggr.created
         this.updated = aggr.updated
@@ -36,7 +34,6 @@ class QuestionAggr {
         this.event_name = aggr.event_name
         this.program_name = aggr.program_name
         this.display_name = aggr.display_name
-        this.like_count = aggr.like_count
         this.comment = aggr.comment
         this.created = aggr.created
         this.updated = aggr.updated
@@ -48,7 +45,6 @@ data class DoneQuestionAggr (
     val event_name: String,
     val program_name: String,
     val display_name: String,
-    val like_count: Int,
     val comment: String,
     val created: DateTime,
     val updated: DateTime
@@ -59,7 +55,6 @@ fun ResultRow.toDoneQuestionAggr(): DoneQuestionAggr = DoneQuestionAggr(
     this[event.name],
     this[program.name],
     this[done_question.display_name],
-    this[done_question.like_count],
     this[done_question.comment],
     this[question.created],
     this[question.updated]
@@ -70,7 +65,6 @@ data class TodoQuestionAggr (
     val event_name: String,
     val program_name: String,
     val display_name: String,
-    val like_count: Int,
     val comment: String,
     val created: DateTime,
     val updated: DateTime
@@ -81,7 +75,6 @@ fun ResultRow.toTodoQuestionAggr(): TodoQuestionAggr = TodoQuestionAggr(
     this[event.name],
     this[program.name],
     this[todo_question.display_name],
-    this[todo_question.like_count],
     this[todo_question.comment],
     this[question.created],
     this[question.updated]

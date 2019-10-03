@@ -12,6 +12,5 @@ object done_question: Table() {
         program
     ) references program.id)
     val display_name = varchar("display_name", 255).default("anonymous")
-    val like_count = integer("like_count").default(0)
     val comment = varchar("comment", 255).default("")
 }

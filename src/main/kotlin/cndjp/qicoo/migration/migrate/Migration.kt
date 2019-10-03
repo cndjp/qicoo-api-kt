@@ -115,14 +115,12 @@ suspend fun main(args: Array<String>) {
                 question_id = q1.id,
                 program_id = p1.id,
                 display_name = d1name,
-                like_count = d1likes,
                 comment = d1comment
             )
             NewDoneQuestion(
                 question_id = q2.id,
                 program_id = p2.id,
                 display_name = d2name,
-                like_count = d2likes,
                 comment = d2comment
             )
         }

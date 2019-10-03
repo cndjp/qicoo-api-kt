@@ -97,7 +97,7 @@ object MySQLDomainSpec: Spek({
                 )
             }
         }
-        test("done_questionのCRUDテスト") {
+        test("done_questionのCRDテスト") {
             initMysqlClient()
             val now = getNowDateTimeJst()
             val yesterday = now.minusDays(1)
@@ -114,11 +114,8 @@ object MySQLDomainSpec: Spek({
             val p1name = "poke"
             val p2name = "moka"
             val d1name = "nyan"
-            val d1likes = 10
-            val d1likesUpdated = 111
             val d1comment = "what is qicoo"
             val d2name = "hyon"
-            val d2likes = 200
             val d2comment = "what is mayo"
 
 
@@ -174,32 +171,18 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-                NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, like_count = d1likes, comment = d1comment)
-                NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, like_count = d2likes, comment = d2comment)
+                NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, comment = d1comment)
+                NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, comment = d2comment)
 
                 val r1 = done_question.select { done_question.question_id eq q1.id}.map{ it.toDoneQuestion() }.first()
                 assertEquals(p1.id, r1.program_id)
                 assertEquals(d1name, r1.display_name)
-                assertEquals(d1likes, r1.like_count)
                 assertEquals(d1comment, r1.comment)
 
-                val updatedCount = done_question.update({ done_question.question_id eq q1.id}) {
-                    it[like_count] = d1likesUpdated
-                }
-                assertEquals(updatedCount,1)
-
-                val rl: MutableList<DoneQuestion> =  mutableListOf()
-                done_question.selectAll().orderBy(done_question.like_count to SortOrder.ASC).forEach{
-                    rl.add(it.toDoneQuestion())
-                }
-                assertEquals(p1.id, rl[0].program_id)
-                assertEquals(d1name, rl[0].display_name)
-                assertEquals(d1likesUpdated, rl[0].like_count)
-                assertEquals(d1comment, rl[0].comment)
-                assertEquals(p2.id, rl[1].program_id)
-                assertEquals(d2name, rl[1].display_name)
-                assertEquals(d2likes, rl[1].like_count)
-                assertEquals(d2comment, rl[1].comment)
+                val r2 = done_question.select { done_question.question_id eq q2.id}.map{ it.toDoneQuestion() }.first()
+                assertEquals(p2.id, r2.program_id)
+                assertEquals(d2name, r2.display_name)
+                assertEquals(d2comment, r2.comment)
 
                 val deleteCount1 = done_question.deleteWhere { done_question.question_id eq q1.id }
                 assertEquals(1, deleteCount1)
@@ -214,7 +197,7 @@ object MySQLDomainSpec: Spek({
                 )
             }
         }
-        test("todo_questionのCRUDテスト") {
+        test("todo_questionのCRDテスト") {
             initMysqlClient()
             val now = getNowDateTimeJst()
             val yesterday = now.minusDays(1)
@@ -231,11 +214,8 @@ object MySQLDomainSpec: Spek({
             val p1name = "poke"
             val p2name = "moka"
             val t1name = "nyan"
-            val t1likes = 10
-            val t1likesUpdated = 111
             val t1comment = "what is qicoo"
             val t2name = "hyon"
-            val t2likes = 200
             val t2comment = "what is mayo"
 
 
@@ -291,32 +271,18 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-                NewTodoQuestion(question_id = q1.id, program_id = p1.id, display_name = t1name, like_count = t1likes, comment = t1comment)
-                NewTodoQuestion(question_id = q2.id, program_id = p2.id, display_name = t2name, like_count = t2likes, comment = t2comment)
+                NewTodoQuestion(question_id = q1.id, program_id = p1.id, display_name = t1name, comment = t1comment)
+                NewTodoQuestion(question_id = q2.id, program_id = p2.id, display_name = t2name, comment = t2comment)
 
                 val r1 = todo_question.select { todo_question.question_id eq q1.id}.map{it.toTodoQuestion()}.first()
                 assertEquals(p1.id, r1.program_id)
                 assertEquals(t1name, r1.display_name)
-                assertEquals(t1likes, r1.like_count)
                 assertEquals(t1comment, r1.comment)
 
-                val updatedCount = todo_question.update({ todo_question.question_id eq q1.id}) {
-                    it[like_count] = t1likesUpdated
-                }
-                assertEquals(updatedCount,1)
-
-                val rl: MutableList<TodoQuestion> =  mutableListOf()
-                todo_question.selectAll().orderBy(todo_question.like_count to SortOrder.ASC).forEach{
-                    rl.add(it.toTodoQuestion())
-                }
-                assertEquals(p1.id, rl[0].program_id)
-                assertEquals(t1name, rl[0].display_name)
-                assertEquals(t1likesUpdated, rl[0].like_count)
-                assertEquals(t1comment, rl[0].comment)
-                assertEquals(p2.id, rl[1].program_id)
-                assertEquals(t2name, rl[1].display_name)
-                assertEquals(t2likes, rl[1].like_count)
-                assertEquals(t2comment, rl[1].comment)
+                val r2 = todo_question.select { todo_question.question_id eq q2.id}.map{it.toTodoQuestion()}.first()
+                assertEquals(p2.id, r2.program_id)
+                assertEquals(t2name, r2.display_name)
+                assertEquals(t2comment, r2.comment)
 
                 val deleteCount1 = todo_question.deleteWhere { todo_question.question_id eq q1.id }
                 assertEquals(1, deleteCount1)

@@ -32,7 +32,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 otherColumn = { done_question.question_id },
                 onColumn = { id }
             )
-            .slice(question.id, event.name, program.name, done_question.display_name, done_question.like_count, done_question.comment, question.created, question.updated)
+            .slice(question.id, event.name, program.name, done_question.display_name, done_question.comment, question.created, question.updated)
             .selectAll().map {QuestionAggr(it.toDoneQuestionAggr())}
         val todo_aggr = question
             .innerJoin(
@@ -48,7 +48,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 otherColumn = { todo_question.question_id },
                 onColumn = { id }
             )
-            .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.like_count, todo_question.comment, question.created, question.updated)
+            .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.comment, question.created, question.updated)
             .selectAll().map {QuestionAggr(it.toTodoQuestionAggr())}
 
         when (Pair(done_aggr.isNotEmpty(), todo_aggr.isNotEmpty())) {
