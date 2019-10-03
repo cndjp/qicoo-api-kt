@@ -51,7 +51,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
             .selectAll().map {it.toTodoQuestionAggr().factory()}
 
         when (Pair(done_aggr.isNotEmpty(), todo_aggr.isNotEmpty())) {
-            Pair(first = true, second = true) -> done_aggr merge todo_aggr
+            Pair(first = true, second = true) -> listOf(done_aggr, todo_aggr).flatten()
             Pair(first = true, second = false) -> done_aggr
             Pair(first = false, second = true) -> todo_aggr
             else -> listOf()
