@@ -108,6 +108,21 @@ setup-mysql-db: load_dotenv
 
 run-mysql-db: lunch-mysql-db check-mysql-db setup-mysql-db
 
+lunch-redis-db: load_dotenv
+    #!/bin/bash
+    if [ ! {{ MYSQL_DOCKER_EXISTS_FLAG }} = 0 ]; then
+        echo "{{ MYSQL_DOCKER }} is exists. Not work."
+    else
+        echo 'set up the mysql docker'
+        docker run --name {{ MYSQL_DOCKER }} \
+            --rm \
+            -d \
+            -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
+            -p ${MYSQL_PORT}:${MYSQL_PORT} mysql:{{ MYSQL_VERSION }} \
+            --character-set-server=utf8mb4 \
+            --collation-server=utf8mb4_unicode_ci
+    fi
+
 clean-mysql-db:
     #!/bin/bash
     if [ {{ MYSQL_DOCKER_EXISTS_FLAG }} = 0 ]; then
