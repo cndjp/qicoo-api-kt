@@ -11,18 +11,14 @@ object RedisContextSpec: Spek({
         test("始まりのflushAll"){
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
-        test("正常な値であれば通る"){
-            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
-            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge"))
-        }
         test("正常な値であればSET、GET、DELETEが通る"){
-            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
-            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge"))
-            assertEquals(1, RedisContext.del(qicooGlobalJedisPool.resource, "hoge"))
+            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge1", 1000, "piyo")
+            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge1"))
+            assertEquals(1, RedisContext.del(qicooGlobalJedisPool.resource, "hoge1"))
         }
         test("ない値であればGETはnull"){
-            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
-            assertNull(RedisContext.get(qicooGlobalJedisPool.resource, "puga"))
+            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge2", 1000, "piyo")
+            assertNull(RedisContext.get(qicooGlobalJedisPool.resource, "puga2"))
         }
     }
 })
