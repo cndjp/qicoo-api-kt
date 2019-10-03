@@ -1,7 +1,6 @@
 package domain.dao.like_count
 
-import domain.repository.like_count.LikeCountRow
-import java.util.*
+import domain.model.like_count.LikeCountRow
 import java.util.UUID
 
 data class LikeCount(

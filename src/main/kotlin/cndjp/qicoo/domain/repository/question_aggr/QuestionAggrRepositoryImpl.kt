@@ -15,6 +15,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import utils.merge
 import java.util.*
 
+// ExposedにUNIONとかWITHないからkotlinで行結合する。
+// パフォーマンス悪かったら生SQLでやるしかないけど...
 class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     override fun findAll(): List<QuestionAggr> = transaction {
         val done_aggr = question

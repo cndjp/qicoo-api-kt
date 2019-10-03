@@ -1,8 +1,8 @@
 package domain
 
 import domain.dao.like_count.factory
-import domain.repository.like_count.LikeCountRow
-import infrastructure.cache.client.qicooGlobalJedisPoll
+import domain.model.like_count.LikeCountRow
+import infrastructure.cache.client.qicooGlobalJedisPool
 import infrastructure.cache.context.RedisContext
 import org.spekframework.spek2.Spek
 import java.util.*
@@ -25,9 +25,20 @@ object RedisDomainSpec: Spek({
     }
     group("redisのテスト"){
         test("正常な値であれば通る"){
-            RedisContext.setEx(qicooGlobalJedisPoll.resource, "hoge", 1000, "piyo")
-            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPoll.resource, "hoge"))
-            RedisContext.flushAll(qicooGlobalJedisPoll.resource)
+            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
+            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge"))
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+        }
+        test("正常な値であればSET、GET、DELETEが通る"){
+            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
+            assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge"))
+            assertEquals(1, RedisContext.del(qicooGlobalJedisPool.resource, "hoge"))
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+        }
+        test("ない値であればGETはnull"){
+            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge", 1000, "piyo")
+            assertNull(RedisContext.get(qicooGlobalJedisPool.resource, "puga"))
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
     }
 })

@@ -1,4 +1,4 @@
-package domain.repository.like_count
+package domain.model.like_count
 
 data class LikeCountRow (
     val key: String,
