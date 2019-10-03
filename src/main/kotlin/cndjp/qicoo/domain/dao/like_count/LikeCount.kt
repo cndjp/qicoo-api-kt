@@ -6,7 +6,7 @@ import java.util.UUID
 
 class LikeCount(row: LikeCountRow) {
     val question_id: UUID?
-    val count: Long?
+    val count: Int?
 
     init {
         this.question_id = runCatching { UUID.fromString(row.key)
@@ -14,6 +14,6 @@ class LikeCount(row: LikeCountRow) {
             onSuccess = { it },
             onFailure = { null }
         )
-        this.count = row.key?.toLongOrNull()
+        this.count = row.value.toIntOrNull()
     }
 }
