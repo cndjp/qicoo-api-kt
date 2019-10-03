@@ -6,6 +6,10 @@ MYSQL_DOCKER := "qicoo-test-mysql"
 MYSQL_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi; docker ps --format "{{ .Names }}" --filter "name=qicoo-test-mysql" | wc -l`
 MYSQL_VERSION := "8.0.11"
 
+REDIS_DOCKER := "qicoo-test-redis"
+REDIS_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi; docker ps --format "{{ .Names }}" --filter "name=qicoo-test-redis" | wc -l`
+REDIS_VERSION := "5.0.0"
+
 DOCKER_NAME := "qicoo-api-kt"
 DOCKER_TAG := `git rev-parse HEAD`
 
@@ -108,20 +112,20 @@ setup-mysql-db: load_dotenv
 
 run-mysql-db: lunch-mysql-db check-mysql-db setup-mysql-db
 
-lunch-redis-db: load_dotenv
+run-redis-db: load_dotenv
     #!/bin/bash
-    if [ ! {{ MYSQL_DOCKER_EXISTS_FLAG }} = 0 ]; then
-        echo "{{ MYSQL_DOCKER }} is exists. Not work."
+    if [ ! {{ REDIS_DOCKER_EXISTS_FLAG }} = 0 ]; then
+        echo "{{ REDIS_DOCKER }} is exists. Not work."
     else
-        echo 'set up the mysql docker'
-        docker run --name {{ MYSQL_DOCKER }} \
+        echo 'set up the redis docker'
+        docker run --name {{ REDIS_DOCKER }} \
             --rm \
             -d \
             -e MYSQL_ALLOW_EMPTY_PASSWORD=yes \
-            -p ${MYSQL_PORT}:${MYSQL_PORT} mysql:{{ MYSQL_VERSION }} \
-            --character-set-server=utf8mb4 \
-            --collation-server=utf8mb4_unicode_ci
+            -p ${REDIS_PORT}:${REDIS_PORT} redis:{{ REDIS_VERSION }}
     fi
+
+run-db: run-redis-db run-mysql-db
 
 clean-mysql-db:
     #!/bin/bash
@@ -130,3 +134,13 @@ clean-mysql-db:
     else
         docker kill {{ MYSQL_DOCKER }} > /dev/null && echo 'clean up the mysql docker'
     fi
+
+clean-redis-db:
+    #!/bin/bash
+    if [ {{ REDIS_DOCKER_EXISTS_FLAG }} = 0 ]; then
+        echo "{{ REDIS_DOCKER }} is not exists. Not work."
+    else
+        docker kill {{ REDIS_DOCKER }} > /dev/null && echo 'clean up the redis docker'
+    fi
+
+clean-db: clean-mysql-db clean-redis-db

@@ -46,7 +46,7 @@ import org.joda.time.Duration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.spekframework.spek2.Spek
 
-object DomainSpec: Spek({
+object MySQLDomainSpec: Spek({
     group("mysqlのテスト") {
         test("questionのCRUDテスト") {
             initMysqlClient()

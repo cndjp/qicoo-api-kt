@@ -6,6 +6,8 @@ sudo: required
 
 services:
   - docker
+  - mysql
+  - redis-server
 
 env:
   global:
@@ -13,6 +15,8 @@ env:
     - MYSQL_HOST="127.0.0.1"
     - MYSQL_DB="qicoo2db"
     - MYSQL_PORT="3306"
+    - REDIS_HOST="localhost"
+    - REDIS_PORT="6379"
 
 before_install:
   - curl -s api.sdkman.io | bash
