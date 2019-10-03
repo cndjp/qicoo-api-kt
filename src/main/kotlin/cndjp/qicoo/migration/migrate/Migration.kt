@@ -43,7 +43,7 @@ suspend fun main(args: Array<String>) {
         val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
         val event2EndAt = "2018-02-02 19:00:00".toDateTimeJst()
         val program1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
-        val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
+        val program1EndAt = "2020-01-01 19:30:00".toDateTimeJst()
         val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
         val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
         val e1name = "poe"

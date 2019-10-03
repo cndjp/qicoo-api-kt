@@ -73,7 +73,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     override fun insert(comment: String): NewTodoQuestion? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select{
-            (program.start_at greaterEq now) and (program.end_at lessEq now)
+            (program.start_at lessEq now) and (program.end_at greaterEq now)
         }.firstOrNull()
         nowProgram?.let{
             val question = NewQuestion.new {

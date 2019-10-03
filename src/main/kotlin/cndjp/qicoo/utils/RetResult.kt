@@ -1,7 +1,9 @@
 package utils
 
-enum class RetResult(msg: String) {
-    Success("success!!"),
-    GeneralFailure("fail!!"),
-    NotFoundEntityFailure("not found entity")
+enum class RetResult {
+    Success,
+    GeneralFailure,
+    NotFoundEntityFailure;
+
+    fun returnReason(): String = this.name
 }
