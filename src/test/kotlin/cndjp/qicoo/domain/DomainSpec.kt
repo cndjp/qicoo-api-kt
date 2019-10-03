@@ -109,6 +109,10 @@ object DomainSpec: Spek({
             val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
             val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
             val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
+            val e1name = "poe"
+            val e2name = "fae"
+            val p1name = "poke"
+            val p2name = "moka"
             val d1name = "nyan"
             val d1likes = 10
             val d1likesUpdated = 111
@@ -127,6 +131,7 @@ object DomainSpec: Spek({
                 )
 
                 val e1 = NewEvent.new {
+                    name = e1name
                     start_at = event1StartAt
                     end_at = event1EndAt
                     created = now
@@ -134,6 +139,7 @@ object DomainSpec: Spek({
                 }
 
                 val e2 = NewEvent.new {
+                    name = e2name
                     start_at = event2StartAt
                     end_at = event2EndAt
                     created = yesterday
@@ -142,6 +148,7 @@ object DomainSpec: Spek({
 
 
                 val p1 = NewProgram.new {
+                    name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
                     end_at  = program1EndAt
@@ -150,6 +157,7 @@ object DomainSpec: Spek({
                 }
 
                 val p2 = NewProgram.new {
+                    name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
                     end_at  = program2EndAt
@@ -218,6 +226,10 @@ object DomainSpec: Spek({
             val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
             val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
             val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
+            val e1name = "poe"
+            val e2name = "fae"
+            val p1name = "poke"
+            val p2name = "moka"
             val t1name = "nyan"
             val t1likes = 10
             val t1likesUpdated = 111
@@ -236,6 +248,7 @@ object DomainSpec: Spek({
                 )
 
                 val e1 = NewEvent.new {
+                    name = e1name
                     start_at = event1StartAt
                     end_at = event1EndAt
                     created = now
@@ -243,6 +256,7 @@ object DomainSpec: Spek({
                 }
 
                 val e2 = NewEvent.new {
+                    name = e2name
                     start_at = event2StartAt
                     end_at = event2EndAt
                     created = yesterday
@@ -251,6 +265,7 @@ object DomainSpec: Spek({
 
 
                 val p1 = NewProgram.new {
+                    name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
                     end_at  = program1EndAt
@@ -259,6 +274,7 @@ object DomainSpec: Spek({
                 }
 
                 val p2 = NewProgram.new {
+                    name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
                     end_at  = program2EndAt
@@ -397,6 +413,8 @@ object DomainSpec: Spek({
             val event1EndAt = "2018-01-01 19:00:00".toDateTimeJst()
             val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
             val event2EndAt = "2018-02-01 19:00:00".toDateTimeJst()
+            val e1name = "poe"
+            val e2name = "fae"
 
             transaction {
                 SchemaUtils.create(
@@ -404,6 +422,7 @@ object DomainSpec: Spek({
                 )
 
                 NewEvent.new {
+                    name = e1name
                     start_at = event1StartAt
                     end_at  = event1EndAt
                     created = now
@@ -411,6 +430,7 @@ object DomainSpec: Spek({
                 }
 
                 NewEvent.new {
+                    name = e2name
                     start_at = event2StartAt
                     end_at = event2EndAt
                     created = yesterday
@@ -465,6 +485,10 @@ object DomainSpec: Spek({
             val program1EndAt = "2018-01-01 19:30:00".toDateTimeJst()
             val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
             val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
+            val e1name = "poe"
+            val e2name = "fae"
+            val p1name = "poke"
+            val p2name = "moka"
 
             transaction {
                 SchemaUtils.create(
@@ -473,6 +497,7 @@ object DomainSpec: Spek({
                 )
 
                 val e1 = NewEvent.new {
+                    name = e1name
                     start_at = event1StartAt
                     end_at = event1EndAt
                     created = now
@@ -480,6 +505,7 @@ object DomainSpec: Spek({
                 }
 
                 val e2 = NewEvent.new {
+                    name = e2name
                     start_at = event2StartAt
                     end_at = event2EndAt
                     created = yesterday
@@ -488,6 +514,7 @@ object DomainSpec: Spek({
 
 
                 NewProgram.new {
+                    name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
                     end_at  = program1EndAt
@@ -496,6 +523,7 @@ object DomainSpec: Spek({
                 }
 
                 NewProgram.new {
+                    name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
                     end_at  = program2EndAt
