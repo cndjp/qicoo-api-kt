@@ -2,6 +2,7 @@ package domain.repository.question_aggr
 
 import domain.dao.done_question.NewTodoQuestion
 import domain.dao.program.toProgram
+import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.toDoneQuestionAggr
@@ -75,17 +76,15 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
         val nowProgram = program.select{
             (program.start_at lessEq now) and (program.end_at greaterEq now)
         }.firstOrNull()
-        nowProgram?.let{
-            val question = NewQuestion.new {
-                created = now
-                updated = now
-            }
-            NewTodoQuestion(
-                question_id = question.id,
-                program_id = it.toProgram().id,
-                display_name = "", // TODO
-                comment = comment
-            )
+        val question = NewQuestion.new {
+            created = now
+            updated = now
         }
+        NewTodoQuestion(
+            question_id = question.id,
+            program_id = nowProgram?.toProgram()?.id ?: unknownProgram.id,
+            display_name = "", // TODO
+            comment = comment
+        )
     }
 }

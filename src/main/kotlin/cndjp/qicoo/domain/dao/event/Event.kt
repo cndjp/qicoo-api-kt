@@ -24,3 +24,13 @@ fun ResultRow.toEvent(): Event =
         this[event.created],
         this[event.updated]
     )
+
+fun NewEvent.toEvent(): Event =
+    Event(
+        this.id,
+        this.name,
+        this.start_at,
+        this.end_at,
+        this.created,
+        this.updated
+    )

@@ -26,3 +26,14 @@ fun ResultRow.toProgram(): Program =
         this[program.created],
         this[program.updated]
     )
+
+fun NewProgram.toProgram(): Program =
+    Program(
+        this.id,
+        this.name,
+        this.event_id,
+        this.start_at,
+        this.end_at,
+        this.created,
+        this.updated
+    )
