@@ -1,7 +1,6 @@
 package domain.repository.question_aggr
 
 import domain.dao.question_aggr.QuestionAggr
-import domain.dao.question_aggr.factory
 import domain.dao.question_aggr.toDoneQuestionAggr
 import domain.dao.question_aggr.toTodoQuestionAggr
 import domain.model.done_question.done_question
@@ -34,7 +33,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 onColumn = { id }
             )
             .slice(question.id, event.name, program.name, done_question.display_name, done_question.like_count, done_question.comment, question.created, question.updated)
-            .selectAll().map {it.toDoneQuestionAggr().factory()}
+            .selectAll().map {QuestionAggr(it.toDoneQuestionAggr())}
         val todo_aggr = question
             .innerJoin(
                 otherTable = todo_question.innerJoin(
@@ -50,7 +49,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 onColumn = { id }
             )
             .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.like_count, todo_question.comment, question.created, question.updated)
-            .selectAll().map {it.toTodoQuestionAggr().factory()}
+            .selectAll().map {QuestionAggr(it.toTodoQuestionAggr())}
 
         when (Pair(done_aggr.isNotEmpty(), todo_aggr.isNotEmpty())) {
             Pair(first = true, second = true) -> listOf(done_aggr, todo_aggr).flatten()

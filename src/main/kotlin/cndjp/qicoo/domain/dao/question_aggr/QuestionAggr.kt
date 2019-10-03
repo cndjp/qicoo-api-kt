@@ -10,38 +10,38 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 import java.util.*
 
-data class QuestionAggr (
-    val question_id: EntityID<UUID>,
-    val event_name: String,
-    val program_name: String,
-    val display_name: String,
-    val like_count: Int,
-    val comment: String,
-    val created: DateTime,
+class QuestionAggr {
+    val question_id: EntityID<UUID>
+    val event_name: String
+    val program_name: String
+    val display_name: String
+    val like_count: Int
+    val comment: String
+    val created: DateTime
     val updated: DateTime
-)
 
-fun DoneQuestionAggr.factory(): QuestionAggr = QuestionAggr(
-    this.question_id,
-    this.event_name,
-    this.program_name,
-    this.display_name,
-    this.like_count,
-    this.comment,
-    this.created,
-    this.updated
-)
+    constructor(aggr: DoneQuestionAggr) {
+        this.question_id = aggr.question_id
+        this.event_name = aggr.event_name
+        this.program_name = aggr.program_name
+        this.display_name = aggr.display_name
+        this.like_count = aggr.like_count
+        this.comment = aggr.comment
+        this.created = aggr.created
+        this.updated = aggr.updated
+    }
 
-fun TodoQuestionAggr.factory(): QuestionAggr = QuestionAggr(
-    this.question_id,
-    this.event_name,
-    this.program_name,
-    this.display_name,
-    this.like_count,
-    this.comment,
-    this.created,
-    this.updated
-)
+    constructor(aggr: TodoQuestionAggr) {
+        this.question_id = aggr.question_id
+        this.event_name = aggr.event_name
+        this.program_name = aggr.program_name
+        this.display_name = aggr.display_name
+        this.like_count = aggr.like_count
+        this.comment = aggr.comment
+        this.created = aggr.created
+        this.updated = aggr.updated
+    }
+}
 
 data class DoneQuestionAggr (
     val question_id: EntityID<UUID>,

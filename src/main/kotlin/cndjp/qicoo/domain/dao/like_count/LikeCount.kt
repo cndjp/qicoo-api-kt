@@ -4,11 +4,11 @@ import domain.model.like_count.LikeCountRow
 import java.lang.reflect.Constructor
 import java.util.UUID
 
-class LikeCount{
+class LikeCount(row: LikeCountRow) {
     val question_id: UUID?
     val count: Long?
 
-    constructor(row: LikeCountRow) {
+    init {
         this.question_id = runCatching { UUID.fromString(row.key)
         }.fold(
             onSuccess = { it },
