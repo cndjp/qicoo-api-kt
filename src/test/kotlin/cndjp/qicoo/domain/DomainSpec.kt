@@ -614,9 +614,9 @@ object DomainSpec: Spek({
             val now = getNowDateTimeJst()
             val yesterday = now.minusDays(1)
             val tid1 = "@hogehoge"
-            val tname1 = "ホゲホゲ"
+            val tname1 = "pikapika"
             val tid2 = "@hugahuga"
-            val tname2 = "フガフガ"
+            val tname2 = "nyanya"
 
             transaction {
                 SchemaUtils.create(
@@ -664,9 +664,9 @@ object DomainSpec: Spek({
             val now = getNowDateTimeJst()
             val yesterday = now.minusDays(1)
             val tid1 = "@hogehoge"
-            val tname1 = "ホゲホゲ"
+            val tname1 = "pikapika"
             val tid2 = "@hugahuga"
-            val tname2 = "フガフガ"
+            val tname2 = "nyanya"
 
             transaction {
                 SchemaUtils.create(
