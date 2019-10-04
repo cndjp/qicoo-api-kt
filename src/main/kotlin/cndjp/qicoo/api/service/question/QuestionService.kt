@@ -1,9 +1,8 @@
 package api.service.question
 
-import domain.dto.question.QuestionDTO
-import utils.RetResult
+import domain.dto.question.QuestionListDTO
 
 interface QuestionService {
-    fun getAll(per: Int, page: Int): Pair<List<QuestionDTO>, Int>
+    fun getAll(per: Int, page: Int): QuestionListDTO
     fun create(comment: String): Unit
 }

@@ -5,27 +5,22 @@ import domain.dao.program.toProgram
 import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
 import domain.dao.question_aggr.QuestionAggr
-import domain.dao.question_aggr.toDoneQuestionAggr
-import domain.dao.question_aggr.toTodoQuestionAggr
-import domain.dao.todo_question.TodoQuestion
+import domain.dao.question_aggr.QuestionAggrList
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
-import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.execAndMap
 import utils.getNowDateTimeJst
-import utils.merge
-import utils.zeroUUID
 import java.util.*
 
 class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
-    override fun findAll(per: Int, page: Int): Pair<List<QuestionAggr>, Int> = transaction {
+    override fun findAll(per: Int, page: Int): QuestionAggrList = transaction {
         val dq = done_question.alias("join_question")
         val tq = todo_question.alias("join_question")
         val done_aggr_sql = question
@@ -65,17 +60,21 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
         val total = "SELECT COUNT(*) AS count FROM ($done_aggr_sql UNION ALL $todo_aggr_sql) AS T"
             .execAndMap { it.getInt("count") }.firstOrNull()?: 0
         val offset = (page - 1) * per
-        Pair("$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created DESC LIMIT $per OFFSET $offset "
-            .execAndMap { rs ->
-                QuestionAggr(rs.getBytes("id"),
-                    rs.getString("event_name"),
-                    rs.getString("program_name"),
-                    rs.getString("display_name"),
-                    rs.getString("comment"),
-                    rs.getString("created"),
-                    rs.getString("updated")
-                )
-            }, total)
+        QuestionAggrList(
+            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY updated DESC LIMIT $per OFFSET $offset "
+                .execAndMap { rs ->
+                    QuestionAggr(
+                        rs.getBytes("id"),
+                        rs.getString("event_name"),
+                        rs.getString("program_name"),
+                        rs.getString("display_name"),
+                        rs.getString("comment"),
+                        rs.getString("created"),
+                        rs.getString("updated")
+                    )
+                }
+            , total
+        )
     }
     override fun findById(id: UUID): QuestionAggr? {
         TODO()

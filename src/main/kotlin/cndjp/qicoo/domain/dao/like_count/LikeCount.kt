@@ -9,7 +9,8 @@ class LikeCount(row: LikeCountRow) {
     val count: Int?
 
     init {
-        this.question_id = runCatching { UUID.fromString(row.key)
+        this.question_id = runCatching {
+            UUID.fromString(row.key.rowKey.split(":").getOrNull(0))
         }.fold(
             onSuccess = { it },
             onFailure = { null }

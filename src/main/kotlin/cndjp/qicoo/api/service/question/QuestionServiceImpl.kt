@@ -1,6 +1,7 @@
 package api.service.question
 
 import domain.dto.question.QuestionDTO
+import domain.dto.question.QuestionListDTO
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
 import org.kodein.di.Kodein
@@ -12,10 +13,10 @@ import utils.RetResult
 class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
-    override fun getAll(per: Int, page: Int): Pair<List<QuestionDTO>, Int> {
+    override fun getAll(per: Int, page: Int): QuestionListDTO {
         val result = questionAggrRepository.findAll(per, page)
-        return Pair(
-            result.first.map {
+        return QuestionListDTO(
+            result.list.map {
                 val likeCount = likeCountRepository.findById(it.question_id)?.count ?: 0
                 QuestionDTO(
                     it.program_name,
@@ -26,7 +27,7 @@ class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinA
                     it.created,
                     it.updated
                 )
-            }, result.second
+            }, result.count
         )
     }
 

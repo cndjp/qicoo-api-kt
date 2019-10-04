@@ -34,12 +34,12 @@ fun Route.questionController() = questionController(Kodein {
 fun Route.questionController(kodein: Kodein) {
     val questionService by kodein.instance<QuestionService>()
 
-    route("/question") {
+    route("/questions") {
         get {
             val per = call.parameters["per"]?.toInt() ?: 10
             val page = call.parameters["page"]?.toInt() ?: 1
             val result = questionService.getAll(per, page)
-            call.respond(HttpStatusCode.OK, QuestionListResponse(result.first.map{QuestionResponse(it)}, result.second))
+            call.respond(HttpStatusCode.OK, QuestionListResponse(result.list.map{QuestionResponse(it)}, result.count))
         }
         post {
             val validRequest = runCatching {
@@ -52,6 +52,9 @@ fun Route.questionController(kodein: Kodein) {
                 .onFailure { exception ->
                     call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
                 }
+        }
+        post("/like") {
+
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")
