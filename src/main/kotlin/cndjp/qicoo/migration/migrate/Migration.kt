@@ -43,14 +43,26 @@ suspend fun main(args: Array<String>) {
         val event1EndAt = "2018-01-02 19:00:00".toDateTimeJst()
         val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
         val event2EndAt = "2018-02-02 19:00:00".toDateTimeJst()
+        val event3StartAt = "2018-03-01 19:00:00".toDateTimeJst()
+        val event3EndAt = "2018-03-02 19:00:00".toDateTimeJst()
+        val event4StartAt = "2018-04-01 19:00:00".toDateTimeJst()
+        val event4EndAt = "2018-04-02 19:00:00".toDateTimeJst()
         val program1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
         val program1EndAt = "2019-01-01 19:30:00".toDateTimeJst()
         val program2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
         val program2EndAt = "2018-02-01 19:30:00".toDateTimeJst()
-        val e1name = "poe"
-        val e2name = "fae"
-        val p1name = "poke"
-        val p2name = "moka"
+        val program3StartAt = "2018-03-01 19:00:00".toDateTimeJst()
+        val program3EndAt = "2019-03-01 19:30:00".toDateTimeJst()
+        val program4StartAt = "2018-04-01 19:00:00".toDateTimeJst()
+        val program4EndAt = "2018-04-01 19:30:00".toDateTimeJst()
+        val e1name = "event_name1"
+        val e2name = "event_name2"
+        val e3name = "event_name3"
+        val e4name = "event_name4"
+        val p1name = "program_name1"
+        val p2name = "program_name2"
+        val p3name = "program_name3"
+        val p4name = "program_name4"
         val d1name = "nyan"
         val d1comment = "what is qicoo"
         val d2name = "hyon"
@@ -85,6 +97,21 @@ suspend fun main(args: Array<String>) {
                 updated = yesterday
             }
 
+            val e3 = NewEvent.new {
+                name = e3name
+                start_at = event3StartAt
+                end_at = event3EndAt
+                created = now
+                updated = now
+            }
+
+            val e4 = NewEvent.new {
+                name = e4name
+                start_at = event4StartAt
+                end_at = event4EndAt
+                created = yesterday
+                updated = yesterday
+            }
 
             val p1 = NewProgram.new {
                 name = p1name
@@ -99,6 +126,22 @@ suspend fun main(args: Array<String>) {
                 event_id = e2.id
                 start_at = program2StartAt
                 end_at = program2EndAt
+                created = yesterday
+                updated = yesterday
+            }
+            val p3 = NewProgram.new {
+                name = p3name
+                event_id = e3.id
+                start_at = program3StartAt
+                end_at = program3EndAt
+                created = now
+                updated = now
+            }
+            val p4 = NewProgram.new {
+                name = p4name
+                event_id = e4.id
+                start_at = program4StartAt
+                end_at = program4EndAt
                 created = yesterday
                 updated = yesterday
             }
@@ -134,14 +177,14 @@ suspend fun main(args: Array<String>) {
                 comment = d2comment
             )
             NewTodoQuestion(
-                question_id = q1.id,
-                program_id = p1.id,
+                question_id = q3.id,
+                program_id = p3.id,
                 display_name = d3name,
                 comment = d3comment
             )
             NewTodoQuestion(
-                question_id = q2.id,
-                program_id = p2.id,
+                question_id = q4.id,
+                program_id = p4.id,
                 display_name = d4name,
                 comment = d4comment
             )

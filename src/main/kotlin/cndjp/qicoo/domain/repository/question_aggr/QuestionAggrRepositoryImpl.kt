@@ -21,44 +21,41 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
     override fun findAll(per: Int, page: Int): QuestionAggrList = transaction {
-        val dq = done_question.alias("join_question")
-        val tq = todo_question.alias("join_question")
         val done_aggr_sql = question
             .innerJoin(
-                otherTable = dq.innerJoin(
+                otherTable = done_question.innerJoin(
                     otherTable = program.innerJoin(
                         otherTable = event,
                         otherColumn = { program.event_id },
                         onColumn = { event.id }
                     ),
-                    otherColumn = { dq[done_question.program_id] },
+                    otherColumn = { done_question.program_id },
                     onColumn = { program.id }
                 ),
-                otherColumn = { dq[done_question.question_id] },
+                otherColumn = { done_question.question_id },
                 onColumn = { id }
             )
-            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), dq[done_question.display_name], dq[done_question.comment], question.created, question.updated)
+            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), done_question.display_name, done_question.comment,  done_question.program_id, question.created, question.updated)
             .selectAll()
             .prepareSQL(QueryBuilder(false))
         val todo_aggr_sql = question
             .innerJoin(
-                otherTable = tq.innerJoin(
+                otherTable = todo_question.innerJoin(
                     otherTable = program.innerJoin(
                         otherTable = event,
                         otherColumn = { program.event_id },
                         onColumn = { event.id }
                     ),
-                    otherColumn = { tq[todo_question.program_id] },
+                    otherColumn = { todo_question.program_id },
                     onColumn = { program.id }
                 ),
-                otherColumn = { tq[todo_question.question_id] },
+                otherColumn = { todo_question.question_id },
                 onColumn = { id }
             )
-            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), tq[todo_question.display_name], tq[todo_question.comment], question.created, question.updated)
+            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), todo_question.display_name, todo_question.comment, todo_question.program_id, question.created, question.updated)
             .selectAll()
             .prepareSQL(QueryBuilder(false))
-        val total = "SELECT COUNT(*) AS count FROM ($done_aggr_sql UNION ALL $todo_aggr_sql) AS T"
-            .execAndMap { it.getInt("count") }.firstOrNull()?: 0
+        val total = question.selectAll().count()
         val offset = (page - 1) * per
         QuestionAggrList(
             "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY updated DESC LIMIT $per OFFSET $offset "

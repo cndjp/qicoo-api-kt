@@ -2,8 +2,10 @@ package api.response.quesion
 
 import domain.dto.question.QuestionDTO
 import utils.toFomatString
+import java.util.UUID
 
 class QuestionResponse(questionDTO: QuestionDTO) {
+    val question_id: String
     val program_name: String
     val event_name: String
     val display_name: String
@@ -13,6 +15,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
     val updated: String
 
     init {
+        this.question_id = questionDTO.qustion_id.toString()
         this.program_name = questionDTO.program_name
         this.event_name = questionDTO.event_name
         this.display_name = questionDTO.display_name

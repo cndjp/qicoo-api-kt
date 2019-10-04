@@ -21,6 +21,7 @@ class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinA
             result.list.map {
                 val likeCount = likeCountRepository.findById(LikeCountRowKey(it.question_id))?.count ?: 0
                 QuestionDTO(
+                    it.question_id,
                     it.program_name,
                     it.event_name,
                     it.display_name,
