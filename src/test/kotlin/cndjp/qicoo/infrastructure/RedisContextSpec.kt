@@ -8,14 +8,15 @@ import kotlin.test.assertNull
 
 object RedisContextSpec: Spek({
     group("redisのコマンドテスト"){
-        test("正常な値であればSET、GET、DELETEが通る"){
+        test("正常な値であればSET、GET、DELETE、INCRが通る"){
             RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge1", 1000, "piyo")
             assertEquals("piyo", RedisContext.get(qicooGlobalJedisPool.resource, "hoge1"))
+            assertEquals(1, RedisContext.incr(qicooGlobalJedisPool.resource, "hoge2"))
             assertEquals(1, RedisContext.del(qicooGlobalJedisPool.resource, "hoge1"))
+            assertEquals(1, RedisContext.del(qicooGlobalJedisPool.resource, "hoge2"))
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
         test("ない値であればGETはnull"){
-            RedisContext.setEx(qicooGlobalJedisPool.resource, "hoge2", 1000, "piyo")
             assertNull(RedisContext.get(qicooGlobalJedisPool.resource, "puga2"))
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }

@@ -9,15 +9,18 @@ import java.util.*
 
 class LikeCountRepositoryImpl: LikeCountRepository {
     override fun findAll(): List<LikeCount> = TODO()
-    override fun findById(question_id: UUID): LikeCount? {
-        val expect = LikeCountRowKey(question_id)
-        return RedisContext.get(qicooGlobalJedisPool.resource, expect.rowKey)?.let {
+    override fun findById(key: LikeCountRowKey): LikeCount? {
+        return RedisContext.get(qicooGlobalJedisPool.resource, key.rowKey)?.let {
             LikeCount(
                 LikeCountRow(
-                    expect,
+                    key,
                     it
                 )
             )
         }
+    }
+
+    override fun incr(key: LikeCountRowKey) {
+        RedisContext.incr(qicooGlobalJedisPool.resource, key.rowKey)
     }
 }

@@ -22,6 +22,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import utils.RetResult
+import java.util.UUID
 
 fun Route.questionController() = questionController(Kodein {
     val kodein = Kodein {
@@ -46,15 +47,27 @@ fun Route.questionController(kodein: Kodein) {
                 call.receive<QuestionRequest>()
             }
             validRequest
-                .onSuccess { request ->
-                    questionService.create(request.comment)
+                .onSuccess { validatedRequest ->
+                    questionService.createQuestion(validatedRequest.comment)
+                    call.respond(HttpStatusCode.OK)
                 }
                 .onFailure { exception ->
                     call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
                 }
         }
         post("/like") {
-
+            val questionId = call.parameters["question_id"]?: ""
+            val validQuestionId = runCatching {
+                UUID.fromString(questionId)
+            }
+            validQuestionId
+                .onSuccess { validatedQuestionId ->
+                    questionService.incrOrCreateLike(validatedQuestionId)
+                    call.respond(HttpStatusCode.OK)
+                }
+                .onFailure { exception ->
+                    call.respond(HttpStatusCode.BadRequest, "invalid uuid format: $exception")
+                }
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")

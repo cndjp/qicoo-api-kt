@@ -8,6 +8,7 @@ import java.util.*
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
+
 object RedisDomainSpec: Spek({
     group("factoryのテスト"){
         test("LikeCountRowに正常な値が入ってたらnullじゃない") {

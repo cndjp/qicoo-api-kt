@@ -7,5 +7,6 @@ object RedisContext {
     fun get(context: Jedis, key: String): String? = context.use{it.get(key)}
     fun del(context: Jedis, key: String): Long = context.use{it.del(key)}
     fun find(context: Jedis, key: String): Set<String> = context.use{it.keys(key)}
+    fun incr(context: Jedis, key: String): Long = context.use{it.incr(key)}
     fun flushAll(context: Jedis) = context.use{it.flushAll()}
 }
