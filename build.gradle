@@ -39,9 +39,15 @@ repositories {
     maven { url "https://dl.bintray.com/spekframework/spek" }
 }
 
+configurations {
+    ktlint
+}
+
 dependencies {
     // stdlib
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // lint
+    ktlint "com.github.shyiko:ktlint:0.30.0"
     // ktor
     compile "io.ktor:ktor-server-netty:$ktor_version"
     compile "io.ktor:ktor-jackson:$ktor_version"
