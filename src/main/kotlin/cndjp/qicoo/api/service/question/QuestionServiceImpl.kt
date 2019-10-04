@@ -15,24 +15,27 @@ import java.util.UUID
 class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
-    override fun getAll(per: Int, page: Int): QuestionListDTO {
-        val result = questionAggrRepository.findAll(per, page)
-        return QuestionListDTO(
-            result.list.map {
-                val likeCount = likeCountRepository.findById(LikeCountRowKey(it.question_id))?.count ?: 0
-                QuestionDTO(
-                    it.question_id,
-                    it.program_name,
-                    it.event_name,
-                    it.display_name,
-                    likeCount,
-                    it.comment,
-                    it.created,
-                    it.updated
-                )
-            }, result.count
-        )
-    }
+
+    override fun getAll(per: Int, page: Int): QuestionListDTO =
+            questionAggrRepository.findAll(per, page)
+                .let { findResult ->
+                    QuestionListDTO(
+                        findResult.list.map { dao ->
+                            val likeCount = likeCountRepository
+                                .findById(LikeCountRowKey(dao.question_id))?.count ?: 0
+                            QuestionDTO(
+                                dao.question_id,
+                                dao.program_name,
+                                dao.event_name,
+                                dao.display_name,
+                                likeCount,
+                                dao.comment,
+                                dao.created,
+                                dao.updated
+                            )
+                        }, findResult.count)
+                }
+
 
     override fun createQuestion(comment: String) =
         questionAggrRepository.insert(comment)

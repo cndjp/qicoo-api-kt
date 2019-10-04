@@ -39,8 +39,18 @@ fun Route.questionController(kodein: Kodein) {
         get {
             val per = call.parameters["per"]?.toInt() ?: 10
             val page = call.parameters["page"]?.toInt() ?: 1
-            val result = questionService.getAll(per, page)
-            call.respond(HttpStatusCode.OK, QuestionListResponse(result.list.map{QuestionResponse(it)}, result.count))
+            call.respond(
+                HttpStatusCode.OK,
+                questionService.getAll(per, page)
+                    .let { result ->
+                        QuestionListResponse(
+                            result.list.map { dto ->
+                                QuestionResponse(dto)
+                            },
+                            result.count
+                        )
+                    }
+            )
         }
         post {
             val validRequest = runCatching {
