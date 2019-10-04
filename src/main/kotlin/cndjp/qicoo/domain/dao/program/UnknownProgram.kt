@@ -2,9 +2,7 @@ package domain.dao.program
 
 import domain.dao.event.unknownEvent
 import domain.model.program.program
-import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.select
-import org.joda.time.DateTime
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
 
@@ -16,7 +14,7 @@ import utils.toDateTimeJst
 // これにより常に1個のunknownのデータが存在することとなる。
 val unknownProgram by lazy {
     val unknownName = "unknown program"
-    program.select{program.name eq unknownName}.map{it.toProgram()}.firstOrNull()
+    program.select { program.name eq unknownName }.map { it.toProgram() }.firstOrNull()
         ?: NewProgram.new {
             name = unknownName
             event_id = unknownEvent.id

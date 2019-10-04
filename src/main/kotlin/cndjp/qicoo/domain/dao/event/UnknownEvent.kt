@@ -13,7 +13,7 @@ import utils.toDateTimeJst
 // これにより常に1個のunknownのデータが存在することとなる。
 val unknownEvent by lazy {
     val unknownName = "unknown event"
-    event.select{event.name eq unknownName}.map{it.toEvent()}.firstOrNull()
+    event.select { event.name eq unknownName }.map { it.toEvent() }.firstOrNull()
         ?: NewEvent.new {
                 name = unknownName
                 start_at = "1970-01-01 19:00:00".toDateTimeJst()

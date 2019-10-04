@@ -1,10 +1,10 @@
 package domain.dao.event
 
 import domain.model.event.event
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
-import java.util.*
 
 class NewEvent(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewEvent>(event)

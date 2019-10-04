@@ -1,10 +1,9 @@
 package domain.dao.linked_user
 
-import domain.model.done_question.done_question
 import domain.model.linked_user.linked_user
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
-import java.util.*
 
 class NewLinkedUser(
     val user_id: EntityID<UUID>,

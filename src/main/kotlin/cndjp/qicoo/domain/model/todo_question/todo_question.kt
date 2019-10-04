@@ -1,10 +1,10 @@
-package domain.model.done_question
+package domain.model.todo_question
 
 import domain.model.program.program
 import domain.model.question.question
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.Table
 
-object done_question: Table() {
+object todo_question : Table() {
     val question_id = (entityId("question_id",
         question
     ) references question.id).primaryKey()

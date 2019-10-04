@@ -21,6 +21,12 @@ test: load_dotenv
     #!/bin/bash
     ./gradlew test --stacktrace --info
 
+lint:
+    ktlint "src/main/**/*.kt" '!src/test/**/*.kt'
+
+lint-fmt:
+    ktlint -F "src/main/**/*.kt" '!src/test/**/*.kt'
+
 build: load_dotenv
     #!/bin/bash
     ./gradlew --gradle-user-home=.gradle shadowJar

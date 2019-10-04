@@ -1,10 +1,10 @@
 package domain.dao.question
 
 import domain.model.question.question
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
-import java.util.*
 
 class NewQuestion(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewQuestion>(question)

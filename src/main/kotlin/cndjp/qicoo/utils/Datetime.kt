@@ -7,7 +7,6 @@ import org.joda.time.format.DateTimeFormat
 
 fun getNowDateTimeJst(): DateTime = DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
 
-
 fun String.toDateTimeUtc(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC().parseDateTime(this)
 }

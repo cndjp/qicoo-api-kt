@@ -1,23 +1,28 @@
 package domain.repository.question_aggr
 
-import domain.dao.done_question.NewTodoQuestion
 import domain.dao.program.toProgram
 import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.QuestionAggrList
+import domain.dao.todo_question.NewTodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
-import org.jetbrains.exposed.sql.*
+import java.util.UUID
+import org.jetbrains.exposed.sql.QueryBuilder
+import org.jetbrains.exposed.sql.alias
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.innerJoin
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.execAndMap
 import utils.getNowDateTimeJst
-import java.util.*
 
-class QuestionAggrRepositoryImpl: QuestionAggrRepository {
+class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
     override fun findAll(per: Int, page: Int): QuestionAggrList = transaction {
@@ -35,7 +40,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                 otherColumn = { done_question.question_id },
                 onColumn = { id }
             )
-            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), done_question.display_name, done_question.comment,  done_question.program_id, question.created, question.updated)
+            .slice(question.id, event.name.alias("event_name"), program.name.alias("program_name"), done_question.display_name, done_question.comment, done_question.program_id, question.created, question.updated)
             .selectAll()
             .prepareSQL(QueryBuilder(false))
         val todo_aggr_sql = question
@@ -69,8 +74,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
                         rs.getString("created"),
                         rs.getString("updated")
                     )
-                }
-            , total
+                }, total
         )
     }
     override fun findById(id: UUID): QuestionAggr? {
@@ -78,7 +82,7 @@ class QuestionAggrRepositoryImpl: QuestionAggrRepository {
     }
     override fun insert(comment: String): Unit = transaction {
         val now = getNowDateTimeJst()
-        val nowProgram = program.select{
+        val nowProgram = program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)
         }.firstOrNull()
         val question = NewQuestion.new {

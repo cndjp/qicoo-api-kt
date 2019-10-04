@@ -1,9 +1,8 @@
 package domain.repository.question_aggr
 
-import domain.dao.done_question.NewTodoQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.QuestionAggrList
-import java.util.*
+import java.util.UUID
 
 interface QuestionAggrRepository {
     fun findAll(per: Int, page: Int): QuestionAggrList

@@ -5,14 +5,12 @@ import domain.dto.question.QuestionListDTO
 import domain.model.like_count.LikeCountRowKey
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
+import java.util.UUID
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
-import utils.NotfoundEntityException
-import utils.RetResult
-import java.util.UUID
 
-class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinAware {
+class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
 
@@ -35,7 +33,6 @@ class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinA
                             )
                         }, findResult.count)
                 }
-
 
     override fun createQuestion(comment: String) =
         questionAggrRepository.insert(comment)

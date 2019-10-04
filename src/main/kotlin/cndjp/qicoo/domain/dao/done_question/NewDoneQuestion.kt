@@ -1,9 +1,9 @@
 package domain.dao.done_question
 
 import domain.model.done_question.done_question
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
-import java.util.*
 
 class NewDoneQuestion(
     val question_id: EntityID<UUID>,

@@ -17,12 +17,11 @@ import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.route
+import java.util.UUID
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import utils.RetResult
-import java.util.UUID
 
 fun Route.questionController() = questionController(Kodein {
     val kodein = Kodein {
@@ -66,7 +65,7 @@ fun Route.questionController(kodein: Kodein) {
                 }
         }
         post("/like") {
-            val questionId = call.parameters["question_id"]?: ""
+            val questionId = call.parameters["question_id"] ?: ""
             val validQuestionId = runCatching {
                 UUID.fromString(questionId)
             }

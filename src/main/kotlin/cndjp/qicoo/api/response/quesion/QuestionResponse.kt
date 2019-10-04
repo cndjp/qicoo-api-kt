@@ -2,7 +2,6 @@ package api.response.quesion
 
 import domain.dto.question.QuestionDTO
 import utils.toFomatString
-import java.util.UUID
 
 class QuestionResponse(questionDTO: QuestionDTO) {
     val question_id: String

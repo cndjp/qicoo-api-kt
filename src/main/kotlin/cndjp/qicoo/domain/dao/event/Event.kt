@@ -1,10 +1,10 @@
 package domain.dao.event
 
 import domain.model.event.event
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
-import java.util.*
 
 data class Event(
     val id: EntityID<UUID>,

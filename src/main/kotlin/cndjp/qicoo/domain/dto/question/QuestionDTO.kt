@@ -1,7 +1,7 @@
 package domain.dto.question
 
-import org.joda.time.DateTime
 import java.util.UUID
+import org.joda.time.DateTime
 
 data class QuestionDTO(
     val qustion_id: UUID,

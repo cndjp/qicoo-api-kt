@@ -1,30 +1,23 @@
 package domain
 
-import domain.dao.done_question.DoneQuestion
-import domain.dao.done_question.toDoneQuestion
 import domain.dao.done_question.NewDoneQuestion
-import domain.dao.done_question.NewTodoQuestion
-import domain.model.event.event
-import domain.model.program.program
-import domain.dao.program.Program
-import domain.dao.program.toProgram
-import domain.model.question.question
+import domain.dao.todo_question.NewTodoQuestion
+import domain.dao.done_question.toDoneQuestion
 import domain.dao.event.Event
-import domain.dao.event.toEvent
-import domain.dao.question.Question
-import domain.dao.question.toQuestion
-import infrastructure.rdb.client.initMysqlClient
-import domain.model.user.user
 import domain.dao.event.NewEvent
+import domain.dao.event.toEvent
 import domain.dao.linked_user.LinkedUser
 import domain.dao.linked_user.NewLinkedUser
 import domain.dao.linked_user.toLinkedUser
 import domain.dao.program.NewProgram
+import domain.dao.program.Program
+import domain.dao.program.toProgram
 import domain.dao.question.NewQuestion
+import domain.dao.question.Question
+import domain.dao.question.toQuestion
 import domain.dao.reply.NewReply
 import domain.dao.reply.Reply
 import domain.dao.reply.toReply
-import domain.dao.todo_question.TodoQuestion
 import domain.dao.todo_question.toTodoQuestion
 import domain.dao.unlinked_user.NewUnlinkedUser
 import domain.dao.unlinked_user.UnlinkedUser
@@ -33,20 +26,25 @@ import domain.dao.user.NewUser
 import domain.dao.user.User
 import domain.dao.user.toUser
 import domain.model.done_question.done_question
+import domain.model.event.event
 import domain.model.linked_user.linked_user
+import domain.model.program.program
+import domain.model.question.question
 import domain.model.reply.reply
 import domain.model.todo_question.todo_question
 import domain.model.unlinked_user.unlinked_user
-import utils.getNowDateTimeJst
-import utils.toDateTimeJst
-import utils.toJST
+import domain.model.user.user
+import infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.joda.time.Duration
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.spekframework.spek2.Spek
+import utils.getNowDateTimeJst
+import utils.toDateTimeJst
+import utils.toJST
 
-object MySQLDomainSpec: Spek({
+object MySQLDomainSpec : Spek({
     group("mysqlのテスト") {
         test("questionのCRUDテスト") {
             initMysqlClient()
@@ -69,17 +67,17 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-                val r1 = question.select { question.created eq now}.map{it.toQuestion()}.first()
+                val r1 = question.select { question.created eq now }.map { it.toQuestion() }.first()
                 assertEquals(now, r1.created.toJST())
                 assertEquals(now, r1.updated.toJST())
 
-                val updatedCount = question.update({ question.created eq now}) {
+                val updatedCount = question.update({ question.created eq now }) {
                     it[updated] = oneMilliSecondAgo
                 }
-                assertEquals(updatedCount,1)
+                assertEquals(updatedCount, 1)
 
-                val rl: MutableList<Question> =  mutableListOf()
-                question.selectAll().orderBy(question.created to SortOrder.DESC).forEach{
+                val rl: MutableList<Question> = mutableListOf()
+                question.selectAll().orderBy(question.created to SortOrder.DESC).forEach {
                     rl.add(it.toQuestion())
                 }
                 assertEquals(now, rl[0].created.toJST())
@@ -118,7 +116,6 @@ object MySQLDomainSpec: Spek({
             val d2name = "hyon"
             val d2comment = "what is mayo"
 
-
             transaction {
                 SchemaUtils.create(
                     event,
@@ -143,12 +140,11 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-
                 val p1 = NewProgram.new {
                     name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
-                    end_at  = program1EndAt
+                    end_at = program1EndAt
                     created = now
                     updated = now
                 }
@@ -157,7 +153,7 @@ object MySQLDomainSpec: Spek({
                     name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
-                    end_at  = program2EndAt
+                    end_at = program2EndAt
                     created = yesterday
                     updated = yesterday
                 }
@@ -174,12 +170,12 @@ object MySQLDomainSpec: Spek({
                 NewDoneQuestion(question_id = q1.id, program_id = p1.id, display_name = d1name, comment = d1comment)
                 NewDoneQuestion(question_id = q2.id, program_id = p2.id, display_name = d2name, comment = d2comment)
 
-                val r1 = done_question.select { done_question.question_id eq q1.id}.map{ it.toDoneQuestion() }.first()
+                val r1 = done_question.select { done_question.question_id eq q1.id }.map { it.toDoneQuestion() }.first()
                 assertEquals(p1.id, r1.program_id)
                 assertEquals(d1name, r1.display_name)
                 assertEquals(d1comment, r1.comment)
 
-                val r2 = done_question.select { done_question.question_id eq q2.id}.map{ it.toDoneQuestion() }.first()
+                val r2 = done_question.select { done_question.question_id eq q2.id }.map { it.toDoneQuestion() }.first()
                 assertEquals(p2.id, r2.program_id)
                 assertEquals(d2name, r2.display_name)
                 assertEquals(d2comment, r2.comment)
@@ -218,7 +214,6 @@ object MySQLDomainSpec: Spek({
             val t2name = "hyon"
             val t2comment = "what is mayo"
 
-
             transaction {
                 SchemaUtils.create(
                     event,
@@ -243,12 +238,11 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-
                 val p1 = NewProgram.new {
                     name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
-                    end_at  = program1EndAt
+                    end_at = program1EndAt
                     created = now
                     updated = now
                 }
@@ -257,7 +251,7 @@ object MySQLDomainSpec: Spek({
                     name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
-                    end_at  = program2EndAt
+                    end_at = program2EndAt
                     created = yesterday
                     updated = yesterday
                 }
@@ -274,12 +268,12 @@ object MySQLDomainSpec: Spek({
                 NewTodoQuestion(question_id = q1.id, program_id = p1.id, display_name = t1name, comment = t1comment)
                 NewTodoQuestion(question_id = q2.id, program_id = p2.id, display_name = t2name, comment = t2comment)
 
-                val r1 = todo_question.select { todo_question.question_id eq q1.id}.map{it.toTodoQuestion()}.first()
+                val r1 = todo_question.select { todo_question.question_id eq q1.id }.map { it.toTodoQuestion() }.first()
                 assertEquals(p1.id, r1.program_id)
                 assertEquals(t1name, r1.display_name)
                 assertEquals(t1comment, r1.comment)
 
-                val r2 = todo_question.select { todo_question.question_id eq q2.id}.map{it.toTodoQuestion()}.first()
+                val r2 = todo_question.select { todo_question.question_id eq q2.id }.map { it.toTodoQuestion() }.first()
                 assertEquals(p2.id, r2.program_id)
                 assertEquals(t2name, r2.display_name)
                 assertEquals(t2comment, r2.comment)
@@ -390,7 +384,7 @@ object MySQLDomainSpec: Spek({
                 NewEvent.new {
                     name = e1name
                     start_at = event1StartAt
-                    end_at  = event1EndAt
+                    end_at = event1EndAt
                     created = now
                     updated = now
                 }
@@ -403,20 +397,19 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-
-                val r1 = event.select { event.created eq now}.map{it.toEvent()}.first()
+                val r1 = event.select { event.created eq now }.map { it.toEvent() }.first()
                 assertEquals(event1StartAt, r1.start_at.toJST())
                 assertEquals(event1EndAt, r1.end_at.toJST())
                 assertEquals(now, r1.created.toJST())
                 assertEquals(now, r1.updated.toJST())
 
-                val updatedCount = event.update({ event.created eq now}) {
+                val updatedCount = event.update({ event.created eq now }) {
                     it[updated] = oneMilliSecondAgo
                 }
                 assertEquals(1, updatedCount)
 
-                val rl: MutableList<Event> =  mutableListOf()
-                event.selectAll().orderBy(event.created to SortOrder.DESC).forEach{
+                val rl: MutableList<Event> = mutableListOf()
+                event.selectAll().orderBy(event.created to SortOrder.DESC).forEach {
                     rl.add(it.toEvent())
                 }
                 assertEquals(event1StartAt, rl[0].start_at.toJST())
@@ -478,12 +471,11 @@ object MySQLDomainSpec: Spek({
                     updated = yesterday
                 }
 
-
                 NewProgram.new {
                     name = p1name
                     event_id = e1.id
                     start_at = program1StartAt
-                    end_at  = program1EndAt
+                    end_at = program1EndAt
                     created = now
                     updated = now
                 }
@@ -492,25 +484,25 @@ object MySQLDomainSpec: Spek({
                     name = p2name
                     event_id = e2.id
                     start_at = program2StartAt
-                    end_at  = program2EndAt
+                    end_at = program2EndAt
                     created = yesterday
                     updated = yesterday
                 }
 
-                val r1 = program.select { program.created eq now}.map{it.toProgram()}.first()
+                val r1 = program.select { program.created eq now }.map { it.toProgram() }.first()
                 assertEquals(e1.id, r1.event_id)
                 assertEquals(program1StartAt, r1.start_at.toJST())
                 assertEquals(program1EndAt, r1.end_at.toJST())
                 assertEquals(now, r1.created.toJST())
                 assertEquals(now, r1.updated.toJST())
 
-                val updatedCount = program.update({ program.created eq now}) {
+                val updatedCount = program.update({ program.created eq now }) {
                     it[updated] = oneMilliSecondAgo
                 }
                 assertEquals(1, updatedCount)
 
-                val srl: MutableList<Program> =  mutableListOf()
-                program.selectAll().orderBy(program.created to SortOrder.DESC).forEach{
+                val srl: MutableList<Program> = mutableListOf()
+                program.selectAll().orderBy(program.created to SortOrder.DESC).forEach {
                     srl.add(it.toProgram())
                 }
                 assertEquals(e1.id, srl[0].event_id)
@@ -523,7 +515,6 @@ object MySQLDomainSpec: Spek({
                 assertEquals(program2EndAt, srl[1].end_at.toJST())
                 assertEquals(yesterday, srl[1].created.toJST())
                 assertEquals(yesterday, srl[1].updated.toJST())
-
 
                 val deleteCount1 = program.deleteWhere { program.created eq now }
                 assertEquals(1, deleteCount1)
@@ -555,11 +546,11 @@ object MySQLDomainSpec: Spek({
                     created = yesterday
                 }
 
-                val r1 = user.select { user.created eq now}.map{it.toUser()}.first()
+                val r1 = user.select { user.created eq now }.map { it.toUser() }.first()
                 assertEquals(now, r1.created.toJST())
 
-                val rl: MutableList<User> =  mutableListOf()
-                user.selectAll().orderBy(user.created to SortOrder.DESC).forEach{
+                val rl: MutableList<User> = mutableListOf()
+                user.selectAll().orderBy(user.created to SortOrder.DESC).forEach {
                     rl.add(it.toUser())
                 }
                 assertEquals(now, rl[0].created.toJST())
@@ -601,12 +592,12 @@ object MySQLDomainSpec: Spek({
                 NewLinkedUser(user_id = u1.id, twitter_account_id = tid1, twitter_account_name = tname1)
                 NewLinkedUser(user_id = u2.id, twitter_account_id = tid2, twitter_account_name = tname2)
 
-                val r1 = linked_user.select { linked_user.twitter_account_id eq tid1}.map{it.toLinkedUser()}.first()
+                val r1 = linked_user.select { linked_user.twitter_account_id eq tid1 }.map { it.toLinkedUser() }.first()
                 assertEquals(u1.id, r1.user_id)
                 assertEquals(tname1, r1.twitter_account_name)
 
-                val rl: MutableList<LinkedUser> =  mutableListOf()
-                linked_user.selectAll().orderBy(linked_user.twitter_account_id to SortOrder.ASC).forEach{
+                val rl: MutableList<LinkedUser> = mutableListOf()
+                linked_user.selectAll().orderBy(linked_user.twitter_account_id to SortOrder.ASC).forEach {
                     rl.add(it.toLinkedUser())
                 }
                 assertEquals(u1.id, rl[0].user_id)
@@ -651,12 +642,12 @@ object MySQLDomainSpec: Spek({
                 NewUnlinkedUser(user_id = u1.id, twitter_account_id = tid1, twitter_account_name = tname1)
                 NewUnlinkedUser(user_id = u2.id, twitter_account_id = tid2, twitter_account_name = tname2)
 
-                val r1 = unlinked_user.select { unlinked_user.twitter_account_id eq tid1}.map{it.toUnlinkedUser()}.first()
+                val r1 = unlinked_user.select { unlinked_user.twitter_account_id eq tid1 }.map { it.toUnlinkedUser() }.first()
                 assertEquals(u1.id, r1.user_id)
                 assertEquals(tname1, r1.twitter_account_name)
 
-                val rl: MutableList<UnlinkedUser> =  mutableListOf()
-                unlinked_user.selectAll().orderBy(unlinked_user.twitter_account_id to SortOrder.ASC).forEach{
+                val rl: MutableList<UnlinkedUser> = mutableListOf()
+                unlinked_user.selectAll().orderBy(unlinked_user.twitter_account_id to SortOrder.ASC).forEach {
                     rl.add(it.toUnlinkedUser())
                 }
                 assertEquals(u1.id, rl[0].user_id)

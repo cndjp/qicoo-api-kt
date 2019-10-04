@@ -1,10 +1,10 @@
 package domain.dao.program
 
 import domain.model.program.program
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
-import java.util.*
 
 data class Program(
     val id: EntityID<UUID>,

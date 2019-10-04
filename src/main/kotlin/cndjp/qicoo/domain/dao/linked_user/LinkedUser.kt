@@ -1,11 +1,9 @@
 package domain.dao.linked_user
 
-import domain.model.event.event
 import domain.model.linked_user.linked_user
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
-import org.joda.time.DateTime
-import java.util.*
 
 data class LinkedUser(
     val user_id: EntityID<UUID>,

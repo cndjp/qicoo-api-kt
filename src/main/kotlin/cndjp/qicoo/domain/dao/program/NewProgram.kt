@@ -1,10 +1,10 @@
 package domain.dao.program
 
 import domain.model.program.program
+import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
-import java.util.*
 
 class NewProgram(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewProgram>(program)

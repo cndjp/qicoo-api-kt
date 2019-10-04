@@ -1,12 +1,10 @@
 package migration.migrate
 
-import domain.dao.done_question.DoneQuestion
 import domain.dao.done_question.NewDoneQuestion
-import domain.dao.done_question.NewTodoQuestion
-import domain.dao.done_question.toDoneQuestion
 import domain.dao.event.NewEvent
 import domain.dao.program.NewProgram
 import domain.dao.question.NewQuestion
+import domain.dao.todo_question.NewTodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.linked_user.linked_user
@@ -17,8 +15,7 @@ import domain.model.todo_question.todo_question
 import domain.model.unlinked_user.unlinked_user
 import domain.model.user.user
 import infrastructure.rdb.client.initMysqlClient
-import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.transaction
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
@@ -71,7 +68,6 @@ suspend fun main(args: Array<String>) {
         val d3comment = "what is poe"
         val d4name = "puyo"
         val d4comment = "what is myas"
-
 
         org.jetbrains.exposed.sql.transactions.transaction {
             SchemaUtils.create(

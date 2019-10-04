@@ -1,8 +1,8 @@
 package domain.dao.question_aggr
 
+import java.util.UUID
 import org.joda.time.DateTime
 import utils.toDateTimeJstgForMySQL
-import java.util.*
 
 class QuestionAggr(f1: ByteArray, f2: String, f3: String, f4: String, f5: String, f6: String, f7: String) {
     val question_id: UUID
