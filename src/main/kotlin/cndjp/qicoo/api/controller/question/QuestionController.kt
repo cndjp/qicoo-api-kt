@@ -36,7 +36,10 @@ fun Route.questionController(kodein: Kodein) {
 
     route("/question") {
         get {
-            call.respond(HttpStatusCode.OK, QuestionListResponse(questionService.getAll().map{QuestionResponse(it)}))
+            val per = call.parameters["per"]?.toInt() ?: 10
+            val page = call.parameters["page"]?.toInt() ?: 1
+            val result = questionService.getAll(per, page)
+            call.respond(HttpStatusCode.OK, QuestionListResponse(result.first.map{QuestionResponse(it)}, result.second))
         }
         post {
             val validRequest = runCatching {
@@ -44,19 +47,10 @@ fun Route.questionController(kodein: Kodein) {
             }
             validRequest
                 .onSuccess { request ->
-                    var reason = ""
                     questionService.create(request.comment)
-                        .also { reason = it.returnReason() }
-                        .also {
-                            when (it) {
-                                RetResult.Success -> call.respond(HttpStatusCode.OK)
-                                RetResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.InternalServerError, reason)
-                                else -> call.respond(HttpStatusCode.InternalServerError, reason)
-                            }
-                        }
                 }
-                .onFailure {
-                    call.respond(HttpStatusCode.BadRequest, "invalid json format")
+                .onFailure { exception ->
+                    call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
                 }
         }
         get("/detail") {

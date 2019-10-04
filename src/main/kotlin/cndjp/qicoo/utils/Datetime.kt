@@ -16,6 +16,10 @@ fun String.toDateTimeJst(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(DateTimeZone.forID("Asia/Tokyo")).parseDateTime(this)
 }
 
+fun String.toDateTimeJstgForMySQL(): DateTime {
+    return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS").withZone(DateTimeZone.forID("Asia/Tokyo")).parseDateTime(this)
+}
+
 fun String.toDateTimeLocal(): DateTime {
     val localDateTime = LocalDateTime.parse(this, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss"))
     return localDateTime.toDateTime()

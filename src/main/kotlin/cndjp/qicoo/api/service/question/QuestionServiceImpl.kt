@@ -12,23 +12,24 @@ import utils.RetResult
 class QuestionServiceImpl(override val kodein: Kodein): QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
-    override fun getAll(): List<QuestionDTO> =
-        questionAggrRepository.findAll().map {
-            val likeCount = likeCountRepository.findById(it.question_id.value)?.count?:0
-            QuestionDTO(
-                it.program_name,
-                it.event_name,
-                it.display_name,
-                likeCount,
-                it.comment,
-                it.created,
-                it.updated
-            )
-        }
+    override fun getAll(per: Int, page: Int): Pair<List<QuestionDTO>, Int> {
+        val result = questionAggrRepository.findAll(per, page)
+        return Pair(
+            result.first.map {
+                val likeCount = likeCountRepository.findById(it.question_id)?.count ?: 0
+                QuestionDTO(
+                    it.program_name,
+                    it.event_name,
+                    it.display_name,
+                    likeCount,
+                    it.comment,
+                    it.created,
+                    it.updated
+                )
+            }, result.second
+        )
+    }
 
-    override fun create(comment: String): RetResult =
-        when (questionAggrRepository.insert(comment)) {
-            null -> RetResult.NotFoundEntityFailure
-            else -> RetResult.Success
-        }
+    override fun create(comment: String): Unit =
+        questionAggrRepository.insert(comment)
 }

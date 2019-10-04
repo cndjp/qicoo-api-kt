@@ -2,6 +2,7 @@ package migration.migrate
 
 import domain.dao.done_question.DoneQuestion
 import domain.dao.done_question.NewDoneQuestion
+import domain.dao.done_question.NewTodoQuestion
 import domain.dao.done_question.toDoneQuestion
 import domain.dao.event.NewEvent
 import domain.dao.program.NewProgram
@@ -51,12 +52,13 @@ suspend fun main(args: Array<String>) {
         val p1name = "poke"
         val p2name = "moka"
         val d1name = "nyan"
-        val d1likes = 10
-        val d1likesUpdated = 111
         val d1comment = "what is qicoo"
         val d2name = "hyon"
-        val d2likes = 200
         val d2comment = "what is mayo"
+        val d3name = "poe"
+        val d3comment = "what is poe"
+        val d4name = "puyo"
+        val d4comment = "what is myas"
 
 
         org.jetbrains.exposed.sql.transactions.transaction {
@@ -92,7 +94,6 @@ suspend fun main(args: Array<String>) {
                 created = now
                 updated = now
             }
-
             val p2 = NewProgram.new {
                 name = p2name
                 event_id = e2.id
@@ -110,6 +111,15 @@ suspend fun main(args: Array<String>) {
                 created = yesterday
                 updated = yesterday
             }
+            val q3 = NewQuestion.new {
+                created = now
+                updated = now
+            }
+
+            val q4 = NewQuestion.new {
+                created = yesterday
+                updated = yesterday
+            }
 
             NewDoneQuestion(
                 question_id = q1.id,
@@ -122,6 +132,18 @@ suspend fun main(args: Array<String>) {
                 program_id = p2.id,
                 display_name = d2name,
                 comment = d2comment
+            )
+            NewTodoQuestion(
+                question_id = q1.id,
+                program_id = p1.id,
+                display_name = d3name,
+                comment = d3comment
+            )
+            NewTodoQuestion(
+                question_id = q2.id,
+                program_id = p2.id,
+                display_name = d4name,
+                comment = d4comment
             )
         }
     }
