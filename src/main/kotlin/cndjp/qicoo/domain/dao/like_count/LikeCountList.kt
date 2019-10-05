@@ -1,6 +1,6 @@
 package domain.dao.like_count
 
-data class LikeCountList (
+data class LikeCountList(
     val list: List<LikeCount>,
     val total: Int
 )

@@ -1,7 +1,6 @@
 package domain.dao.todo_question
 
 import domain.model.todo_question.todo_question
-import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 

@@ -1,7 +1,6 @@
 package domain.dao.question
 
 import domain.model.question.question
-import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime

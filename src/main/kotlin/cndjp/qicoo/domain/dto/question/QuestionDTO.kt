@@ -1,6 +1,5 @@
 package domain.dto.question
 
-import java.util.UUID
 import org.joda.time.DateTime
 
 data class QuestionDTO(

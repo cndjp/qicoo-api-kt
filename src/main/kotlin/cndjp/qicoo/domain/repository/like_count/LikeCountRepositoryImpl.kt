@@ -5,16 +5,15 @@ import domain.dao.like_count.LikeCountList
 import domain.model.like_count.LikeCountRow
 import infrastructure.cache.client.qicooGlobalJedisPool
 import infrastructure.cache.context.RedisContext
-import java.util.UUID
 
 class LikeCountRepositoryImpl : LikeCountRepository {
     private val likeCountListKey = "like_count_list"
 
     override fun findAll(): LikeCountList =
         RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 10000000.0)
-            .map{LikeCount(
+            .map { LikeCount(
                     LikeCountRow(
-                        it.element.toIntOrNull()?: 0,
+                        it.element.toIntOrNull() ?: 0,
                         it.score
                     )
                 )

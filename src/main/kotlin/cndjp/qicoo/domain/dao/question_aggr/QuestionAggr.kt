@@ -6,7 +6,6 @@ import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
 import org.jetbrains.exposed.sql.ResultRow
-import java.util.UUID
 import org.joda.time.DateTime
 import utils.toDateTimeJstgForMySQL
 
@@ -29,13 +28,15 @@ class QuestionAggr {
         updated = f7.toDateTimeJstgForMySQL()
     }
 
-    constructor(f1: Int,
+    constructor(
+        f1: Int,
         f2: String,
         f3: String,
         f4: String,
         f5: String,
         f6: DateTime,
-        f7: DateTime) {
+        f7: DateTime
+    ) {
         question_id = f1
         event_name = f2
         program_name = f3
