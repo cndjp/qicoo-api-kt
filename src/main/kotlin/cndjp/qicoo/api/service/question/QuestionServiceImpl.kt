@@ -65,7 +65,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun createQuestion(comment: String) {
         val created = questionAggrRepository.insert(comment)
-        created?.question_id?.let {likeCountRepository.incr(it.value)}
+        created?.question_id?.let {likeCountRepository.create(it.value)}
     }
     override fun incr(questionId: UUID) {
         likeCountRepository.incr(questionId)

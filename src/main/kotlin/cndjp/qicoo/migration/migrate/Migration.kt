@@ -18,11 +18,11 @@ import infrastructure.cache.client.qicooGlobalJedisPool
 import infrastructure.cache.context.RedisContext
 import infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.experimental.transaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import utils.getNowDateTimeJst
 import utils.toDateTimeJst
 
-suspend fun main(args: Array<String>) {
+fun main(args: Array<String>) {
     initMysqlClient()
     transaction {
         SchemaUtils.create(

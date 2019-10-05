@@ -9,4 +9,5 @@ interface LikeCountRepository {
     fun findById(key: UUID): LikeCount?
     //fun incr(key: LikeCountRowKey)
     fun incr(key: UUID)
+    fun create(key: UUID)
 }
