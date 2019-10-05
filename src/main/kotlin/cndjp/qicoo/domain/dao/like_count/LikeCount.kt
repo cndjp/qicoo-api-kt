@@ -4,16 +4,11 @@ import domain.model.like_count.LikeCountRow
 import java.util.UUID
 
 class LikeCount(row: LikeCountRow) {
-    val question_id: UUID?
+    val question_id: Int
     val count: Int?
 
     init {
-        this.question_id = runCatching {
-            UUID.fromString(row.key.rowKey.split(":").getOrNull(0))
-        }.fold(
-            onSuccess = { it },
-            onFailure = { null }
-        )
-        this.count = row.value.toIntOrNull()
+        this.question_id = row.key
+        this.count = row.value.toInt()
     }
 }

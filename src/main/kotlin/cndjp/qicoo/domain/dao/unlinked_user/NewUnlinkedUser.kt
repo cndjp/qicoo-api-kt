@@ -6,7 +6,7 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
 
 class NewUnlinkedUser(
-    val user_id: EntityID<UUID>,
+    val user_id: EntityID<Int>,
     val twitter_account_id: String,
     val twitter_account_name: String
 ) {

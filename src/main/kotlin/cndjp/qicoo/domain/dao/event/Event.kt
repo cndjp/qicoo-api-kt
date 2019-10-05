@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 
 data class Event(
-    val id: EntityID<UUID>,
+    val id: EntityID<Int>,
     val name: String,
     val start_at: DateTime,
     val end_at: DateTime,

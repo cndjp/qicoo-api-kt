@@ -1,29 +1,29 @@
 package api.service.question
 
-import api.http_resource.paramater.question.QuestionGetOrderParameter
 import api.http_resource.paramater.question.QuestionGetParameter
 import api.http_resource.paramater.question.QuestionGetSortParameter
-import domain.dao.question.Question
 import domain.dto.question.QuestionDTO
 import domain.dto.question.QuestionListDTO
-import domain.model.like_count.LikeCountRowKey
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
 import java.util.UUID
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import utils.zeroUUID
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
 
     override fun getAll(param: QuestionGetParameter): QuestionListDTO =
-            questionAggrRepository.findAll(param.per, param.page, param.sort == QuestionGetSortParameter.created, param.order.name)
+        when (param.sort) {
+            QuestionGetSortParameter.created -> questionAggrRepository.findAll(param.per, param.page, param.order.name)
                 .let { findResult ->
-                        val list = findResult.list.map { dao ->
+                    QuestionListDTO(
+                        findResult.list.map { dao ->
                             val likeCount = likeCountRepository
-                                .findById(LikeCountRowKey(dao.question_id))?.count ?: 0
+                                .findById(dao.question_id)?.count ?: 0
                             QuestionDTO(
                                 dao.question_id,
                                 dao.program_name,
@@ -34,26 +34,40 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 dao.created,
                                 dao.updated
                             )
-                        }
-                        when (param.sort) {
-                            QuestionGetSortParameter.created ->  QuestionListDTO(list, findResult.count)
-                            QuestionGetSortParameter.like -> when (param.order) {
-                                QuestionGetOrderParameter.asc -> {
-                                    val sorted = list.sortedBy { dto -> dto.like_count }
-                                    QuestionListDTO(sorted, findResult.count)
-                                }
-                                QuestionGetOrderParameter.desc -> {
-                                    val sorted = list.sortedByDescending { dto -> dto.like_count }
-                                    QuestionListDTO(sorted, findResult.count)
-                                }
-                            }
-                        }
+                        }, findResult.total
+                    )
                 }
+            QuestionGetSortParameter.like ->
+                likeCountRepository.findAll()
+                    .let { findResult ->
+                        QuestionListDTO(
+                        findResult.list.zip(questionAggrRepository.findByIds(
+                            findResult.list
+                                .map{
+                                    it.question_id
+                                }).list)
+                            .map{ dao ->
+                                QuestionDTO(
+                                    dao.second.question_id,
+                                    dao.second.program_name,
+                                    dao.second.event_name,
+                                    dao.second.display_name,
+                                    dao.first.count ?: 0,
+                                    dao.second.comment,
+                                    dao.second.created,
+                                    dao.second.updated
+                                )
+                            },
+                            findResult.total
+                        )
+                    }
+        }
 
-    override fun createQuestion(comment: String) =
-        questionAggrRepository.insert(comment)
-
-    override fun incrOrCreateLike(questionId: UUID) {
-        likeCountRepository.incr(LikeCountRowKey(questionId))
+    override fun createQuestion(comment: String) {
+        val created = questionAggrRepository.insert(comment)
+        created?.question_id?.let {likeCountRepository.create(it.value)}
+    }
+    override fun incr(questionId: Int) {
+        likeCountRepository.incr(questionId)
     }
 }

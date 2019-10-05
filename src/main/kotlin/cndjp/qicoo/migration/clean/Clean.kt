@@ -9,11 +9,13 @@ import domain.model.reply.reply
 import domain.model.todo_question.todo_question
 import domain.model.unlinked_user.unlinked_user
 import domain.model.user.user
+import infrastructure.cache.client.qicooGlobalJedisPool
+import infrastructure.cache.context.RedisContext
 import infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.experimental.transaction
+import org.jetbrains.exposed.sql.transactions.transaction
 
-suspend fun main(args: Array<String>) {
+fun main(args: Array<String>) {
     initMysqlClient()
     transaction {
         SchemaUtils.drop(
@@ -28,4 +30,5 @@ suspend fun main(args: Array<String>) {
             unlinked_user
         )
     }
+    RedisContext.flushAll(qicooGlobalJedisPool.resource)
 }

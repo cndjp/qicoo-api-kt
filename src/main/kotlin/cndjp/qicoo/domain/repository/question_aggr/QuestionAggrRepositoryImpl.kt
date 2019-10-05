@@ -5,6 +5,8 @@ import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.QuestionAggrList
+import domain.dao.question_aggr.toQuestionAggrFromDone
+import domain.dao.question_aggr.toQuestionAggrFromTodo
 import domain.dao.todo_question.NewTodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
@@ -15,17 +17,20 @@ import java.util.UUID
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.execAndMap
 import utils.getNowDateTimeJst
+import utils.merge
+import utils.orWhere
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
-    override fun findAll(per: Int, page: Int, isSort: Boolean, order: String): QuestionAggrList = transaction {
+    override fun findAll(per: Int, page: Int, order: String): QuestionAggrList = transaction {
         val done_aggr_sql = question
             .innerJoin(
                 otherTable = done_question.innerJoin(
@@ -62,15 +67,11 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .prepareSQL(QueryBuilder(false))
         val total = question.selectAll().count()
         val offset = (page - 1) * per
-        val sortStr = when (isSort) {
-            true -> "ORDER BY created $order"
-            false -> ""
-        }
         QuestionAggrList(
-            "$done_aggr_sql UNION ALL $todo_aggr_sql $sortStr LIMIT $per OFFSET $offset "
+            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created $order LIMIT $per OFFSET $offset "
                 .execAndMap { rs ->
                     QuestionAggr(
-                        rs.getBytes("id"),
+                        rs.getInt("id"),
                         rs.getString("event_name"),
                         rs.getString("program_name"),
                         rs.getString("display_name"),
@@ -81,10 +82,60 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 }, total
         )
     }
-    override fun findById(id: UUID): QuestionAggr? {
+    override fun findById(id: Int): QuestionAggr? {
         TODO()
     }
-    override fun insert(comment: String): Unit = transaction {
+
+    override fun findByIds(ids: List<Int>): QuestionAggrList = transaction {
+        require(ids.isNotEmpty())
+
+        val total = question.selectAll().count()
+        val done_query = question
+        .innerJoin(
+            otherTable = done_question.innerJoin(
+                otherTable = program.innerJoin(
+                    otherTable = event,
+                    otherColumn = { program.event_id },
+                    onColumn = { event.id }
+                ),
+                otherColumn = { done_question.program_id },
+                onColumn = { program.id }
+            ),
+            otherColumn = { done_question.question_id },
+            onColumn = { id }
+        )
+        .slice(question.id, event.name, program.name, done_question.display_name, done_question.comment, done_question.program_id, question.created, question.updated)
+        .selectAll()
+        .also { prepare -> ids.map{ prepare.orWhere { done_question.question_id eq it } } }
+        .map { it.toQuestionAggrFromDone() }
+
+        val todo_sql = question
+            .innerJoin(
+                otherTable = todo_question.innerJoin(
+                    otherTable = program.innerJoin(
+                        otherTable = event,
+                        otherColumn = { program.event_id },
+                        onColumn = { event.id }
+                    ),
+                    otherColumn = { todo_question.program_id },
+                    onColumn = { program.id }
+                ),
+                otherColumn = { todo_question.question_id },
+                onColumn = { id }
+            )
+            .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.comment, todo_question.program_id, question.created, question.updated)
+            .selectAll()
+            .also { prepare -> ids.map{ prepare.orWhere { todo_question.question_id eq it } } }
+            .map { it.toQuestionAggrFromTodo() }
+
+        println(listOf(done_query, todo_sql).flatten())
+
+        QuestionAggrList(
+            listOf(done_query, todo_sql).flatten(), total
+        )
+    }
+
+    override fun insert(comment: String): NewTodoQuestion? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)

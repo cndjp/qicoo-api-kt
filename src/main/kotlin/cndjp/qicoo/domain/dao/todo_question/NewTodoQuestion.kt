@@ -6,8 +6,8 @@ import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
 
 class NewTodoQuestion(
-    val question_id: EntityID<UUID>,
-    val program_id: EntityID<UUID>,
+    val question_id: EntityID<Int>,
+    val program_id: EntityID<Int>,
     val display_name: String,
     val comment: String
 ) {
