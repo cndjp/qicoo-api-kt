@@ -21,8 +21,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun getAll(param: QuestionGetParameter): QuestionListDTO =
             questionAggrRepository.findAll(param.per, param.page, param.sort == QuestionGetSortParameter.created, param.order.name)
                 .let { findResult ->
-                    QuestionListDTO(
-                        findResult.list.map { dao ->
+                        val list = findResult.list.map { dao ->
                             val likeCount = likeCountRepository
                                 .findById(LikeCountRowKey(dao.question_id))?.count ?: 0
                             QuestionDTO(
@@ -36,15 +35,19 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 dao.updated
                             )
                         }
-                            .also { list ->
-                                if (param.sort == QuestionGetSortParameter.like) {
-                                    when (param.order) {
-                                        QuestionGetOrderParameter.asc -> list.sortedBy { dto -> dto.like_count }
-                                        QuestionGetOrderParameter.desc -> list.sortedByDescending { dto -> dto.like_count }
-                                    }
+                        when (param.sort) {
+                            QuestionGetSortParameter.created ->  QuestionListDTO(list, findResult.count)
+                            QuestionGetSortParameter.like -> when (param.order) {
+                                QuestionGetOrderParameter.asc -> {
+                                    val sorted = list.sortedBy { dto -> dto.like_count }
+                                    QuestionListDTO(sorted, findResult.count)
                                 }
-                            },
-                        findResult.count)
+                                QuestionGetOrderParameter.desc -> {
+                                    val sorted = list.sortedByDescending { dto -> dto.like_count }
+                                    QuestionListDTO(sorted, findResult.count)
+                                }
+                            }
+                        }
                 }
 
     override fun createQuestion(comment: String) =

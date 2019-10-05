@@ -53,7 +53,6 @@ fun Route.questionController(kodein: Kodein) {
                     else -> QuestionGetOrderParameter.desc
                 }
             )
-            //println("param: $param")
             call.respond(
                 HttpStatusCode.OK,
                 questionService.getAll(param)
