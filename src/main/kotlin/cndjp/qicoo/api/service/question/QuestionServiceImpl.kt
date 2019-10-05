@@ -36,11 +36,11 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 dao.updated
                             )
                         }
-                            .also {
+                            .also { list ->
                                 if (param.sort == QuestionGetSortParameter.like) {
                                     when (param.order) {
-                                        QuestionGetOrderParameter.asc -> it.sortedBy { dto -> dto.like_count }
-                                        else -> it.sortedByDescending { dto -> dto.like_count }
+                                        QuestionGetOrderParameter.asc -> list.sortedBy { dto -> dto.like_count }
+                                        else -> list.sortedByDescending { dto -> dto.like_count }
                                     }
                                 }
                             },
