@@ -14,33 +14,33 @@ class LikeCountRepositoryImpl : LikeCountRepository {
         RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 10000000.0)
             .map{LikeCount(
                     LikeCountRow(
-                        it.element,
+                        it.element.toIntOrNull()?: 0,
                         it.score
                     )
                 )
             }
             .let {
                 LikeCountList(
-                    it,
+                    it.asReversed(),
                     it.size
                 )
             }
 
-    override fun findById(key: UUID): LikeCount? =
+    override fun findById(key: Int): LikeCount? =
         RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())?.let {
             LikeCount(
                 LikeCountRow(
-                    key.toString(),
+                    key,
                     it
                 )
             )
         }
 
-    override fun incr(key: UUID) {
+    override fun incr(key: Int) {
         RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
     }
 
-    override fun create(key: UUID) {
+    override fun create(key: Int) {
         RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))
     }
 }

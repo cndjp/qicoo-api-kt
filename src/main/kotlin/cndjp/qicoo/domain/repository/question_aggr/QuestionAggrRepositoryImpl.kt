@@ -71,7 +71,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created $order LIMIT $per OFFSET $offset "
                 .execAndMap { rs ->
                     QuestionAggr(
-                        rs.getBytes("id"),
+                        rs.getInt("id"),
                         rs.getString("event_name"),
                         rs.getString("program_name"),
                         rs.getString("display_name"),
@@ -82,11 +82,11 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 }, total
         )
     }
-    override fun findById(id: UUID): QuestionAggr? {
+    override fun findById(id: Int): QuestionAggr? {
         TODO()
     }
 
-    override fun findByIds(ids: List<UUID>): QuestionAggrList = transaction {
+    override fun findByIds(ids: List<Int>): QuestionAggrList = transaction {
         require(ids.isNotEmpty())
 
         val total = question.selectAll().count()

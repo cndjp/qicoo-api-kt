@@ -4,7 +4,7 @@ import domain.dto.question.QuestionDTO
 import utils.toFomatString
 
 class QuestionResponse(questionDTO: QuestionDTO) {
-    val question_id: String
+    val question_id: Int
     val program_name: String
     val event_name: String
     val display_name: String
@@ -14,7 +14,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
     val updated: String
 
     init {
-        this.question_id = questionDTO.qustion_id.toString()
+        this.question_id = questionDTO.qustion_id
         this.program_name = questionDTO.program_name
         this.event_name = questionDTO.event_name
         this.display_name = questionDTO.display_name

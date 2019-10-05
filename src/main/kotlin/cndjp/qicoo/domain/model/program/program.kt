@@ -1,9 +1,9 @@
 package domain.model.program
 
 import domain.model.event.event
-import org.jetbrains.exposed.dao.UUIDTable
+import org.jetbrains.exposed.dao.IntIdTable
 
-object program : UUIDTable() {
+object program : IntIdTable() {
     val name = varchar("name", 255)
     val event_id = (entityId("event_id",
         event

@@ -44,7 +44,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                         findResult.list.zip(questionAggrRepository.findByIds(
                             findResult.list
                                 .map{
-                                    it.question_id?: zeroUUID
+                                    it.question_id
                                 }).list)
                             .map{ dao ->
                                 QuestionDTO(
@@ -67,7 +67,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
         val created = questionAggrRepository.insert(comment)
         created?.question_id?.let {likeCountRepository.create(it.value)}
     }
-    override fun incr(questionId: UUID) {
+    override fun incr(questionId: Int) {
         likeCountRepository.incr(questionId)
     }
 }

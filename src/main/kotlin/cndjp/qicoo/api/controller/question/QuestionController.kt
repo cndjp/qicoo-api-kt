@@ -80,18 +80,9 @@ fun Route.questionController(kodein: Kodein) {
                 }
         }
         post("/like") {
-            val questionId = call.parameters["question_id"] ?: ""
-            val validQuestionId = runCatching {
-                UUID.fromString(questionId)
-            }
-            validQuestionId
-                .onSuccess { validatedQuestionId ->
-                    questionService.incr(validatedQuestionId)
-                    call.respond(HttpStatusCode.OK)
-                }
-                .onFailure { exception ->
-                    call.respond(HttpStatusCode.BadRequest, "invalid uuid format: $exception")
-                }
+            val questionId = call.parameters["question_id"]?.toInt() ?: 0
+            questionService.incr(questionId)
+            call.respond(HttpStatusCode.OK)
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")

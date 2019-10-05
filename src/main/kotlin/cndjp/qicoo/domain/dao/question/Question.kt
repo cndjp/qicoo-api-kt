@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 
 data class Question(
-    val id: EntityID<UUID>,
+    val id: EntityID<Int>,
     val created: DateTime,
     val updated: DateTime
 )

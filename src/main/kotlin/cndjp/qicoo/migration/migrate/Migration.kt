@@ -186,6 +186,8 @@ fun main(args: Array<String>) {
                 display_name = d4name,
                 comment = d4comment
             )
+            val likeCountListKey = "like_count_list"
+            RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(q1.id.value.toString(), 10.0), Pair(q2.id.value.toString(), 20.0), Pair(q3.id.value.toString(), 18.0), Pair(q4.id.value.toString(), 5.0)))
         }
     }
 }

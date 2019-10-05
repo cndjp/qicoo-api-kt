@@ -6,8 +6,8 @@ import java.util.UUID
 
 interface LikeCountRepository {
     fun findAll(): LikeCountList
-    fun findById(key: UUID): LikeCount?
+    fun findById(key: Int): LikeCount?
     //fun incr(key: LikeCountRowKey)
-    fun incr(key: UUID)
-    fun create(key: UUID)
+    fun incr(key: Int)
+    fun create(key: Int)
 }

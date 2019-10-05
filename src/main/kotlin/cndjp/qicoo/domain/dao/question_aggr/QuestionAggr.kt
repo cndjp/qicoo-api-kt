@@ -11,7 +11,7 @@ import org.joda.time.DateTime
 import utils.toDateTimeJstgForMySQL
 
 class QuestionAggr {
-    val question_id: UUID
+    val question_id: Int
     val event_name: String
     val program_name: String
     val display_name: String
@@ -19,8 +19,8 @@ class QuestionAggr {
     val created: DateTime
     val updated: DateTime
 
-    constructor(f1: ByteArray, f2: String, f3: String, f4: String, f5: String, f6: String, f7: String) {
-        question_id = UUID.nameUUIDFromBytes(f1)
+    constructor(f1: Int, f2: String, f3: String, f4: String, f5: String, f6: String, f7: String) {
+        question_id = f1
         event_name = f2
         program_name = f3
         display_name = f4
@@ -29,7 +29,7 @@ class QuestionAggr {
         updated = f7.toDateTimeJstgForMySQL()
     }
 
-    constructor(f1: UUID,
+    constructor(f1: Int,
         f2: String,
         f3: String,
         f4: String,

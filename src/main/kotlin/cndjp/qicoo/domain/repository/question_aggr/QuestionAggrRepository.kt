@@ -7,7 +7,7 @@ import java.util.UUID
 
 interface QuestionAggrRepository {
     fun findAll(per: Int, page: Int, order: String): QuestionAggrList
-    fun findById(id: UUID): QuestionAggr?
-    fun findByIds(ids: List<UUID>): QuestionAggrList
+    fun findById(id: Int): QuestionAggr?
+    fun findByIds(ids: List<Int>): QuestionAggrList
     fun insert(comment: String): NewTodoQuestion?
 }

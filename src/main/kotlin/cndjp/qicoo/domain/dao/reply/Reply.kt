@@ -7,8 +7,8 @@ import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 
 data class Reply(
-    val id: EntityID<UUID>,
-    val question_id: EntityID<UUID>,
+    val id: EntityID<Int>,
+    val question_id: EntityID<Int>,
     val comment: String,
     val created: DateTime,
     val updated: DateTime
