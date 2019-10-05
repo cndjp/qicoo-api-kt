@@ -6,11 +6,9 @@ import domain.dto.question.QuestionDTO
 import domain.dto.question.QuestionListDTO
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
-import java.util.UUID
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
-import utils.zeroUUID
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
@@ -43,10 +41,10 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                         QuestionListDTO(
                         findResult.list.zip(questionAggrRepository.findByIds(
                             findResult.list
-                                .map{
+                                .map {
                                     it.question_id
                                 }).list)
-                            .map{ dao ->
+                            .map { dao ->
                                 QuestionDTO(
                                     dao.second.question_id,
                                     dao.second.program_name,
@@ -65,7 +63,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun createQuestion(comment: String) {
         val created = questionAggrRepository.insert(comment)
-        created?.question_id?.let {likeCountRepository.create(it.value)}
+        created?.question_id?.let { likeCountRepository.create(it.value) }
     }
     override fun incr(questionId: Int) {
         likeCountRepository.incr(questionId)

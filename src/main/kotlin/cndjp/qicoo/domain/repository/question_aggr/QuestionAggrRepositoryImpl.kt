@@ -13,18 +13,15 @@ import domain.model.event.event
 import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
-import java.util.UUID
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.andWhere
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import utils.execAndMap
 import utils.getNowDateTimeJst
-import utils.merge
 import utils.orWhere
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
@@ -106,7 +103,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         )
         .slice(question.id, event.name, program.name, done_question.display_name, done_question.comment, done_question.program_id, question.created, question.updated)
         .selectAll()
-        .also { prepare -> ids.map{ prepare.orWhere { done_question.question_id eq it } } }
+        .also { prepare -> ids.map { prepare.orWhere { done_question.question_id eq it } } }
         .map { it.toQuestionAggrFromDone() }
 
         val todo_sql = question
@@ -125,10 +122,8 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             )
             .slice(question.id, event.name, program.name, todo_question.display_name, todo_question.comment, todo_question.program_id, question.created, question.updated)
             .selectAll()
-            .also { prepare -> ids.map{ prepare.orWhere { todo_question.question_id eq it } } }
+            .also { prepare -> ids.map { prepare.orWhere { todo_question.question_id eq it } } }
             .map { it.toQuestionAggrFromTodo() }
-
-        println(listOf(done_query, todo_sql).flatten())
 
         QuestionAggrList(
             listOf(done_query, todo_sql).flatten(), total

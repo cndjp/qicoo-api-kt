@@ -1,7 +1,6 @@
 package domain.dao.linked_user
 
 import domain.model.linked_user.linked_user
-import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 
