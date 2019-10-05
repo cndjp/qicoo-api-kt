@@ -5,6 +5,7 @@ import java.util.UUID
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.dao.UUIDEntity
 import org.jetbrains.exposed.dao.UUIDEntityClass
+import org.jetbrains.exposed.sql.ResultRow
 
 class NewQuestion(id: EntityID<UUID>) : UUIDEntity(id) {
     companion object : UUIDEntityClass<NewQuestion>(question)

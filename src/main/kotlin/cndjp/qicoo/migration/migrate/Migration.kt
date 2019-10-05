@@ -14,6 +14,8 @@ import domain.model.reply.reply
 import domain.model.todo_question.todo_question
 import domain.model.unlinked_user.unlinked_user
 import domain.model.user.user
+import infrastructure.cache.client.qicooGlobalJedisPool
+import infrastructure.cache.context.RedisContext
 import infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.transaction
@@ -184,6 +186,12 @@ suspend fun main(args: Array<String>) {
                 display_name = d4name,
                 comment = d4comment
             )
+
+            val likeCountListKey = "like_count_list"
+            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q1.id.toString())
+            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q2.id.toString())
+            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q3.id.toString())
+            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q4.id.toString())
         }
     }
 }

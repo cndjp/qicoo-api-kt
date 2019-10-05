@@ -9,11 +9,11 @@ class LikeCount(row: LikeCountRow) {
 
     init {
         this.question_id = runCatching {
-            UUID.fromString(row.key.rowKey.split(":").getOrNull(0))
+            UUID.fromString(row.key)
         }.fold(
             onSuccess = { it },
             onFailure = { null }
         )
-        this.count = row.value.toIntOrNull()
+        this.count = row.value.toInt()
     }
 }

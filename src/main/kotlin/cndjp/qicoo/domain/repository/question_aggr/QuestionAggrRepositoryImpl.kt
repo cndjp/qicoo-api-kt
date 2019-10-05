@@ -25,7 +25,7 @@ import utils.getNowDateTimeJst
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
-    override fun findAll(per: Int, page: Int, isSort: Boolean, order: String): QuestionAggrList = transaction {
+    override fun findAll(per: Int, page: Int, order: String): QuestionAggrList = transaction {
         val done_aggr_sql = question
             .innerJoin(
                 otherTable = done_question.innerJoin(
@@ -62,12 +62,8 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .prepareSQL(QueryBuilder(false))
         val total = question.selectAll().count()
         val offset = (page - 1) * per
-        val sortStr = when (isSort) {
-            true -> "ORDER BY created $order"
-            false -> ""
-        }
         QuestionAggrList(
-            "$done_aggr_sql UNION ALL $todo_aggr_sql $sortStr LIMIT $per OFFSET $offset "
+            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created $order LIMIT $per OFFSET $offset "
                 .execAndMap { rs ->
                     QuestionAggr(
                         rs.getBytes("id"),
@@ -84,7 +80,66 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     override fun findById(id: UUID): QuestionAggr? {
         TODO()
     }
-    override fun insert(comment: String): Unit = transaction {
+
+    override fun findByIds(ids: List<UUID>): QuestionAggrList = transaction {
+        require(ids.isNotEmpty())
+
+        val done_aggr_sql = question
+            .innerJoin(
+                otherTable = done_question.innerJoin(
+                    otherTable = program.innerJoin(
+                        otherTable = event,
+                        otherColumn = { program.event_id },
+                        onColumn = { event.id }
+                    ),
+                    otherColumn = { done_question.program_id },
+                    onColumn = { program.id }
+                ),
+                otherColumn = { done_question.question_id },
+                onColumn = { id }
+            )
+            .slice(question.id.alias("question_id"), event.name.alias("event_name"), program.name.alias("program_name"), done_question.display_name, done_question.comment, done_question.program_id, question.created, question.updated)
+            .selectAll().prepareSQL(QueryBuilder(false))
+        val todo_aggr_sql = question
+            .innerJoin(
+                otherTable = todo_question.innerJoin(
+                    otherTable = program.innerJoin(
+                        otherTable = event,
+                        otherColumn = { program.event_id },
+                        onColumn = { event.id }
+                    ),
+                    otherColumn = { todo_question.program_id },
+                    onColumn = { program.id }
+                ),
+                otherColumn = { todo_question.question_id },
+                onColumn = { id }
+            )
+            .slice(question.id.alias("question_id"), event.name.alias("event_name"), program.name.alias("program_name"), todo_question.display_name, todo_question.comment, todo_question.program_id, question.created, question.updated)
+            .selectAll().prepareSQL(QueryBuilder(false))
+        val total = question.selectAll().count()
+        val first = ids.first().toString()
+        var whereStr = "WHERE question_id = '$first' "
+        ids.drop(1).map {
+            val id = it.toString()
+            whereStr += " OR question_id = '$id' "
+        }
+        QuestionAggrList(
+            "$done_aggr_sql $whereStr UNION ALL $todo_aggr_sql $whereStr"
+                .execAndMap { rs ->
+                    QuestionAggr(
+                        rs.getBytes("question_id"),
+                        rs.getString("event_name"),
+                        rs.getString("program_name"),
+                        rs.getString("display_name"),
+                        rs.getString("comment"),
+                        rs.getString("created"),
+                        rs.getString("updated")
+                    )
+                }, total
+        )
+    }
+
+    override fun insert(comment: String): NewTodoQuestion? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)

@@ -86,7 +86,7 @@ fun Route.questionController(kodein: Kodein) {
             }
             validQuestionId
                 .onSuccess { validatedQuestionId ->
-                    questionService.incrOrCreateLike(validatedQuestionId)
+                    questionService.incr(validatedQuestionId)
                     call.respond(HttpStatusCode.OK)
                 }
                 .onFailure { exception ->

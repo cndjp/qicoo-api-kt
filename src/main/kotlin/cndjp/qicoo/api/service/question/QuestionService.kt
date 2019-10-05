@@ -7,5 +7,5 @@ import java.util.UUID
 interface QuestionService {
     fun getAll(param: QuestionGetParameter): QuestionListDTO
     fun createQuestion(comment: String)
-    fun incrOrCreateLike(questionId: UUID)
+    fun incr(questionId: UUID)
 }
