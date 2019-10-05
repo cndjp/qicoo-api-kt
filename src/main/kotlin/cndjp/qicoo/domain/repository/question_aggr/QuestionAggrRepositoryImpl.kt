@@ -25,7 +25,7 @@ import utils.getNowDateTimeJst
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
-    override fun findAll(per: Int, page: Int): QuestionAggrList = transaction {
+    override fun findAll(per: Int, page: Int, order: String): QuestionAggrList = transaction {
         val done_aggr_sql = question
             .innerJoin(
                 otherTable = done_question.innerJoin(
@@ -63,7 +63,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         val total = question.selectAll().count()
         val offset = (page - 1) * per
         QuestionAggrList(
-            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY updated DESC LIMIT $per OFFSET $offset "
+            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY updated $order LIMIT $per OFFSET $offset "
                 .execAndMap { rs ->
                     QuestionAggr(
                         rs.getBytes("id"),

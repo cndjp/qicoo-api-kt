@@ -5,7 +5,7 @@ import domain.dao.question_aggr.QuestionAggrList
 import java.util.UUID
 
 interface QuestionAggrRepository {
-    fun findAll(per: Int, page: Int): QuestionAggrList
+    fun findAll(per: Int, page: Int, order: String): QuestionAggrList
     fun findById(id: UUID): QuestionAggr?
     fun insert(comment: String): Unit
 }

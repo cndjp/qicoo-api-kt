@@ -1,4 +1,4 @@
-package api.response.quesion
+package api.http_resource.response.question
 
 data class QuestionListResponse(
     val value: List<QuestionResponse>,

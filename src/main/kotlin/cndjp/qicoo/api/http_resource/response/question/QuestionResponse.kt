@@ -1,4 +1,4 @@
-package api.response.quesion
+package api.http_resource.response.question
 
 import domain.dto.question.QuestionDTO
 import utils.toFomatString

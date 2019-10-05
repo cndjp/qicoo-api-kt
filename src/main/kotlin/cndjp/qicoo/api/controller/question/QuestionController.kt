@@ -1,8 +1,11 @@
 package api.controller.question
 
-import api.request.question.QuestionRequest
-import api.response.quesion.QuestionListResponse
-import api.response.quesion.QuestionResponse
+import api.http_resource.paramater.question.QuestionGetOrderParameter
+import api.http_resource.paramater.question.QuestionGetParameter
+import api.http_resource.paramater.question.QuestionGetSortParameter
+import api.http_resource.request.question.QuestionRequest
+import api.http_resource.response.question.QuestionListResponse
+import api.http_resource.response.question.QuestionResponse
 import api.service.question.QuestionService
 import api.service.question.QuestionServiceImpl
 import domain.repository.like_count.LikeCountRepository
@@ -36,11 +39,23 @@ fun Route.questionController(kodein: Kodein) {
 
     route("/questions") {
         get {
-            val per = call.parameters["per"]?.toInt() ?: 10
-            val page = call.parameters["page"]?.toInt() ?: 1
+            val param = QuestionGetParameter(
+                per = call.parameters["per"]?.toInt() ?: 10,
+                page = call.parameters["page"]?.toInt() ?: 1,
+                sort = when (call.parameters["sort"]) {
+                    "updated" -> QuestionGetSortParameter.updated
+                    "like" -> QuestionGetSortParameter.like
+                    else -> QuestionGetSortParameter.updated
+                },
+                order = when (call.parameters["order"]) {
+                    "asc" -> QuestionGetOrderParameter.asc
+                    "desc" -> QuestionGetOrderParameter.desc
+                    else -> QuestionGetOrderParameter.desc
+                }
+            )
             call.respond(
                 HttpStatusCode.OK,
-                questionService.getAll(per, page)
+                questionService.getAll(param)
                     .let { result ->
                         QuestionListResponse(
                             result.list.map { dto ->
