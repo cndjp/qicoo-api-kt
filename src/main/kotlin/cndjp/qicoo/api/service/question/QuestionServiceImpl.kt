@@ -19,7 +19,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     private val likeCountRepository: LikeCountRepository by instance()
 
     override fun getAll(param: QuestionGetParameter): QuestionListDTO =
-            questionAggrRepository.findAll(param.per, param.page, param.order.name)
+            questionAggrRepository.findAll(param.per, param.page, param.sort == QuestionGetSortParameter.created, param.order.name)
                 .let { findResult ->
                     QuestionListDTO(
                         findResult.list.map { dao ->
@@ -40,7 +40,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 if (param.sort == QuestionGetSortParameter.like) {
                                     when (param.order) {
                                         QuestionGetOrderParameter.asc -> list.sortedBy { dto -> dto.like_count }
-                                        else -> list.sortedByDescending { dto -> dto.like_count }
+                                        QuestionGetOrderParameter.desc -> list.sortedByDescending { dto -> dto.like_count }
                                     }
                                 }
                             },

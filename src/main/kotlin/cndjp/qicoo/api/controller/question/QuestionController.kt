@@ -43,9 +43,9 @@ fun Route.questionController(kodein: Kodein) {
                 per = call.parameters["per"]?.toInt() ?: 10,
                 page = call.parameters["page"]?.toInt() ?: 1,
                 sort = when (call.parameters["sort"]) {
-                    "updated" -> QuestionGetSortParameter.updated
+                    "created" -> QuestionGetSortParameter.created
                     "like" -> QuestionGetSortParameter.like
-                    else -> QuestionGetSortParameter.updated
+                    else -> QuestionGetSortParameter.created
                 },
                 order = when (call.parameters["order"]) {
                     "asc" -> QuestionGetOrderParameter.asc
@@ -53,6 +53,7 @@ fun Route.questionController(kodein: Kodein) {
                     else -> QuestionGetOrderParameter.desc
                 }
             )
+            //println("param: $param")
             call.respond(
                 HttpStatusCode.OK,
                 questionService.getAll(param)

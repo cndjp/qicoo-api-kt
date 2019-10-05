@@ -12,5 +12,5 @@ enum class QuestionGetOrderParameter {
 }
 
 enum class QuestionGetSortParameter {
-    like, updated,
+    like, created,
 }

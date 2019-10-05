@@ -14,11 +14,9 @@ DOCKER_NAME := "qicoo-api-kt"
 DOCKER_TAG := `git rev-parse HEAD`
 
 version:
-    #!/bin/bash
     ./gradlew --version
 
 test: load_dotenv
-    #!/bin/bash
     ./gradlew test --stacktrace --info
 
 lint:
@@ -27,16 +25,16 @@ lint:
 lint-fmt:
     ktlint -F "src/main/**/*.kt" '!src/test/**/*.kt'
 
+clean:
+    ./gradlew cleanBuildCache
+
 build: load_dotenv
-    #!/bin/bash
     ./gradlew --gradle-user-home=.gradle shadowJar
 
 run: build
-    #!/bin/bash
     java -jar build/libs/qicoo-0.0.1-all.jar
 
 docker-build: load_dotenv
-    #!/bin/bash
     docker build -t cndjp/qicoo/qpi:{{ DOCKER_TAG }} .
 
 docker-run: load_dotenv
