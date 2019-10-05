@@ -26,8 +26,8 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 )
             }
 
-    override fun findById(key: String): LikeCount? =
-        RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key)?.let {
+    override fun findById(key: UUID): LikeCount? =
+        RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())?.let {
             LikeCount(
                 LikeCountRow(
                     key.toString(),

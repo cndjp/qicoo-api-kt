@@ -23,7 +23,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                     QuestionListDTO(
                         findResult.list.map { dao ->
                             val likeCount = likeCountRepository
-                                .findById(dao.question_id.toString())?.count ?: 0
+                                .findById(dao.question_id)?.count ?: 0
                             QuestionDTO(
                                 dao.question_id,
                                 dao.program_name,

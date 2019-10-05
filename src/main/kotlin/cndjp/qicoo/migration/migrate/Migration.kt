@@ -186,12 +186,6 @@ suspend fun main(args: Array<String>) {
                 display_name = d4name,
                 comment = d4comment
             )
-
-            val likeCountListKey = "like_count_list"
-            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q1.id.toString())
-            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q2.id.toString())
-            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q3.id.toString())
-            RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, q4.id.toString())
         }
     }
 }
