@@ -63,7 +63,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         val total = question.selectAll().count()
         val offset = (page - 1) * per
         val sortStr = when (isSort) {
-            true -> "ORDER BY updated $order"
+            true -> "ORDER BY created $order"
             false -> ""
         }
         QuestionAggrList(
