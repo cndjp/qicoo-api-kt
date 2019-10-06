@@ -33,10 +33,10 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 }
             }
             .let { rowList ->
-                val validPagenation = kotlin.runCatching {
+                val validPagination = kotlin.runCatching {
                     rowList.subList(((page - 1) * per), end)
                 }
-                validPagenation.onSuccess {
+                validPagination.onSuccess {
                     return LikeCountList(
                         it,
                         total
