@@ -41,7 +41,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                     )
                 }
             QuestionGetSortParameter.like ->
-                likeCountRepository.findAll()
+                likeCountRepository.findAll(param.per, param.page, param.order.name)
                     .let { findResult ->
                         val mapFromMysql = questionAggrRepository.findByIds(
                             findResult.list.map {

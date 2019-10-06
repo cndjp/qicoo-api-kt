@@ -35,12 +35,16 @@ object RedisContext {
         it.zincrby(key, score, value)
     }
     fun zrangeByScoreWithScores(context: Jedis, key: String, start: Double, end: Double): Set<Tuple> = context.use {
-        logger.debug("redis> ZRANGEBYSCORE $key  $start $end WITHSCORES")
+        logger.debug("redis> ZRANGEBYSCORE $key $start $end WITHSCORES")
         it.zrangeByScoreWithScores(key, start, end)
     }
     fun zscore(context: Jedis, key: String, value: String): Double? = context.use {
         logger.debug("redis> ZSCORE $key $value")
         it.zscore(key, value)
+    }
+    fun zcount(context: Jedis, key: String): Long = context.use {
+        logger.debug("redis> ZCOUNT $key")
+        it.zcount(key, "-inf" , "+inf")
     }
     fun flushAll(context: Jedis) = context.use {
         logger.debug("redis> FLUSHALL")

@@ -9,9 +9,11 @@ import infrastructure.cache.context.RedisContext
 class LikeCountRepositoryImpl : LikeCountRepository {
     val likeCountListKey = "like_count_list"
 
-    override fun findAll(): LikeCountList =
-        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 100000.0)
-            .map { LikeCount(
+    override fun findAll(per: Int, page: Int, order: String): LikeCountList {
+        val total = RedisContext.zcount(qicooGlobalJedisPool.resource, likeCountListKey).toInt()
+        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 100000000.0)
+            .map {
+                LikeCount(
                     LikeCountRow(
                         it.element,
                         it.score
@@ -19,11 +21,18 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 )
             }
             .let {
-                LikeCountList(
-                    it.asReversed(),
-                    it.size
+                when (order) {
+                    "asc" -> it
+                    else -> it.asReversed()
+                }
+            }
+            .let {
+                return LikeCountList(
+                    it.subList(((page - 1) * per), page * per),
+                    total
                 )
             }
+    }
 
     override fun findById(key: Int): LikeCount? =
         RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())?.let {

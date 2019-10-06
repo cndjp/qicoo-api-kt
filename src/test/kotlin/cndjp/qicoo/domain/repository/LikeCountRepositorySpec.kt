@@ -12,7 +12,7 @@ object LikeCountRepositorySpec: Spek({
         test("findAll()のテスト"){
             val likeCountRepositoryImpl = LikeCountRepositoryImpl()
             assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0))))
-            val list = likeCountRepositoryImpl.findAll().list
+            val list = likeCountRepositoryImpl.findAll(10000, 1, "asc").list
             assertEquals(3, list[0].question_id)
             assertEquals(5, list[0].count)
             assertEquals(1, list[1].question_id)
