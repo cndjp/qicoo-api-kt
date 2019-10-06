@@ -31,6 +31,7 @@ object LikeCountRepositorySpec: Spek({
             assertEquals(2, like1?.count)
             assertEquals(3, like3?.question_id)
             assertEquals(5, like3?.count)
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
     }
 })
