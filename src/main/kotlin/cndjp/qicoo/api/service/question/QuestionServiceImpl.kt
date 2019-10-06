@@ -47,10 +47,10 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                             }
                         ).list.map{it.question_id to it }.toMap()
                         QuestionListDTO(
-                            findResult.list.map { dao ->
+                            findResult.list.mapNotNull { dao ->
                                 mapFromMysql[dao.question_id]?.let {
                                     QuestionDTO(
-                                        dao.question_id?: 0,
+                                        dao.question_id ?: 0,
                                         it.program_name,
                                         it.event_name,
                                         it.display_name,
@@ -60,7 +60,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                         it.updated
                                     )
                                 }
-                            }.filterNotNull(),
+                            },
                             findResult.total
                         )
                     }
