@@ -35,11 +35,11 @@ class LikeCountRepositoryImpl : LikeCountRepository {
             )
         }
 
-    override fun incr(key: Int) {
-        RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
-    }
-
     override fun create(key: Int) {
         RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))
+    }
+
+    override fun incr(key: Int) {
+        RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
     }
 }

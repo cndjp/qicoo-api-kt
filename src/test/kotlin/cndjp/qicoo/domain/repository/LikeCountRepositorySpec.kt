@@ -33,5 +33,22 @@ object LikeCountRepositorySpec: Spek({
             assertEquals(5, like3?.count)
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
+        test("create()のテスト"){
+            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
+            likeCountRepositoryImpl.create(1)
+            likeCountRepositoryImpl.create(2)
+            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
+            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "2"))
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+        }
+        test("incr()のテスト"){
+            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
+            assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 1.0), Pair("2", 2.0))))
+            likeCountRepositoryImpl.incr(1)
+            likeCountRepositoryImpl.incr(2)
+            assertEquals(2.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
+            assertEquals(3.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "2"))
+            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+        }
     }
 })
