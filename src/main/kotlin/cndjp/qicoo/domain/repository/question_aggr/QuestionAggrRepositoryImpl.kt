@@ -67,9 +67,8 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .selectAll()
             .prepareSQL(QueryBuilder(false))
         val total = question.selectAll().count()
-        val offset = (page - 1) * per
         QuestionAggrList(
-            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created $order LIMIT $per OFFSET $offset "
+            "$done_aggr_sql UNION ALL $todo_aggr_sql ORDER BY created $order LIMIT $per OFFSET ${(page - 1) * per}"
                 .execAndMap { rs ->
                     QuestionAggr(
                         rs.getInt("id"),

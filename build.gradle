@@ -53,6 +53,7 @@ dependencies {
     compile "io.ktor:ktor-jackson:$ktor_version"
     // log
     compile "ch.qos.logback:logback-classic:$logback_version"
+    compile 'io.github.microutils:kotlin-logging:1.7.6'
     // redis
     compile "redis.clients:jedis:$jedis_version"
     // rdb
