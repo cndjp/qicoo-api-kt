@@ -16,6 +16,7 @@ import domain.model.event.event
 import domain.model.program.program
 import domain.model.question.question
 import domain.model.todo_question.todo_question
+import mu.KotlinLogging
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
@@ -29,6 +30,7 @@ import utils.getNowDateTimeJst
 import utils.orWhere
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
+    private val logger = KotlinLogging.logger {}
     // ExposedにUNIONとかWITHないから生SQL使う。
     // パフォーマンス悪かったらもうjooqでやるしかないけど...
     override fun findAll(per: Int, page: Int, order: String): QuestionAggrList = transaction {
@@ -87,7 +89,13 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     }
 
     override fun findByIds(ids: List<Int>): QuestionAggrList = transaction {
-        require(ids.isNotEmpty())
+        if(ids.isEmpty()) {
+            logger.error("ids is empty from QuestionAggrRepositoryImpl.findByIds(ids: List<Int>)")
+            return@transaction QuestionAggrList(
+                listOf(),
+                0
+            )
+        }
 
         val total = question.selectAll().count()
         val done_query = question

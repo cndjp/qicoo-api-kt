@@ -6,6 +6,7 @@ import domain.dto.question.QuestionDTO
 import domain.dto.question.QuestionListDTO
 import domain.repository.like_count.LikeCountRepository
 import domain.repository.question_aggr.QuestionAggrRepository
+import mu.KotlinLogging
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -16,6 +17,7 @@ import utils.checkNull
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
+    private val logger = KotlinLogging.logger {}
 
     override fun getAll(param: QuestionGetParameter): QuestionListDTO =
         when (param.sort) {
@@ -46,6 +48,16 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 it.question_id ?: 0
                             }
                         ).list.map{it.question_id to it }.toMap()
+
+                        if (findResult.list.size != mapFromMysql.size) {
+                            // 普通起きないと思うが、これが起きた時は大概mysqlとredisの間に不整合がある。
+                            logger.error("incorrect value between redis and mysql")
+                            return QuestionListDTO(
+                                listOf(),
+                                0
+                            )
+                        }
+
                         QuestionListDTO(
                             findResult.list.mapNotNull { dao ->
                                 mapFromMysql[dao.question_id]?.let {
