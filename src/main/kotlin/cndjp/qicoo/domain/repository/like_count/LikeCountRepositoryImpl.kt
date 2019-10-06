@@ -7,13 +7,13 @@ import infrastructure.cache.client.qicooGlobalJedisPool
 import infrastructure.cache.context.RedisContext
 
 class LikeCountRepositoryImpl : LikeCountRepository {
-    private val likeCountListKey = "like_count_list"
+    val likeCountListKey = "like_count_list"
 
     override fun findAll(): LikeCountList =
-        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 10000000.0)
+        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 100000.0)
             .map { LikeCount(
                     LikeCountRow(
-                        it.element.toIntOrNull() ?: 0,
+                        it.element,
                         it.score
                     )
                 )
@@ -29,7 +29,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
         RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())?.let {
             LikeCount(
                 LikeCountRow(
-                    key,
+                    key.toString(),
                     it
                 )
             )

@@ -42,7 +42,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                         findResult.list.zip(questionAggrRepository.findByIds(
                             findResult.list
                                 .map {
-                                    it.question_id
+                                    it.question_id ?: 0
                                 }).list)
                             .map { dao ->
                                 QuestionDTO(
