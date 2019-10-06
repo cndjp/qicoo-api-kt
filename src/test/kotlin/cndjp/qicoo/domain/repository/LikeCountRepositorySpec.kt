@@ -11,12 +11,29 @@ object LikeCountRepositorySpec: Spek({
     group("LikeCountRepositoryのテスト") {
         test("findAll()のテスト"){
             val likeCountRepositoryImpl = LikeCountRepositoryImpl()
-            assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0))))
-            val list = likeCountRepositoryImpl.findAll(10000, 1, "asc").list
-            assertEquals(3, list[0].question_id)
-            assertEquals(5, list[0].count)
-            assertEquals(1, list[1].question_id)
-            assertEquals(2, list[1].count)
+            assertEquals(3, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0), Pair("17", 4.0))))
+            val list1 = likeCountRepositoryImpl.findAll(3, 1, "desc").list
+            assertEquals(3, list1[0].question_id)
+            assertEquals(5, list1[0].count)
+            assertEquals(17, list1[1].question_id)
+            assertEquals(4, list1[1].count)
+            assertEquals(1, list1[2].question_id)
+            assertEquals(2, list1[2].count)
+            val list2 = likeCountRepositoryImpl.findAll(3, 1, "asc").list
+            assertEquals(1, list2[0].question_id)
+            assertEquals(2, list2[0].count)
+            assertEquals(17, list1[1].question_id)
+            assertEquals(4, list1[1].count)
+            assertEquals(3, list2[2].question_id)
+            assertEquals(5, list2[2].count)
+            val list3 = likeCountRepositoryImpl.findAll(2, 2, "desc").list
+            assertEquals(1, list3[0].question_id)
+            assertEquals(2, list3[0].count)
+
+            // オーバフローなページネーションは無視して空のリストを返すこと。
+            assertEquals(0, likeCountRepositoryImpl.findAll(5, 2, "desc").list.size)
+            assertEquals(0, likeCountRepositoryImpl.findAll(2, 10, "desc").list.size)
+
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
         test("findById()のテスト"){
