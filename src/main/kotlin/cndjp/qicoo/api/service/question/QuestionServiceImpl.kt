@@ -9,6 +9,9 @@ import domain.repository.question_aggr.QuestionAggrRepository
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
+import utils.EntityResult
+import utils.checkCreate
+import utils.checkNull
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
@@ -38,34 +41,43 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
             QuestionGetSortParameter.like ->
                 likeCountRepository.findAll()
                     .let { findResult ->
+                        val mapFromMysql = questionAggrRepository.findByIds(
+                            findResult.list.map {
+                                it.question_id ?: 0
+                            }
+                        ).list.map{it.question_id to it }.toMap()
                         QuestionListDTO(
-                        findResult.list.zip(questionAggrRepository.findByIds(
-                            findResult.list
-                                .map {
-                                    it.question_id ?: 0
-                                }).list)
-                            .map { dao ->
-                                QuestionDTO(
-                                    dao.second.question_id,
-                                    dao.second.program_name,
-                                    dao.second.event_name,
-                                    dao.second.display_name,
-                                    dao.first.count ?: 0,
-                                    dao.second.comment,
-                                    dao.second.created,
-                                    dao.second.updated
-                                )
-                            },
+                            findResult.list.map { dao ->
+                                mapFromMysql[dao.question_id]?.let {
+                                    QuestionDTO(
+                                        dao.question_id?: 0,
+                                        it.program_name,
+                                        it.event_name,
+                                        it.display_name,
+                                        dao.count ?: 0,
+                                        it.comment,
+                                        it.created,
+                                        it.updated
+                                    )
+                                }
+                            }.filterNotNull(),
                             findResult.total
                         )
                     }
         }
 
-    override fun createQuestion(comment: String) {
+    override fun createQuestion(comment: String): EntityResult {
         val created = questionAggrRepository.insert(comment)
-        created?.question_id?.let { likeCountRepository.create(it.value) }
+        created?.question_id?.let { return likeCountRepository.create(it.value).checkCreate() }
+
+        return EntityResult.NotFoundEntityFailure
     }
-    override fun incr(questionId: Int) {
-        likeCountRepository.incr(questionId)
-    }
+
+    override fun incr(questionId: Int): EntityResult =
+        likeCountRepository.incr(questionId).checkCreate()
+
+
+    override fun answer(questionId: Int): EntityResult =
+        questionAggrRepository.todo2done(questionId).checkNull()
+
 }

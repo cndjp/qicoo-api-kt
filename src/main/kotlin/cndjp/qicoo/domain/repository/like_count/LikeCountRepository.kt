@@ -6,6 +6,6 @@ import domain.dao.like_count.LikeCountList
 interface LikeCountRepository {
     fun findAll(): LikeCountList
     fun findById(key: Int): LikeCount?
-    fun create(key: Int)
-    fun incr(key: Int)
+    fun create(key: Int): Long
+    fun incr(key: Int): Double
 }

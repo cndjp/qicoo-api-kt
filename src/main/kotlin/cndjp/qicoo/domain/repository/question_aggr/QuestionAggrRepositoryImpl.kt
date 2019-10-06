@@ -1,5 +1,7 @@
 package domain.repository.question_aggr
 
+import domain.dao.done_question.NewDoneQuestion
+import domain.dao.done_question.toDoneQuestion
 import domain.dao.program.toProgram
 import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
@@ -8,6 +10,7 @@ import domain.dao.question_aggr.QuestionAggrList
 import domain.dao.question_aggr.toQuestionAggrFromDone
 import domain.dao.question_aggr.toQuestionAggrFromTodo
 import domain.dao.todo_question.NewTodoQuestion
+import domain.dao.todo_question.toTodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
 import domain.model.program.program
@@ -16,6 +19,7 @@ import domain.model.todo_question.todo_question
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
@@ -145,5 +149,18 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             display_name = "", // TODO
             comment = comment
         )
+    }
+
+    override fun todo2done(id: Int): NewDoneQuestion? = transaction {
+        val todo = todo_question.select{todo_question.question_id eq id}.map{it.toTodoQuestion()}.firstOrNull()
+        todo?.let {
+            todo_question.deleteWhere { todo_question.question_id eq id }
+            NewDoneQuestion(
+                question_id = it.question_id,
+                program_id = it.program_id,
+                display_name = it.display_name,
+                comment = it.comment
+            )
+        }
     }
 }

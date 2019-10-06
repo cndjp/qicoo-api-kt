@@ -24,6 +24,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import utils.EntityResult
 
 fun Route.questionController() = questionController(Kodein {
     val kodein = Kodein {
@@ -71,17 +72,28 @@ fun Route.questionController(kodein: Kodein) {
             }
             validRequest
                 .onSuccess { validatedRequest ->
-                    questionService.createQuestion(validatedRequest.comment)
-                    call.respond(HttpStatusCode.OK)
+                    when (questionService.createQuestion(validatedRequest.comment)) {
+                        EntityResult.Success -> call.respond(HttpStatusCode.OK)
+                        EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
+                    }
                 }
                 .onFailure { exception ->
                     call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
                 }
         }
+        post("/answer") {
+            val questionId = call.parameters["question_id"]?.toInt() ?: 0
+            when (questionService.answer(questionId)) {
+                EntityResult.Success -> call.respond(HttpStatusCode.OK)
+                EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
+            }
+        }
         post("/like") {
             val questionId = call.parameters["question_id"]?.toInt() ?: 0
-            questionService.incr(questionId)
-            call.respond(HttpStatusCode.OK)
+            when (questionService.incr(questionId)) {
+                EntityResult.Success -> call.respond(HttpStatusCode.OK)
+                EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
+            }
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")
