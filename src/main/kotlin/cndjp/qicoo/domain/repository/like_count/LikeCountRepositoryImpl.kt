@@ -1,10 +1,10 @@
-package domain.repository.like_count
+package cndjp.qicoo.domain.repository.like_count
 
-import domain.dao.like_count.LikeCount
-import domain.dao.like_count.LikeCountList
-import domain.model.like_count.LikeCountRow
-import infrastructure.cache.client.qicooGlobalJedisPool
-import infrastructure.cache.context.RedisContext
+import cndjp.qicoo.domain.dao.like_count.LikeCount
+import cndjp.qicoo.domain.dao.like_count.LikeCountList
+import cndjp.qicoo.domain.model.like_count.LikeCountRow
+import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
+import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import mu.KotlinLogging
 
 class LikeCountRepositoryImpl : LikeCountRepository {

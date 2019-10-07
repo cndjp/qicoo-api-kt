@@ -1,4 +1,4 @@
-package domain.model.like_count
+package cndjp.qicoo.domain.model.like_count
 
 data class LikeCountRow(
     val key: String,

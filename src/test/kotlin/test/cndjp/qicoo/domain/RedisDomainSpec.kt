@@ -1,8 +1,7 @@
-package domain
+package test.cndjp.qicoo.domain
 
-import domain.dao.like_count.LikeCount
-import domain.model.like_count.LikeCountRow
-import java.util.*
+import cndjp.qicoo.domain.dao.like_count.LikeCount
+import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import kotlin.test.assertNotNull
 import org.spekframework.spek2.Spek
 

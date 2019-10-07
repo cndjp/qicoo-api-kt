@@ -1,4 +1,4 @@
-package utils
+package cndjp.qicoo.utils
 
 import org.joda.time.DateTime
 import org.joda.time.DateTimeZone

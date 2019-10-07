@@ -1,4 +1,4 @@
-package api.http_resource.paramater.question
+package cndjp.qicoo.api.http_resource.paramater.question
 
 data class QuestionGetParameter(
     val per: Int,

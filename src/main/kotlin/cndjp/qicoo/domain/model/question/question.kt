@@ -1,4 +1,4 @@
-package domain.model.question
+package cndjp.qicoo.domain.model.question
 
 import org.jetbrains.exposed.dao.IntIdTable
 

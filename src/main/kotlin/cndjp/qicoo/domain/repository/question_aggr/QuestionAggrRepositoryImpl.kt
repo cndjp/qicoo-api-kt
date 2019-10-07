@@ -1,24 +1,24 @@
-package domain.repository.question_aggr
+package cndjp.qicoo.domain.repository.question_aggr
 
-import domain.dao.done_question.DoneQuestionRow
-import domain.dao.done_question.NewDoneQuestion
-import domain.dao.done_question.toRaw
-import domain.dao.program.toProgram
-import domain.dao.program.unknownProgram
-import domain.dao.question.NewQuestion
-import domain.dao.question_aggr.QuestionAggr
-import domain.dao.question_aggr.QuestionAggrList
-import domain.dao.question_aggr.toQuestionAggrFromDone
-import domain.dao.question_aggr.toQuestionAggrFromTodo
-import domain.dao.todo_question.NewTodoQuestion
-import domain.dao.todo_question.TodoQuestionRow
-import domain.dao.todo_question.toRaw
-import domain.dao.todo_question.toTodoQuestion
-import domain.model.done_question.done_question
-import domain.model.event.event
-import domain.model.program.program
-import domain.model.question.question
-import domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
+import cndjp.qicoo.domain.dao.done_question.NewDoneQuestion
+import cndjp.qicoo.domain.dao.done_question.toRaw
+import cndjp.qicoo.domain.dao.program.toProgram
+import cndjp.qicoo.domain.dao.program.unknownProgram
+import cndjp.qicoo.domain.dao.question.NewQuestion
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
+import cndjp.qicoo.domain.dao.question_aggr.toQuestionAggrFromDone
+import cndjp.qicoo.domain.dao.question_aggr.toQuestionAggrFromTodo
+import cndjp.qicoo.domain.dao.todo_question.NewTodoQuestion
+import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
+import cndjp.qicoo.domain.dao.todo_question.toRaw
+import cndjp.qicoo.domain.dao.todo_question.toTodoQuestion
+import cndjp.qicoo.domain.model.done_question.done_question
+import cndjp.qicoo.domain.model.event.event
+import cndjp.qicoo.domain.model.program.program
+import cndjp.qicoo.domain.model.question.question
+import cndjp.qicoo.domain.model.todo_question.todo_question
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
@@ -28,9 +28,9 @@ import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import utils.execAndMap
-import utils.getNowDateTimeJst
-import utils.orWhere
+import cndjp.qicoo.utils.execAndMap
+import cndjp.qicoo.utils.getNowDateTimeJst
+import cndjp.qicoo.utils.orWhere
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     private val logger = KotlinLogging.logger {}

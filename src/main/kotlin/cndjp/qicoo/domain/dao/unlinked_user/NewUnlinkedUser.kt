@@ -1,6 +1,6 @@
-package domain.dao.unlinked_user
+package cndjp.qicoo.domain.dao.unlinked_user
 
-import domain.model.unlinked_user.unlinked_user
+import cndjp.qicoo.domain.model.unlinked_user.unlinked_user
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
 

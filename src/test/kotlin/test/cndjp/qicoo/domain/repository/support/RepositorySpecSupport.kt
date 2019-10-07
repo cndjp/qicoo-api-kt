@@ -1,27 +1,27 @@
-package domain.repository.support
+package test.cndjp.qicoo.domain.repository.support
 
-import domain.dao.done_question.NewDoneQuestion
-import domain.dao.event.NewEvent
-import domain.dao.program.NewProgram
-import domain.dao.question.NewQuestion
-import domain.dao.todo_question.NewTodoQuestion
-import domain.model.done_question.done_question
-import domain.model.event.event
-import domain.model.linked_user.linked_user
-import domain.model.program.program
-import domain.model.question.question
-import domain.model.reply.reply
-import domain.model.todo_question.todo_question
-import domain.model.unlinked_user.unlinked_user
-import domain.model.user.user
-import domain.repository.like_count.LikeCountRepositoryImpl
-import infrastructure.cache.client.qicooGlobalJedisPool
-import infrastructure.cache.context.RedisContext
-import infrastructure.rdb.client.initMysqlClient
+import cndjp.qicoo.domain.dao.done_question.NewDoneQuestion
+import cndjp.qicoo.domain.dao.event.NewEvent
+import cndjp.qicoo.domain.dao.program.NewProgram
+import cndjp.qicoo.domain.dao.question.NewQuestion
+import cndjp.qicoo.domain.dao.todo_question.NewTodoQuestion
+import cndjp.qicoo.domain.model.done_question.done_question
+import cndjp.qicoo.domain.model.event.event
+import cndjp.qicoo.domain.model.linked_user.linked_user
+import cndjp.qicoo.domain.model.program.program
+import cndjp.qicoo.domain.model.question.question
+import cndjp.qicoo.domain.model.reply.reply
+import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.model.unlinked_user.unlinked_user
+import cndjp.qicoo.domain.model.user.user
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
+import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
+import cndjp.qicoo.infrastructure.cache.context.RedisContext
+import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import utils.getNowDateTimeJst
-import utils.toDateTimeJst
+import cndjp.qicoo.utils.getNowDateTimeJst
+import cndjp.qicoo.utils.toDateTimeJst
 
 object RepositorySpecSupport {
     val q1date = getNowDateTimeJst()
@@ -99,140 +99,140 @@ fun RepositorySpecSupport.insertDummyData() {
         )
 
         val e1 = NewEvent.new {
-            name = ss.e1name
-            start_at = ss.event1StartAt
-            end_at = ss.event1EndAt
-            created = ss.q1date
-            updated = ss.q1date
+            name = e1name
+            start_at = event1StartAt
+            end_at = event1EndAt
+            created = q1date
+            updated = q1date
         }
 
         val e2 = NewEvent.new {
-            name = ss.e2name
-            start_at = ss.event2StartAt
-            end_at = ss.event2EndAt
-            created = ss.q2date
-            updated = ss.q2date
+            name = e2name
+            start_at = event2StartAt
+            end_at = event2EndAt
+            created = q2date
+            updated = q2date
         }
 
         val e3 = NewEvent.new {
-            name = ss.e3name
-            start_at = ss.event3StartAt
-            end_at = ss.event3EndAt
-            created = ss.q3date
-            updated = ss.q3date
+            name = e3name
+            start_at = event3StartAt
+            end_at = event3EndAt
+            created = q3date
+            updated = q3date
         }
 
         val e4 = NewEvent.new {
-            name = ss.e4name
-            start_at = ss.event4StartAt
-            end_at = ss.event4EndAt
-            created = ss.q4date
-            updated = ss.q4date
+            name = e4name
+            start_at = event4StartAt
+            end_at = event4EndAt
+            created = q4date
+            updated = q4date
         }
 
         val e5 = NewEvent.new {
-            name = ss.e5name
-            start_at = ss.event5StartAt
-            end_at = ss.event5EndAt
-            created = ss.q5date
-            updated = ss.q5date
+            name = e5name
+            start_at = event5StartAt
+            end_at = event5EndAt
+            created = q5date
+            updated = q5date
         }
 
         val p1 = NewProgram.new {
-            name = ss.p1name
+            name = p1name
             event_id = e1.id
-            start_at = ss.program1StartAt
-            end_at = ss.program1EndAt
-            created = ss.q1date
-            updated = ss.q1date
+            start_at = program1StartAt
+            end_at = program1EndAt
+            created = q1date
+            updated = q1date
         }
         val p2 = NewProgram.new {
-            name = ss.p2name
+            name = p2name
             event_id = e2.id
-            start_at = ss.program2StartAt
-            end_at = ss.program2EndAt
-            created = ss.q2date
-            updated = ss.q2date
+            start_at = program2StartAt
+            end_at = program2EndAt
+            created = q2date
+            updated = q2date
         }
         val p3 = NewProgram.new {
-            name = ss.p3name
+            name = p3name
             event_id = e3.id
-            start_at = ss.program3StartAt
-            end_at = ss.program3EndAt
-            created = ss.q3date
-            updated = ss.q3date
+            start_at = program3StartAt
+            end_at = program3EndAt
+            created = q3date
+            updated = q3date
         }
         val p4 = NewProgram.new {
-            name = ss.p4name
+            name = p4name
             event_id = e4.id
-            start_at = ss.program4StartAt
-            end_at = ss.program4EndAt
-            created = ss.q4date
-            updated = ss.q4date
+            start_at = program4StartAt
+            end_at = program4EndAt
+            created = q4date
+            updated = q4date
         }
         val p5 = NewProgram.new {
-            name = ss.p5name
+            name = p5name
             event_id = e5.id
-            start_at = ss.program5StartAt
-            end_at = ss.program5EndAt
-            created = ss.q5date
-            updated = ss.q5date
+            start_at = program5StartAt
+            end_at = program5EndAt
+            created = q5date
+            updated = q5date
         }
         val q1 = NewQuestion.new {
-            created = ss.q1date
-            updated = ss.q1date
+            created = q1date
+            updated = q1date
         }
 
         val q2 = NewQuestion.new {
-            created = ss.q2date
-            updated = ss.q2date
+            created = q2date
+            updated = q2date
         }
         val q3 = NewQuestion.new {
-            created = ss.q3date
-            updated = ss.q3date
+            created = q3date
+            updated = q3date
         }
 
         val q4 = NewQuestion.new {
-            created = ss.q4date
-            updated = ss.q4date
+            created = q4date
+            updated = q4date
         }
 
         val q5 = NewQuestion.new {
-            created = ss.q5date
-            updated = ss.q5date
+            created = q5date
+            updated = q5date
         }
 
         NewDoneQuestion(
             question_id = q1.id,
             program_id = p1.id,
-            display_name = ss.q1dname,
-            comment = ss.q1comment
+            display_name = q1dname,
+            comment = q1comment
         )
         NewDoneQuestion(
             question_id = q2.id,
             program_id = p2.id,
-            display_name = ss.q2dname,
-            comment = ss.q2comment
+            display_name = q2dname,
+            comment = q2comment
         )
         NewTodoQuestion(
             question_id = q3.id,
             program_id = p3.id,
-            display_name = ss.q3dname,
-            comment = ss.q3comment
+            display_name = q3dname,
+            comment = q3comment
         )
         NewTodoQuestion(
             question_id = q4.id,
             program_id = p4.id,
-            display_name = ss.q4dname,
-            comment = ss.q4comment
+            display_name = q4dname,
+            comment = q4comment
         )
         NewTodoQuestion(
             question_id = q5.id,
             program_id = p5.id,
-            display_name = ss.q5dname,
-            comment = ss.q5comment
+            display_name = q5dname,
+            comment = q5comment
         )
-        RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1", ss.q1like), Pair("2", ss.q2like), Pair("3", ss.q3like), Pair("4", ss.q4like), Pair("5", ss.q5like)))
+        RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1", q1like), Pair("2", q2like), Pair("3", q3like), Pair("4", q4like), Pair("5", q5like)))
     }
 }
 

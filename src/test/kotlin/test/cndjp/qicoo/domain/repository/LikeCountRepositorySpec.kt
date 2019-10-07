@@ -1,11 +1,11 @@
-package domain.repository
+package test.cndjp.qicoo.domain.repository
 
-import domain.repository.like_count.LikeCountRepositoryImpl
-import domain.repository.support.RepositorySpecSupport
-import domain.repository.support.dropDummyData
-import domain.repository.support.insertDummyData
-import infrastructure.cache.client.qicooGlobalJedisPool
-import infrastructure.cache.context.RedisContext
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
+import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.domain.repository.support.dropDummyData
+import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
+import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.spekframework.spek2.Spek

@@ -1,20 +1,20 @@
-package domain.repository
+package test.cndjp.qicoo.domain.repository
 
-import domain.dao.done_question.toDoneQuestion
-import domain.dao.todo_question.toTodoQuestion
-import domain.model.done_question.done_question
-import domain.model.todo_question.todo_question
-import domain.repository.question_aggr.QuestionAggrRepositoryImpl
-import domain.repository.support.RepositorySpecSupport
-import domain.repository.support.dropDummyData
-import domain.repository.support.insertDummyData
+import cndjp.qicoo.domain.dao.done_question.toDoneQuestion
+import cndjp.qicoo.domain.dao.todo_question.toTodoQuestion
+import cndjp.qicoo.domain.model.done_question.done_question
+import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
+import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.domain.repository.support.dropDummyData
+import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.spekframework.spek2.Spek
-import utils.toJST
+import cndjp.qicoo.utils.toJST
 
 object QuestionAggrRepositorySpec : Spek({
     val questionAggrRepositoryImpl = QuestionAggrRepositoryImpl()

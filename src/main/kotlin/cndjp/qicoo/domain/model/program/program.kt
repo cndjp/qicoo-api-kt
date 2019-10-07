@@ -1,6 +1,6 @@
-package domain.model.program
+package cndjp.qicoo.domain.model.program
 
-import domain.model.event.event
+import cndjp.qicoo.domain.model.event.event
 import org.jetbrains.exposed.dao.IntIdTable
 
 object program : IntIdTable() {

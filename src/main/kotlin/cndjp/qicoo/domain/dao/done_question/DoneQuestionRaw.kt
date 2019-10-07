@@ -1,4 +1,4 @@
-package domain.dao.done_question
+package cndjp.qicoo.domain.dao.done_question
 
 data class DoneQuestionRow(
     val question_id: Int,

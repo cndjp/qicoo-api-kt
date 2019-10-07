@@ -1,7 +1,7 @@
-package api.http_resource.response.question
+package cndjp.qicoo.api.http_resource.response.question
 
-import domain.dto.question.QuestionDTO
-import utils.toFomatString
+import cndjp.qicoo.domain.dto.question.QuestionDTO
+import cndjp.qicoo.utils.toFomatString
 
 class QuestionResponse(questionDTO: QuestionDTO) {
     val question_id: Int

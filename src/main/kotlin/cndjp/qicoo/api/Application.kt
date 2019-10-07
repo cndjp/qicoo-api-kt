@@ -1,9 +1,9 @@
-package api
+package cndjp.qicoo.api
 
-import api.controller.healthcheck.healthCheckController
-import api.controller.question.questionController
+import cndjp.qicoo.api.controller.healthcheck.healthCheckController
+import cndjp.qicoo.api.controller.question.questionController
 import com.fasterxml.jackson.databind.SerializationFeature
-import infrastructure.rdb.client.initMysqlClient
+import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging

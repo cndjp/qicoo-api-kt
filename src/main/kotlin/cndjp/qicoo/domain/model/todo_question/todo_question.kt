@@ -1,7 +1,7 @@
-package domain.model.todo_question
+package cndjp.qicoo.domain.model.todo_question
 
-import domain.model.program.program
-import domain.model.question.question
+import cndjp.qicoo.domain.model.program.program
+import cndjp.qicoo.domain.model.question.question
 import org.jetbrains.exposed.sql.Table
 
 object todo_question : Table() {

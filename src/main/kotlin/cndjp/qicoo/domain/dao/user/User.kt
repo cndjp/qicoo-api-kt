@@ -1,6 +1,6 @@
-package domain.dao.user
+package cndjp.qicoo.domain.dao.user
 
-import domain.model.user.user
+import cndjp.qicoo.domain.model.user.user
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime

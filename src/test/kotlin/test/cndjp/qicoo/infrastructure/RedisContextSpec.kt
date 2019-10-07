@@ -1,7 +1,7 @@
-package infrastructure
+package test.cndjp.qicoo.infrastructure
 
-import infrastructure.cache.client.qicooGlobalJedisPool
-import infrastructure.cache.context.RedisContext
+import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
+import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.spekframework.spek2.Spek
@@ -18,7 +18,8 @@ object RedisContextSpec : Spek({
             assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, "hoge3", mapOf(Pair("one", 1.0), Pair("two", 2.0))))
             assertEquals(2, RedisContext.zcount(qicooGlobalJedisPool.resource, "hoge3"))
             assertEquals(4.0, RedisContext.zincrby(qicooGlobalJedisPool.resource, "hoge3", 2.0, "two"))
-            assertEquals(setOf(Tuple("one", 1.0), Tuple("two", 4.0)), RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, "hoge3", 0.0, 10000.0))
+            assertEquals(setOf(Tuple("one", 1.0), Tuple("two", 4.0)), RedisContext.zrangeByScoreWithScores(
+                qicooGlobalJedisPool.resource, "hoge3", 0.0, 10000.0))
             assertEquals(4.0, RedisContext.zscore(qicooGlobalJedisPool.resource, "hoge3", "two"))
             RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }

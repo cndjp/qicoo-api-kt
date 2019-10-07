@@ -1,8 +1,8 @@
-package api.service.question
+package cndjp.qicoo.api.service.question
 
-import api.http_resource.paramater.question.QuestionGetParameter
-import domain.dto.question.QuestionListDTO
-import utils.EntityResult
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
+import cndjp.qicoo.domain.dto.question.QuestionListDTO
+import cndjp.qicoo.utils.EntityResult
 
 interface QuestionService {
     fun getAll(param: QuestionGetParameter): QuestionListDTO

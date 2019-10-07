@@ -1,4 +1,4 @@
-package utils
+package cndjp.qicoo.utils
 
 import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.full.primaryConstructor

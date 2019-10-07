@@ -1,11 +1,11 @@
-package domain.repository
+package test.cndjp.qicoo.domain.repository
 
-import domain.dao.done_question.DoneQuestionRow
-import domain.dao.question_aggr.QuestionAggr
-import domain.dao.question_aggr.QuestionAggrList
-import domain.dao.todo_question.TodoQuestionRow
-import domain.repository.question_aggr.QuestionAggrRepository
-import domain.repository.support.RepositorySpecSupport
+import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
+import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
+import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 
 class QuestionAggrRepositoryMock : QuestionAggrRepository {
     private val ss = RepositorySpecSupport

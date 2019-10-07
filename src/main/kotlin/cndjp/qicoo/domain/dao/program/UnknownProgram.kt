@@ -1,10 +1,10 @@
-package domain.dao.program
+package cndjp.qicoo.domain.dao.program
 
-import domain.dao.event.unknownEvent
-import domain.model.program.program
+import cndjp.qicoo.domain.dao.event.unknownEvent
+import cndjp.qicoo.domain.model.program.program
 import org.jetbrains.exposed.sql.select
-import utils.getNowDateTimeJst
-import utils.toDateTimeJst
+import cndjp.qicoo.utils.getNowDateTimeJst
+import cndjp.qicoo.utils.toDateTimeJst
 
 // とても不服な実装だが、questionのinsert等で見つからない場合に常にデフォルトで参照させるダミーをいれておく
 // 実装自体に関してはとても上手いと思ってる。

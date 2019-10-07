@@ -1,6 +1,6 @@
-package domain.dao.linked_user
+package cndjp.qicoo.domain.dao.linked_user
 
-import domain.model.linked_user.linked_user
+import cndjp.qicoo.domain.model.linked_user.linked_user
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
 

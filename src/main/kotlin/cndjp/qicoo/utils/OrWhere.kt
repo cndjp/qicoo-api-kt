@@ -1,4 +1,4 @@
-package utils
+package cndjp.qicoo.utils
 
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.Query

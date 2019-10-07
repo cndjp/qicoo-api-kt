@@ -1,4 +1,4 @@
-package domain.model.user
+package cndjp.qicoo.domain.model.user
 
 import org.jetbrains.exposed.dao.IntIdTable
 

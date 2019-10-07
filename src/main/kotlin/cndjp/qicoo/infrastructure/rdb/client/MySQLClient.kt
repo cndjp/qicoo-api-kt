@@ -1,4 +1,4 @@
-package infrastructure.rdb.client
+package cndjp.qicoo.infrastructure.rdb.client
 
 import org.jetbrains.exposed.sql.Database
 

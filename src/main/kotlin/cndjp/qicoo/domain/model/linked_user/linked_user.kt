@@ -1,6 +1,6 @@
-package domain.model.linked_user
+package cndjp.qicoo.domain.model.linked_user
 
-import domain.model.user.user
+import cndjp.qicoo.domain.model.user.user
 import org.jetbrains.exposed.sql.Table
 
 object linked_user : Table() {

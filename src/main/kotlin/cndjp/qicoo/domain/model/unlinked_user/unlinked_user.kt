@@ -1,6 +1,6 @@
-package domain.model.unlinked_user
+package cndjp.qicoo.domain.model.unlinked_user
 
-import domain.model.user.user
+import cndjp.qicoo.domain.model.user.user
 import org.jetbrains.exposed.sql.Table
 
 object unlinked_user : Table() {

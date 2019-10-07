@@ -1,4 +1,4 @@
-package domain.dao.todo_question
+package cndjp.qicoo.domain.dao.todo_question
 
 data class TodoQuestionRow(
     val question_id: Int,

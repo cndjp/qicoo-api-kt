@@ -1,6 +1,6 @@
-package domain.dao.reply
+package cndjp.qicoo.domain.dao.reply
 
-import domain.model.reply.reply
+import cndjp.qicoo.domain.model.reply.reply
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime

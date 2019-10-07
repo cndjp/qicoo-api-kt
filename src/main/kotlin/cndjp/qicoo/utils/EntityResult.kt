@@ -1,4 +1,4 @@
-package utils
+package cndjp.qicoo.utils
 
 enum class EntityResult {
     Success,

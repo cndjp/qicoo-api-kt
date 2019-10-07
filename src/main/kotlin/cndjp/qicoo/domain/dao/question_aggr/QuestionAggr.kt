@@ -1,13 +1,13 @@
-package domain.dao.question_aggr
+package cndjp.qicoo.domain.dao.question_aggr
 
-import domain.model.done_question.done_question
-import domain.model.event.event
-import domain.model.program.program
-import domain.model.question.question
-import domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.model.done_question.done_question
+import cndjp.qicoo.domain.model.event.event
+import cndjp.qicoo.domain.model.program.program
+import cndjp.qicoo.domain.model.question.question
+import cndjp.qicoo.domain.model.todo_question.todo_question
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
-import utils.toDateTimeJstForMySQL
+import cndjp.qicoo.utils.toDateTimeJstForMySQL
 
 class QuestionAggr {
     val question_id: Int

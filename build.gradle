@@ -26,8 +26,8 @@ version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 
 sourceSets {
-    main.kotlin.srcDirs = main.java.srcDirs = ['src/main/kotlin/cndjp/qicoo']
-    test.kotlin.srcDirs = test.java.srcDirs = ['src/test/kotlin/cndjp/qicoo']
+    main.kotlin.srcDirs = main.java.srcDirs = ['src/main/kotlin']
+    test.kotlin.srcDirs = test.java.srcDirs = ['src/test/kotlin']
     main.resources.srcDirs = ['resources']
     test.resources.srcDirs = ['testresources']
 }
@@ -46,6 +46,8 @@ configurations {
 dependencies {
     // stdlib
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // gson
+    implementation 'com.google.code.gson:gson:2.8.6'
     // lint
     ktlint "com.github.shyiko:ktlint:0.30.0"
     // ktor

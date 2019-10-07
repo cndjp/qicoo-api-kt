@@ -1,17 +1,17 @@
-package api.controller.question
+package cndjp.qicoo.api.controller.question
 
-import api.http_resource.paramater.question.QuestionGetOrderParameter
-import api.http_resource.paramater.question.QuestionGetParameter
-import api.http_resource.paramater.question.QuestionGetSortParameter
-import api.http_resource.request.question.QuestionRequest
-import api.http_resource.response.question.QuestionListResponse
-import api.http_resource.response.question.QuestionResponse
-import api.service.question.QuestionService
-import api.service.question.QuestionServiceImpl
-import domain.repository.like_count.LikeCountRepository
-import domain.repository.like_count.LikeCountRepositoryImpl
-import domain.repository.question_aggr.QuestionAggrRepository
-import domain.repository.question_aggr.QuestionAggrRepositoryImpl
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetOrderParameter
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
+import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
+import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
+import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
+import cndjp.qicoo.api.service.question.QuestionService
+import cndjp.qicoo.api.service.question.QuestionServiceImpl
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -24,7 +24,7 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
-import utils.EntityResult
+import cndjp.qicoo.utils.EntityResult
 
 fun Route.questionController() = questionController(Kodein {
     val kodein = Kodein {

@@ -1,4 +1,4 @@
-package domain.dto.question
+package cndjp.qicoo.domain.dto.question
 
 import org.joda.time.DateTime
 

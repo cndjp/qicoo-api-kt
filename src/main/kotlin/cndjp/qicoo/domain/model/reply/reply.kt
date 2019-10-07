@@ -1,6 +1,6 @@
-package domain.model.reply
+package cndjp.qicoo.domain.model.reply
 
-import domain.model.question.question
+import cndjp.qicoo.domain.model.question.question
 import org.jetbrains.exposed.dao.IntIdTable
 
 object reply : IntIdTable() {

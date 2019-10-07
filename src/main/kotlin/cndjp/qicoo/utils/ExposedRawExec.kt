@@ -1,4 +1,4 @@
-package utils
+package cndjp.qicoo.utils
 
 import java.sql.ResultSet
 import org.jetbrains.exposed.sql.transactions.TransactionManager

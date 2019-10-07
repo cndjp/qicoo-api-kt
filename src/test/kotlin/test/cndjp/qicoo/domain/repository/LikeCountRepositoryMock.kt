@@ -1,10 +1,10 @@
-package domain.repository
+package test.cndjp.qicoo.domain.repository
 
-import domain.dao.like_count.LikeCount
-import domain.dao.like_count.LikeCountList
-import domain.model.like_count.LikeCountRow
-import domain.repository.like_count.LikeCountRepository
-import domain.repository.support.RepositorySpecSupport
+import cndjp.qicoo.domain.dao.like_count.LikeCount
+import cndjp.qicoo.domain.dao.like_count.LikeCountList
+import cndjp.qicoo.domain.model.like_count.LikeCountRow
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
+import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 
 class LikeCountRepositoryMock : LikeCountRepository {
     private val ss = RepositorySpecSupport

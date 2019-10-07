@@ -1,6 +1,6 @@
-package domain.dao.done_question
+package cndjp.qicoo.domain.dao.done_question
 
-import domain.model.done_question.done_question
+import cndjp.qicoo.domain.model.done_question.done_question
 import org.jetbrains.exposed.dao.EntityID
 import org.jetbrains.exposed.sql.insert
 

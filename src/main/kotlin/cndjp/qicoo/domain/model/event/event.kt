@@ -1,4 +1,4 @@
-package domain.model.event
+package cndjp.qicoo.domain.model.event
 
 import org.jetbrains.exposed.dao.IntIdTable
 

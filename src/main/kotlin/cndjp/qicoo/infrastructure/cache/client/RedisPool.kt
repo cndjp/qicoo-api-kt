@@ -1,4 +1,4 @@
-package infrastructure.cache.client
+package cndjp.qicoo.infrastructure.cache.client
 
 import redis.clients.jedis.JedisPool
 import redis.clients.jedis.JedisPoolConfig

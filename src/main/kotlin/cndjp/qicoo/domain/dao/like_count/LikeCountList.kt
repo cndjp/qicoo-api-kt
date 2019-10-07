@@ -1,4 +1,4 @@
-package domain.dao.like_count
+package cndjp.qicoo.domain.dao.like_count
 
 data class LikeCountList(
     val list: List<LikeCount>,

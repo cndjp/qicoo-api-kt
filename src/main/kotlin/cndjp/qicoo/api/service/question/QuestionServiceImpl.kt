@@ -1,18 +1,18 @@
-package api.service.question
+package cndjp.qicoo.api.service.question
 
-import api.http_resource.paramater.question.QuestionGetParameter
-import api.http_resource.paramater.question.QuestionGetSortParameter
-import domain.dto.question.QuestionDTO
-import domain.dto.question.QuestionListDTO
-import domain.repository.like_count.LikeCountRepository
-import domain.repository.question_aggr.QuestionAggrRepository
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
+import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
+import cndjp.qicoo.domain.dto.question.QuestionDTO
+import cndjp.qicoo.domain.dto.question.QuestionListDTO
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import mu.KotlinLogging
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
-import utils.EntityResult
-import utils.checkCreate
-import utils.checkNull
+import cndjp.qicoo.utils.EntityResult
+import cndjp.qicoo.utils.checkCreate
+import cndjp.qicoo.utils.checkNull
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
