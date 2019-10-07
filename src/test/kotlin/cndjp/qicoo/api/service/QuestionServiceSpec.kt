@@ -27,6 +27,7 @@ import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 import org.spekframework.spek2.Spek
 import utils.EntityResult
+import utils.toJST
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -144,15 +145,15 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.p3name, dto1.list[0].program_name)
             assertEquals(ss.e3name, dto1.list[0].event_name)
             assertEquals(ss.q3dname, dto1.list[0].display_name)
-            assertEquals(ss.q3date, dto1.list[0].created)
-            assertEquals(ss.q3date, dto1.list[0].updated)
+            assertEquals(ss.q3date, dto1.list[0].created.toJST())
+            assertEquals(ss.q3date, dto1.list[0].updated.toJST())
             assertEquals(ss.q3like.toInt(), dto1.list[0].like_count)
             assertEquals(4, dto1.list[1].qustion_id)
             assertEquals(ss.p4name, dto1.list[1].program_name)
             assertEquals(ss.e4name, dto1.list[1].event_name)
             assertEquals(ss.q4dname, dto1.list[1].display_name)
-            assertEquals(ss.q4date, dto1.list[1].created)
-            assertEquals(ss.q4date, dto1.list[1].updated)
+            assertEquals(ss.q4date, dto1.list[1].created.toJST())
+            assertEquals(ss.q4date, dto1.list[1].updated.toJST())
             assertEquals(ss.q4like.toInt(), dto1.list[1].like_count)
             val dto2 = questionServiceImpl2.getAll(param2)
             assertEquals(5, dto2.count)
@@ -160,22 +161,22 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.p2name, dto2.list[0].program_name)
             assertEquals(ss.e2name, dto2.list[0].event_name)
             assertEquals(ss.q2dname, dto2.list[0].display_name)
-            assertEquals(ss.q2date, dto2.list[0].created)
-            assertEquals(ss.q2date, dto2.list[0].updated)
+            assertEquals(ss.q2date, dto2.list[0].created.toJST())
+            assertEquals(ss.q2date, dto2.list[0].updated.toJST())
             assertEquals(ss.q2like.toInt(), dto2.list[0].like_count)
             assertEquals(1, dto2.list[1].qustion_id)
             assertEquals(ss.p1name, dto2.list[1].program_name)
             assertEquals(ss.e1name, dto2.list[1].event_name)
             assertEquals(ss.q1dname, dto2.list[1].display_name)
-            assertEquals(ss.q1date, dto2.list[1].created)
-            assertEquals(ss.q1date, dto2.list[1].updated)
+            assertEquals(ss.q1date, dto2.list[1].created.toJST())
+            assertEquals(ss.q1date, dto2.list[1].updated.toJST())
             assertEquals(ss.q1like.toInt(), dto2.list[1].like_count)
             assertEquals(5, dto2.list[2].qustion_id)
             assertEquals(ss.p5name, dto2.list[2].program_name)
             assertEquals(ss.e5name, dto2.list[2].event_name)
             assertEquals(ss.q5dname, dto2.list[2].display_name)
-            assertEquals(ss.q5date, dto2.list[2].created)
-            assertEquals(ss.q5date, dto2.list[2].updated)
+            assertEquals(ss.q5date, dto2.list[2].created.toJST())
+            assertEquals(ss.q5date, dto2.list[2].updated.toJST())
             assertEquals(ss.q5like.toInt(), dto2.list[2].like_count)
         }
 
