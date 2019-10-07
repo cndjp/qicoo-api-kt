@@ -12,6 +12,9 @@ import io.ktor.server.testing.handleRequest
 import io.ktor.server.testing.withTestApplication
 import org.junit.internal.Classes.getClass
 import org.spekframework.spek2.Spek
+import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.domain.repository.support.dropDummyData
+import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import java.io.File
 import java.nio.file.Paths
 import kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltInsResourceLoader
@@ -29,6 +32,13 @@ fun testRequesetQuestion() = withTestApplication(Application::main) {
 }
 
 object QuestionControllerSpec :Spek({
+    val ss = RepositorySpecSupport
+    beforeGroup {
+        ss.insertDummyData()
+    }
+    afterGroup {
+        ss.dropDummyData()
+    }
     group("QuestionControllerのテスト") {
         test("GET - /questions") {
             testRequesetQuestion()
