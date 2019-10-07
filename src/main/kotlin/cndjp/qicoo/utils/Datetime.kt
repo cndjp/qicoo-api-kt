@@ -15,7 +15,7 @@ fun String.toDateTimeJst(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZone(DateTimeZone.forID("Asia/Tokyo")).parseDateTime(this)
 }
 
-fun String.toDateTimeJstgForMySQL(): DateTime {
+fun String.toDateTimeJstForMySQL(): DateTime {
     return DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSSSSS").withZone(DateTimeZone.forID("Asia/Tokyo")).parseDateTime(this)
 }
 

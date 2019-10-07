@@ -7,7 +7,7 @@ import domain.model.question.question
 import domain.model.todo_question.todo_question
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
-import utils.toDateTimeJstgForMySQL
+import utils.toDateTimeJstForMySQL
 
 class QuestionAggr {
     val question_id: Int
@@ -24,8 +24,8 @@ class QuestionAggr {
         program_name = f3
         display_name = f4
         comment = f5
-        created = f6.toDateTimeJstgForMySQL()
-        updated = f7.toDateTimeJstgForMySQL()
+        created = f6.toDateTimeJstForMySQL()
+        updated = f7.toDateTimeJstForMySQL()
     }
 
     constructor(
