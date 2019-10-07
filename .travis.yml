@@ -28,7 +28,6 @@ before_install:
 before_script:
   - echo 'Asia/Tokyo' | sudo tee /etc/timezone
   - sudo dpkg-reconfigure --frontend noninteractive tzdata
-  - sudo ntpdate ntp.ubuntu.com
   - mkdir /opt/bin
   - curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /opt/bin/
   - export PATH=/opt/bin:$PATH
