@@ -26,7 +26,7 @@ lint-fmt:
     ktlint -F "src/main/**/*.kt" '!src/test/**/*.kt'
 
 clean:
-    ./gradlew cleanBuildCache
+    rm  $HOME/.gradle/caches/
 
 build: load_dotenv
     ./gradlew --gradle-user-home=.gradle shadowJar

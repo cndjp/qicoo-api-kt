@@ -1,6 +1,6 @@
 package domain.dao.todo_question
 
-data class TodoQuestionRow (
+data class TodoQuestionRow(
     val question_id: Int,
     val program_id: Int,
     val display_name: String,

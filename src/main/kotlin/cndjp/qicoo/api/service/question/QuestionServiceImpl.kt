@@ -47,7 +47,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                             findResult.list.map {
                                 it.question_id ?: 0
                             }
-                        ).list.map{it.question_id to it }.toMap()
+                        ).list.map { it.question_id to it }.toMap()
 
                         if (findResult.list.size != mapFromMysql.size) {
                             // 普通起きないと思うが、これが起きた時は大概mysqlとredisの間に不整合がある。
@@ -88,8 +88,6 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun incr(questionId: Int): EntityResult =
         likeCountRepository.incr(questionId).checkCreate()
 
-
     override fun answer(questionId: Int): EntityResult =
         questionAggrRepository.todo2done(questionId).checkNull()
-
 }

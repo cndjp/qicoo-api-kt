@@ -1,7 +1,6 @@
 package domain
 
 import domain.dao.done_question.NewDoneQuestion
-import domain.dao.todo_question.NewTodoQuestion
 import domain.dao.done_question.toDoneQuestion
 import domain.dao.event.Event
 import domain.dao.event.NewEvent
@@ -18,6 +17,7 @@ import domain.dao.question.toQuestion
 import domain.dao.reply.NewReply
 import domain.dao.reply.Reply
 import domain.dao.reply.toReply
+import domain.dao.todo_question.NewTodoQuestion
 import domain.dao.todo_question.toTodoQuestion
 import domain.dao.unlinked_user.NewUnlinkedUser
 import domain.dao.unlinked_user.UnlinkedUser

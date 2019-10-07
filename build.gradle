@@ -69,14 +69,13 @@ dependencies {
         //compile group: 'org.jooq', name: 'jooq-codegen', version: "$jooq_version"
         //compile group: 'org.jooq', name: 'jooq-codegen-maven', version: "$jooq_version"
     // test
-    testCompile "io.ktor:ktor-server-tests:$ktor_version"
-    testCompile "io.ktor:ktor-server-tests:$ktor_version"
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    testCompile 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-    testCompile "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
-    testCompile "org.spekframework.spek2:spek-runner-junit5:$spek_version"
-        // spek requires kotlin-reflect, can be omitted if already in the classpath
-    testCompile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    compile "io.ktor:ktor-server-tests:$ktor_version"
+    compile "io.ktor:ktor-server-tests:$ktor_version"
+    compile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    compile 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    compile "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
+    compile "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
 shadowJar {

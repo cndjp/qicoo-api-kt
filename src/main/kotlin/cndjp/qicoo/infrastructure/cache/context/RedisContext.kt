@@ -44,7 +44,7 @@ object RedisContext {
     }
     fun zcount(context: Jedis, key: String): Long = context.use {
         logger.debug("redis> ZCOUNT $key")
-        it.zcount(key, "-inf" , "+inf")
+        it.zcount(key, "-inf", "+inf")
     }
     fun flushAll(context: Jedis) = context.use {
         logger.debug("redis> FLUSHALL")

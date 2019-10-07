@@ -92,7 +92,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     }
 
     override fun findByIds(ids: List<Int>): QuestionAggrList = transaction {
-        if(ids.isEmpty()) {
+        if (ids.isEmpty()) {
             logger.error("ids is empty from QuestionAggrRepositoryImpl.findByIds(ids: List<Int>)")
             return@transaction QuestionAggrList(
                 listOf(),
@@ -162,7 +162,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     }
 
     override fun todo2done(id: Int): DoneQuestionRow? = transaction {
-        val todo = todo_question.select{todo_question.question_id eq id}.map{it.toTodoQuestion()}.firstOrNull()
+        val todo = todo_question.select { todo_question.question_id eq id }.map { it.toTodoQuestion() }.firstOrNull()
         todo?.let {
             todo_question.deleteWhere { todo_question.question_id eq id }
             NewDoneQuestion(

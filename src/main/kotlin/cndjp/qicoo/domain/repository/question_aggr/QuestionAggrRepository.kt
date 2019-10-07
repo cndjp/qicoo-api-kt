@@ -1,10 +1,8 @@
 package domain.repository.question_aggr
 
 import domain.dao.done_question.DoneQuestionRow
-import domain.dao.done_question.NewDoneQuestion
 import domain.dao.question_aggr.QuestionAggr
 import domain.dao.question_aggr.QuestionAggrList
-import domain.dao.todo_question.NewTodoQuestion
 import domain.dao.todo_question.TodoQuestionRow
 
 interface QuestionAggrRepository {
