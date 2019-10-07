@@ -1,7 +1,8 @@
 package domain.repository.question_aggr
 
+import domain.dao.done_question.DoneQuestionRow
 import domain.dao.done_question.NewDoneQuestion
-import domain.dao.done_question.toDoneQuestion
+import domain.dao.done_question.toRaw
 import domain.dao.program.toProgram
 import domain.dao.program.unknownProgram
 import domain.dao.question.NewQuestion
@@ -10,6 +11,8 @@ import domain.dao.question_aggr.QuestionAggrList
 import domain.dao.question_aggr.toQuestionAggrFromDone
 import domain.dao.question_aggr.toQuestionAggrFromTodo
 import domain.dao.todo_question.NewTodoQuestion
+import domain.dao.todo_question.TodoQuestionRow
+import domain.dao.todo_question.toRaw
 import domain.dao.todo_question.toTodoQuestion
 import domain.model.done_question.done_question
 import domain.model.event.event
@@ -141,7 +144,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         )
     }
 
-    override fun insert(comment: String): NewTodoQuestion? = transaction {
+    override fun insert(comment: String): TodoQuestionRow? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)
@@ -155,10 +158,10 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             program_id = nowProgram?.toProgram()?.id ?: unknownProgram.id,
             display_name = "", // TODO
             comment = comment
-        )
+        ).toRaw()
     }
 
-    override fun todo2done(id: Int): NewDoneQuestion? = transaction {
+    override fun todo2done(id: Int): DoneQuestionRow? = transaction {
         val todo = todo_question.select{todo_question.question_id eq id}.map{it.toTodoQuestion()}.firstOrNull()
         todo?.let {
             todo_question.deleteWhere { todo_question.question_id eq id }
@@ -167,7 +170,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 program_id = it.program_id,
                 display_name = it.display_name,
                 comment = it.comment
-            )
+            ).toRaw()
         }
     }
 }

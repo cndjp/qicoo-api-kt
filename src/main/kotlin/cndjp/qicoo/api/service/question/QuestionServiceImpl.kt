@@ -80,7 +80,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun createQuestion(comment: String): EntityResult {
         val created = questionAggrRepository.insert(comment)
-        created?.question_id?.let { return likeCountRepository.create(it.value).checkCreate() }
+        created?.question_id?.let { return likeCountRepository.create(it).checkCreate() }
 
         return EntityResult.NotFoundEntityFailure
     }
