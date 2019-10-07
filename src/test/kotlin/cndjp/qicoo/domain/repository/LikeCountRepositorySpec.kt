@@ -8,10 +8,17 @@ import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
 object LikeCountRepositorySpec: Spek({
+    val likeCountRepositoryImpl = LikeCountRepositoryImpl()
+    beforeGroup {
+        RedisContext.flushAll(qicooGlobalJedisPool.resource)
+        assertEquals(3, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0), Pair("17", 4.0))))
+    }
+    afterGroup {
+        RedisContext.flushAll(qicooGlobalJedisPool.resource)
+    }
+
     group("LikeCountRepositoryのテスト") {
         test("findAll()のテスト"){
-            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
-            assertEquals(3, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0), Pair("17", 4.0))))
             val list1 = likeCountRepositoryImpl.findAll(3, 1, "desc").list
             assertEquals(3, list1[0].question_id)
             assertEquals(5, list1[0].count)
@@ -33,12 +40,8 @@ object LikeCountRepositorySpec: Spek({
             // オーバフローなページネーションは無視して空のリストを返すこと。
             assertEquals(0, likeCountRepositoryImpl.findAll(5, 2, "desc").list.size)
             assertEquals(0, likeCountRepositoryImpl.findAll(2, 10, "desc").list.size)
-
-            RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
         test("findById()のテスト"){
-            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
-            assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 2.0), Pair("3", 5.0))))
             val like1 = likeCountRepositoryImpl.findById(1)
             val like2 = likeCountRepositoryImpl.findById(2)
             val like3 = likeCountRepositoryImpl.findById(3)
@@ -48,24 +51,21 @@ object LikeCountRepositorySpec: Spek({
             assertEquals(2, like1?.count)
             assertEquals(3, like3?.question_id)
             assertEquals(5, like3?.count)
-            RedisContext.flushAll(qicooGlobalJedisPool.resource)
         }
         test("create()のテスト"){
-            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
-            likeCountRepositoryImpl.create(1)
-            likeCountRepositoryImpl.create(2)
-            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
-            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "2"))
-            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+            likeCountRepositoryImpl.create(11)
+            likeCountRepositoryImpl.create(12)
+            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "11"))
+            assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "12"))
         }
         test("incr()のテスト"){
-            val likeCountRepositoryImpl = LikeCountRepositoryImpl()
-            assertEquals(2, RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, mapOf(Pair("1", 1.0), Pair("2", 2.0))))
             likeCountRepositoryImpl.incr(1)
-            likeCountRepositoryImpl.incr(2)
-            assertEquals(2.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
-            assertEquals(3.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "2"))
-            RedisContext.flushAll(qicooGlobalJedisPool.resource)
+            likeCountRepositoryImpl.incr(3)
+            likeCountRepositoryImpl.incr(17)
+            likeCountRepositoryImpl.incr(17)
+            assertEquals(3.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
+            assertEquals(6.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "3"))
+            assertEquals(6.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "17"))
         }
     }
 })

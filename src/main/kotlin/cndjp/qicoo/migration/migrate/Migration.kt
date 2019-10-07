@@ -14,6 +14,7 @@ import domain.model.reply.reply
 import domain.model.todo_question.todo_question
 import domain.model.unlinked_user.unlinked_user
 import domain.model.user.user
+import domain.repository.like_count.LikeCountRepositoryImpl
 import infrastructure.cache.client.qicooGlobalJedisPool
 import infrastructure.cache.context.RedisContext
 import infrastructure.rdb.client.initMysqlClient
@@ -71,7 +72,7 @@ fun main(args: Array<String>) {
         val d4name = "puyo"
         val d4comment = "what is myas"
 
-        org.jetbrains.exposed.sql.transactions.transaction {
+        transaction {
             SchemaUtils.create(
                 event,
                 question,
@@ -186,8 +187,7 @@ fun main(args: Array<String>) {
                 display_name = d4name,
                 comment = d4comment
             )
-            val likeCountListKey = "like_count_list"
-            RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(q1.id.value.toString(), 10.0), Pair(q2.id.value.toString(), 20.0), Pair(q3.id.value.toString(), 18.0), Pair(q4.id.value.toString(), 5.0)))
+            RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair(q1.id.value.toString(), 10.0), Pair(q2.id.value.toString(), 20.0), Pair(q3.id.value.toString(), 18.0), Pair(q4.id.value.toString(), 5.0)))
         }
     }
 }
