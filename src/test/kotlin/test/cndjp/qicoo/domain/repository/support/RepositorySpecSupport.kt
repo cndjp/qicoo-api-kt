@@ -20,11 +20,11 @@ import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.toDateTimeJst
+import cndjp.qicoo.utils.toDateTimeJstForMySQL
 
 object RepositorySpecSupport {
-    val q1date = getNowDateTimeJst()
+    val q1date = "2020-10-10 19:00:00.11110000".toDateTimeJstForMySQL()
     val q2date = q1date.minusDays(1)
     val q3date = q2date.minusDays(1)
     val q4date = q3date.minusDays(1)

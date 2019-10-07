@@ -7,8 +7,8 @@
       "display_name": "nyan",
       "like_count": 4,
       "comment": "what is qicoo",
-      "created": "2019-10-08 00:36:27",
-      "updated": "2019-10-08 00:36:27"
+      "created": "2020-10-10 19:00:00",
+      "updated": "2020-10-10 19:00:00"
     },
     {
       "question_id": 2,
@@ -17,8 +17,8 @@
       "display_name": "hyon",
       "like_count": 1,
       "comment": "what is mayo",
-      "created": "2019-10-07 00:36:27",
-      "updated": "2019-10-07 00:36:27"
+      "created": "2020-10-09 19:00:00",
+      "updated": "2020-10-09 19:00:00"
     },
     {
       "question_id": 3,
@@ -27,8 +27,8 @@
       "display_name": "poe",
       "like_count": 10,
       "comment": "what is poe",
-      "created": "2019-10-06 00:36:27",
-      "updated": "2019-10-06 00:36:27"
+      "created": "2020-10-08 19:00:00",
+      "updated": "2020-10-08 19:00:00"
     },
     {
       "question_id": 4,
@@ -37,8 +37,8 @@
       "display_name": "puyo",
       "like_count": 8,
       "comment": "what is myas",
-      "created": "2019-10-05 00:36:27",
-      "updated": "2019-10-05 00:36:27"
+      "created": "2020-10-07 19:00:00",
+      "updated": "2020-10-07 19:00:00"
     },
     {
       "question_id": 5,
@@ -47,8 +47,8 @@
       "display_name": "mere",
       "like_count": 6,
       "comment": "what is hugai",
-      "created": "2019-10-04 00:36:27",
-      "updated": "2019-10-04 00:36:27"
+      "created": "2020-10-06 19:00:00",
+      "updated": "2020-10-06 19:00:00"
     }
   ],
   "total": 5
