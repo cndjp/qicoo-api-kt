@@ -7,13 +7,15 @@ data class QicooError(
 )
 
 enum class QicooErrorReason {
+    EmptyPagenationFailure,
+    ArrayIndexOutOfBoundsFailure,
     InvalidConvertFailure,
     MismatchDataStoreFailure,
     CannotCreateEntityFailure,
     NotFoundEntityFailure;
 }
 
-fun QicooErrorReason.withLog(): QicooErrorReason =
+fun QicooErrorReason.withLog(reason: String = this.name): QicooErrorReason =
     this.also {
-        KotlinLogging.logger {}.error("error: ${it.name}")
+        KotlinLogging.logger {}.error("error: $reason")
     }

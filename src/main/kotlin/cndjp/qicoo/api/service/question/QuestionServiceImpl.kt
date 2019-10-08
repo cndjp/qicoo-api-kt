@@ -13,6 +13,7 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
+import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.map
 import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
@@ -49,19 +50,19 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                 }
             QuestionGetSortParameter.like ->
                 likeCountRepository.findAll(param.per, param.page, param.order.name)
-                    .let { redisResult ->
+                    .flatMap { redisResult ->
                         questionAggrRepository.findByIds(
                             redisResult.list.map {
                                 it.question_id ?: 0
                             }
                         )
-                            .andThen { listFromMySQL ->
+                            .flatMap { listFromMySQL ->
                                 listFromMySQL.list.map { it.question_id to it }.toMap()
                                     .let { when (redisResult.list.size == it.size) {
                                         true -> Ok(it)
                                         false -> Err(QicooError(QicooErrorReason.MismatchDataStoreFailure.withLog()))
                                     } }
-                                    .andThen { mapFromMysql ->
+                                    .flatMap { mapFromMysql ->
                                         Ok(QuestionListDTO(
                                             redisResult.list.mapNotNull { redisDAO ->
                                                 mapFromMysql[redisDAO.question_id]?.let { mysqlDAO ->
@@ -89,7 +90,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
             .toResultOr {
                 QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog())
             }
-            .andThen {
+            .flatMap {
                 likeCountRepository.create(it.question_id)
             }
 
@@ -100,7 +101,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
             .toResultOr { QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog()) }
-            .andThen {
+            .flatMap {
                 logger.debug("question id ${it.question_id} from todo to done")
                 Ok(Unit)
             }

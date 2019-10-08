@@ -6,7 +6,10 @@ import test.cndjp.qicoo.domain.repository.support.dropDummyData
 import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
+import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.utils.QicooErrorReason
 import com.github.michaelbull.result.get
+import com.github.michaelbull.result.getError
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 import org.spekframework.spek2.Spek
@@ -23,29 +26,28 @@ object LikeCountRepositorySpec : Spek({
 
     group("LikeCountRepositoryのテスト") {
         test("findAll()のテスト") {
-            val list1 = likeCountRepositoryImpl.findAll(3, 1, "desc").list
+            val list1 = likeCountRepositoryImpl.findAll(3, 1, "desc").get()!!.list
             assertEquals(3, list1[0].question_id)
             assertEquals(ss.q3like.toInt(), list1[0].count)
             assertEquals(4, list1[1].question_id)
             assertEquals(ss.q4like.toInt(), list1[1].count)
             assertEquals(5, list1[2].question_id)
             assertEquals(ss.q5like.toInt(), list1[2].count)
-            val list2 = likeCountRepositoryImpl.findAll(3, 1, "asc").list
+            val list2 = likeCountRepositoryImpl.findAll(3, 1, "asc").get()!!.list
             assertEquals(2, list2[0].question_id)
             assertEquals(ss.q2like.toInt(), list2[0].count)
             assertEquals(1, list2[1].question_id)
             assertEquals(ss.q1like.toInt(), list2[1].count)
             assertEquals(5, list2[2].question_id)
             assertEquals(ss.q5like.toInt(), list2[2].count)
-            val list3 = likeCountRepositoryImpl.findAll(2, 2, "desc").list
+            val list3 = likeCountRepositoryImpl.findAll(2, 2, "desc").get()!!.list
             assertEquals(5, list3[0].question_id)
             assertEquals(ss.q5like.toInt(), list3[0].count)
             assertEquals(1, list3[1].question_id)
             assertEquals(ss.q1like.toInt(), list3[1].count)
 
-            // オーバフローなページネーションは無視して空のリストを返すこと。
-            assertEquals(0, likeCountRepositoryImpl.findAll(5, 2, "desc").list.size)
-            assertEquals(0, likeCountRepositoryImpl.findAll(2, 10, "desc").list.size)
+            assertEquals(QicooError(QicooErrorReason.EmptyPagenationFailure), likeCountRepositoryImpl.findAll(5, 2, "desc").getError())
+            assertEquals(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure), likeCountRepositoryImpl.findAll(2, 10, "desc").getError())
         }
         test("findById()のテスト") {
             val like1 = likeCountRepositoryImpl.findById(1)

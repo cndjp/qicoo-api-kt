@@ -13,9 +13,9 @@ class
 LikeCountRepositoryMock : LikeCountRepository {
     private val ss = RepositorySpecSupport
 
-    override fun findAll(per: Int, page: Int, order: String): LikeCountList =
+    override fun findAll(per: Int, page: Int, order: String):  Result<LikeCountList, QicooError> =
         when (Triple(per, page, order)) {
-            Triple(3, 1, "desc") -> LikeCountList(
+            Triple(3, 1, "desc") -> Ok(LikeCountList(
                 listOf(
                     LikeCount(
                         LikeCountRow(
@@ -37,7 +37,7 @@ LikeCountRepositoryMock : LikeCountRepository {
                     )
                 ),
                 5
-            )
+            ))
             else -> TODO()
         }
 

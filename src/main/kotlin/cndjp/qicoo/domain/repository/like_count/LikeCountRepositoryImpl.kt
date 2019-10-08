@@ -19,13 +19,13 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     private val defaultZMax = 100000000.0
     val likeCountListKey = "like_count_list"
 
-    override fun findAll(per: Int, page: Int, order: String): LikeCountList {
+    override fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError> {
         val total = RedisContext.zcount(qicooGlobalJedisPool.resource, likeCountListKey).toInt()
         val end = when (total > (page * per)) {
             true -> page * per
             false -> total
         }
-        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 100000000.0)
+        return RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, likeCountListKey, 0.0, 100000000.0)
             .map {
                 LikeCount(
                     LikeCountRow(
@@ -41,18 +41,14 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 }
             }
             .let { rowList ->
-                val validPagination = kotlin.runCatching {
+                runCatching {
                     rowList.subList(((page - 1) * per), end)
-                }
-                validPagination.onSuccess {
-                    return LikeCountList(
-                        it,
-                        total
-                    )
-                }
-                return LikeCountList(
-                    listOf(),
-                    total
+                }.fold(
+                    onSuccess = { when(it.isNotEmpty() || page == 1) {
+                        true -> Ok(LikeCountList(it, total))
+                        false -> Err(QicooError(QicooErrorReason.EmptyPagenationFailure.withLog()))
+                    } },
+                    onFailure = { Err(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog())) }
                 )
             }
     }

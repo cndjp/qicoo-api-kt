@@ -6,7 +6,7 @@ import cndjp.qicoo.utils.QicooError
 import com.github.michaelbull.result.Result
 
 interface LikeCountRepository {
-    fun findAll(per: Int, page: Int, order: String): LikeCountList
+    fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError>
     fun findById(key: Int): LikeCount?
     fun findByIds(keys: List<Int>): LikeCountList
     fun create(key: Int): Result<Unit, QicooError>
