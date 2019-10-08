@@ -65,7 +65,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun create(key: Int): Result<Unit, QicooError> =
         when (RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))) {
             1L -> Ok(Unit)
-            else -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog()))
+            else -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog()))
         }
 
     override fun incr(key: Int) =

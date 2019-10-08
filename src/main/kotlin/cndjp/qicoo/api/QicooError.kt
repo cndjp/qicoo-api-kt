@@ -10,7 +10,7 @@ enum class QicooErrorReason {
     ArrayIndexOutOfBoundsFailure,
     ParseRequestFailure,
     MismatchDataStoreFailure,
-    CannotCreateEntityFailure,
+    CouldNotCreateEntityFailure,
     NotFoundEntityFailure;
 }
 

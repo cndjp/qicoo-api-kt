@@ -85,7 +85,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun createQuestion(comment: String): Result<Unit, QicooError> =
         questionAggrRepository.insert(comment)
             .toResultOr {
-                QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog())
+                QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog())
             }
             .flatMap {
                 likeCountRepository.create(it.question_id)
@@ -97,7 +97,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
-            .toResultOr { QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog()) }
+            .toResultOr { QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog()) }
             .flatMap {
                 logger.debug("question id ${it.question_id} from todo to done")
                 Ok(Unit)

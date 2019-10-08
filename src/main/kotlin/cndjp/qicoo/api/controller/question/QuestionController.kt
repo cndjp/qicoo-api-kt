@@ -10,6 +10,7 @@ import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.QicooErrorReason
 import cndjp.qicoo.api.withLog
+import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
 import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
@@ -77,16 +78,13 @@ fun Route.questionController(kodein: Kodein) {
         post("/answer") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(cndjp.qicoo.api.QicooErrorReason.ParseRequestFailure.withLog())
+                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
             }
+                .flatMap { validatedQuestionId ->
+                    questionService.answer(validatedQuestionId)
+                }
                 .mapBoth(
-                    success = { validatedQuestionId ->
-                        questionService.answer(validatedQuestionId)
-                            .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK) },
-                                failure = { call.respond(HttpStatusCode.InternalServerError) }
-                            )
-                    },
+                    success = { call.respond(HttpStatusCode.OK) },
                     failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                 )
         }
