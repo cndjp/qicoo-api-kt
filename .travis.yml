@@ -19,7 +19,7 @@ env:
     - REDIS_PORT="6379"
 
 before_install:
-  - export TZ=Asita/Tokyo
+  - export TZ=Asia/Tokyo
   - curl -s api.sdkman.io | bash
   - source /home/travis/.sdkman/bin/sdkman-init.sh # ターミナル上での表示結果
   - sdk list gradle

@@ -45,12 +45,8 @@ import kotlin.test.assertNull
 fun testGetRequestQuestion1() = withTestApplication(Application::main) {
     with(handleRequest(HttpMethod.Get, "/questions")) {
         assertEquals(HttpStatusCode.OK, response.status())
-        val resource = when (System.getenv("TRAVIS")) {
-            "true" -> "ExpectResponse_1_travis.json"
-            else -> "ExpectResponse_1.json"
-        }
         assertEquals(
-            getTestResources(resource).readText().asJsonObject(),
+            getTestResources("ExpectResponse_1.json").readText().asJsonObject(),
             response.content!!.asJsonObject()
         )
     }
@@ -59,12 +55,8 @@ fun testGetRequestQuestion1() = withTestApplication(Application::main) {
 fun testGetRequestQuestion2() = withTestApplication(Application::main) {
     with(handleRequest(HttpMethod.Get, "/questions?sort=like&order=desc&per=4&page=1")) {
         assertEquals(HttpStatusCode.OK, response.status())
-        val resource = when (System.getenv("TRAVIS")) {
-            "true" -> "ExpectResponse_2_travis.json"
-            else -> "ExpectResponse_2.json"
-        }
         assertEquals(
-            getTestResources(resource).readText().asJsonObject(),
+            getTestResources("ExpectResponse_2.json").readText().asJsonObject(),
             response.content!!.asJsonObject()
         )
     }
@@ -73,12 +65,8 @@ fun testGetRequestQuestion2() = withTestApplication(Application::main) {
 fun testGetRequestQuestion3() = withTestApplication(Application::main) {
     with(handleRequest(HttpMethod.Get, "/questions?sort=created&order=asc&per=2&page=2")) {
         assertEquals(HttpStatusCode.OK, response.status())
-        val resource = when (System.getenv("TRAVIS")) {
-            "true" -> "ExpectResponse_3_travis.json"
-            else -> "ExpectResponse_3.json"
-        }
         assertEquals(
-            getTestResources(resource).readText().asJsonObject(),
+            getTestResources("ExpectResponse_3.json").readText().asJsonObject(),
             response.content!!.asJsonObject()
         )
     }
@@ -87,12 +75,8 @@ fun testGetRequestQuestion3() = withTestApplication(Application::main) {
 fun testGetRequestQuestion4() = withTestApplication(Application::main) {
     with(handleRequest(HttpMethod.Get, "/questions?sort=like&order=asc&per=2&page=3")) {
         assertEquals(HttpStatusCode.OK, response.status())
-        val resource = when (System.getenv("TRAVIS")) {
-            "true" -> "ExpectResponse_4_travis.json"
-            else -> "ExpectResponse_4.json"
-        }
         assertEquals(
-            getTestResources(resource).readText().asJsonObject(),
+            getTestResources("ExpectResponse_4.json").readText().asJsonObject(),
             response.content!!.asJsonObject()
         )
     }
