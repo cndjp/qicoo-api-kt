@@ -15,5 +15,5 @@ enum class QicooErrorReason {
 
 fun QicooErrorReason.withLog(): QicooErrorReason =
     this.also {
-        KotlinLogging.logger{}.error("error: ${it.name}")
+        KotlinLogging.logger {}.error("error: ${it.name}")
     }

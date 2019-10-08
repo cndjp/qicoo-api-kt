@@ -14,7 +14,6 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
 import org.kodein.di.Kodein
@@ -61,7 +60,6 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                     .let { when (redisResult.list.size == it.size) {
                                         true -> Ok(it)
                                         false -> Err(QicooError(QicooErrorReason.MismatchDataStoreFailure.withLog()))
-
                                     } }
                                     .andThen { mapFromMysql ->
                                         Ok(QuestionListDTO(
