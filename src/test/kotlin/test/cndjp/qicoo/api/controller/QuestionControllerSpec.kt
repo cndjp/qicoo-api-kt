@@ -15,6 +15,8 @@ import org.spekframework.spek2.Spek
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 import test.cndjp.qicoo.domain.repository.support.dropDummyData
 import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import test.cndjp.qicoo.utils.asJsonObject
+import test.cndjp.qicoo.utils.getTestResources
 import java.io.File
 import java.nio.file.Paths
 import kotlin.reflect.jvm.internal.impl.serialization.deserialization.builtins.BuiltInsResourceLoader
@@ -25,8 +27,8 @@ fun testRequesetQuestion() = withTestApplication(Application::main) {
     with(handleRequest(HttpMethod.Get, "/questions")) {
         assertEquals(HttpStatusCode.OK, response.status())
         assertEquals(
-            JsonParser.parseString(Paths.get("testresources/ExpectResponse_1.json").toAbsolutePath().toFile().readText()).asJsonObject,
-            JsonParser.parseString(response.content).asJsonObject
+            getTestResources("ExpectResponse_1.json").readText().asJsonObject(),
+            response.content!!.asJsonObject()
         )
     }
 }
