@@ -71,7 +71,7 @@ fun Route.questionController(kodein: Kodein) {
                         )
                 }
                 .onFailure { exception ->
-                    call.respond(HttpStatusCode.BadRequest, QicooErrorReason.ParseRequestFailure.withLog().name)
+                    call.respond(HttpStatusCode.BadRequest, QicooErrorReason.ParseRequestFailure.withLog(exception.toString()).name)
                 }
         }
         post("/answer") {
