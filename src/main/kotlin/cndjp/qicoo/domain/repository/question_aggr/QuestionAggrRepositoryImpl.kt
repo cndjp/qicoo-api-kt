@@ -24,6 +24,7 @@ import cndjp.qicoo.utils.QicooErrorReason
 import cndjp.qicoo.utils.execAndMap
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
+import cndjp.qicoo.utils.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -99,7 +100,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
             logger.error("ids is empty from QuestionAggrRepositoryImpl.findByIds(ids: List<Int>)")
-            return@transaction Err(QicooError(QicooErrorReason.NotFoundEntityFailure))
+            return@transaction Err(QicooError(QicooErrorReason.NotFoundEntityFailure.withLog()))
         }
 
         val total = question.selectAll().count()

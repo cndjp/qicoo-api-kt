@@ -7,6 +7,7 @@ import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
+import cndjp.qicoo.utils.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -73,7 +74,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun create(key: Int): Result<Unit, QicooError> =
         when (RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))) {
             1L -> Ok(Unit)
-            else -> Err(QicooError(QicooErrorReason.CannotCreateEntityFailure))
+            else -> Err(QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog()))
         }
 
     override fun incr(key: Int) =

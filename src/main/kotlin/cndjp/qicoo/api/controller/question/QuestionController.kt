@@ -63,7 +63,7 @@ fun Route.questionController(kodein: Kodein) {
                     questionService.createQuestion(validatedRequest.comment)
                         .mapBoth(
                             success = { call.respond(HttpStatusCode.OK) },
-                            failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                            failure = { call.respond(HttpStatusCode.InternalServerError, it.reason.name) }
                         )
                 }
                 .onFailure { exception ->
