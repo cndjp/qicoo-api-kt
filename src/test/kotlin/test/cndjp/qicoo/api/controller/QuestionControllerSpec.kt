@@ -239,7 +239,9 @@ object QuestionControllerSpec :Spek({
                 testPostRequestLike1()
             }
             test("POST :+: /questions/like?question_id=1 :=: 正常なパラメータ") {
+                assertEquals(ss.q1like, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
                 testPostRequestLike2()
+                assertEquals(ss.q1like+1, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
             }
             test("POST :+: /questions/like?question_id=19 :=: 存在しない質問へのリクエスト") {
                 testPostRequestLike3()
