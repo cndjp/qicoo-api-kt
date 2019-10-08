@@ -6,7 +6,6 @@ import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
 import cndjp.qicoo.utils.toDateTimeJstForMySQL
-import cndjp.qicoo.utils.toJST
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 
@@ -25,8 +24,8 @@ class QuestionAggr {
         program_name = f3
         display_name = f4
         comment = f5
-        created = f6.toDateTimeJstForMySQL().toJST()
-        updated = f7.toDateTimeJstForMySQL().toJST()
+        created = f6.toDateTimeJstForMySQL()
+        updated = f7.toDateTimeJstForMySQL()
     }
 
     constructor(
