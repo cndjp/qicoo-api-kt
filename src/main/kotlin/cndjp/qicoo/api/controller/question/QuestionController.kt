@@ -7,7 +7,11 @@ import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
+import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.utils.QicooErrorReason
+import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -71,17 +75,34 @@ fun Route.questionController(kodein: Kodein) {
                 }
         }
         post("/answer") {
-            val questionId = call.parameters["question_id"]?.toInt() ?: 0
-            questionService.answer(questionId)
-                .mapBoth(
-                    success = { call.respond(HttpStatusCode.OK) },
-                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
-                )
+            val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
+                validQuestionId.toResultOr {
+                    QicooError(QicooErrorReason.InvalidConvertFailure)
+                }
+                    .mapBoth(
+                        success = { validatedQuestionId ->
+                                questionService.answer(validatedQuestionId)
+                                .mapBoth(
+                                    success = { call.respond(HttpStatusCode.OK) },
+                                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                                )
+                        },
+                        failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                    )
         }
         post("/like") {
-            val questionId = call.parameters["question_id"]?.toInt() ?: 0
-            questionService.incr(questionId)
-            call.respond(HttpStatusCode.OK)
+            val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
+            validQuestionId.toResultOr {
+                QicooError(QicooErrorReason.InvalidConvertFailure)
+            }
+                .mapBoth(
+                    success = { validatedQuestionId ->
+                        questionService.incr(validatedQuestionId)
+                        call.respond(HttpStatusCode.OK)
+                    },
+                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                )
+
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")

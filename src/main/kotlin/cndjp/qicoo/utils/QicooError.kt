@@ -7,6 +7,7 @@ data class QicooError(
 )
 
 enum class QicooErrorReason {
+    InvalidConvertFailure,
     MismatchDataStoreFailure,
     CannotCreateEntityFailure,
     NotFoundEntityFailure;
