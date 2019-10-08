@@ -7,9 +7,8 @@ data class QicooError(
 )
 
 enum class QicooErrorReason {
-    EmptyPagenationFailure,
     ArrayIndexOutOfBoundsFailure,
-    InvalidConvertFailure,
+    ParseRequestFailure,
     MismatchDataStoreFailure,
     CannotCreateEntityFailure,
     NotFoundEntityFailure;

@@ -10,7 +10,6 @@ import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
 import cndjp.qicoo.utils.withLog
-import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
 import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
@@ -72,26 +71,29 @@ fun Route.questionController(kodein: Kodein) {
                         )
                 }
                 .onFailure { exception ->
-                    call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
+                    call.respond(HttpStatusCode.BadRequest, QicooErrorReason.ParseRequestFailure.withLog().name)
                 }
         }
         post("/answer") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.InvalidConvertFailure.withLog())
+                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
             }
-                .flatMap { validatedQuestionId ->
-                    questionService.answer(validatedQuestionId)
-                }
                 .mapBoth(
-                    success = { call.respond(HttpStatusCode.OK) },
+                    success = { validatedQuestionId ->
+                        questionService.answer(validatedQuestionId)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK) },
+                                failure = { call.respond(HttpStatusCode.InternalServerError) }
+                            )
+                    },
                     failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                 )
         }
         post("/like") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.InvalidConvertFailure.withLog())
+                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
             }
                 .mapBoth(
                     success = { validatedQuestionId ->
