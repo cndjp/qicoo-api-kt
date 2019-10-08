@@ -14,9 +14,6 @@ import com.github.michaelbull.result.Result
 import mu.KotlinLogging
 
 class LikeCountRepositoryImpl : LikeCountRepository {
-    private val logger = KotlinLogging.logger {}
-    private val defaultZMin = 0.0
-    private val defaultZMax = 100000000.0
     val likeCountListKey = "like_count_list"
 
     override fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError> {
@@ -44,7 +41,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 runCatching {
                     rowList.subList(((page - 1) * per), end)
                 }.fold(
-                    onSuccess = { when(it.isNotEmpty() || page == 1) {
+                    onSuccess = { when (it.isNotEmpty() || page == 1) {
                         true -> Ok(LikeCountList(it, total))
                         false -> Err(QicooError(QicooErrorReason.EmptyPagenationFailure.withLog()))
                     } },

@@ -99,7 +99,6 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
-            logger.error("ids is empty from QuestionAggrRepositoryImpl.findByIds(ids: List<Int>)")
             return@transaction Err(QicooError(QicooErrorReason.NotFoundEntityFailure.withLog()))
         }
 
