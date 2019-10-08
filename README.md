@@ -3,13 +3,13 @@
 qicoo-apiのkotlinバージョン
 
 # 設計方針
-- NoTry, NoNull(=OrNull)
+- NoTry, NoNull(=OrNull)  
     DBのカラムは全部NOT NULL、コードに例外、?じゃないnullableはいらないです
-- No DeleteFlag
+- No DeleteFlag  
     脳死なdelete_flg bool はいらないです
-- Cake Pattern
+- Cake Pattern  
     どのレイヤーも単体で切り離して、例えばモック、例えば違う実装で全体のコードが走ります
-- Repository Pattern
+- Repository Pattern  
     ドメイン層のやりとりで、インフラ層の何を使っているか隠蔽し、柔軟性を保たせます
 
 # テスト環境
