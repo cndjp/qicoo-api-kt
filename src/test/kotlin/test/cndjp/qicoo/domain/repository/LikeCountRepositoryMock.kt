@@ -4,7 +4,7 @@ import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
-import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.api.QicooError
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport

@@ -23,7 +23,7 @@ import org.kodein.di.generic.singleton
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.main() {
-    val _client = initMysqlClient()
+    initMysqlClient()
     install(CallLogging)
     install(ContentNegotiation) {
         jackson {

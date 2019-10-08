@@ -1,4 +1,4 @@
-package cndjp.qicoo.utils
+package cndjp.qicoo.api
 
 import mu.KotlinLogging
 

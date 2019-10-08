@@ -2,7 +2,7 @@ package cndjp.qicoo.domain.repository.like_count
 
 import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
-import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.api.QicooError
 import com.github.michaelbull.result.Result
 
 interface LikeCountRepository {

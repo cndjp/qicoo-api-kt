@@ -6,14 +6,12 @@ import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
-import cndjp.qicoo.utils.QicooError
-import cndjp.qicoo.utils.QicooErrorReason
-import cndjp.qicoo.utils.withLog
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.map
 import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
 import org.kodein.di.Kodein
@@ -59,7 +57,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 listFromMySQL.list.map { it.question_id to it }.toMap()
                                     .let { when (redisResult.list.size == it.size) {
                                         true -> Ok(it)
-                                        false -> Err(QicooError(QicooErrorReason.MismatchDataStoreFailure.withLog()))
+                                        false -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.MismatchDataStoreFailure.withLog()))
                                     } }
                                     .flatMap { mapFromMysql ->
                                         Ok(QuestionListDTO(
@@ -87,7 +85,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun createQuestion(comment: String): Result<Unit, QicooError> =
         questionAggrRepository.insert(comment)
             .toResultOr {
-                QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog())
+                QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog())
             }
             .flatMap {
                 likeCountRepository.create(it.question_id)
@@ -99,7 +97,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
-            .toResultOr { QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog()) }
+            .toResultOr { QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog()) }
             .flatMap {
                 logger.debug("question id ${it.question_id} from todo to done")
                 Ok(Unit)

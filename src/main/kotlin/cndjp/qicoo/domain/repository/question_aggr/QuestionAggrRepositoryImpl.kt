@@ -19,12 +19,11 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
-import cndjp.qicoo.utils.QicooError
-import cndjp.qicoo.utils.QicooErrorReason
+import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.utils.execAndMap
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
-import cndjp.qicoo.utils.withLog
+import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -99,7 +98,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
-            return@transaction Err(QicooError(QicooErrorReason.NotFoundEntityFailure.withLog()))
+            return@transaction Err(QicooError(cndjp.qicoo.api.QicooErrorReason.NotFoundEntityFailure.withLog()))
         }
 
         val total = question.selectAll().count()

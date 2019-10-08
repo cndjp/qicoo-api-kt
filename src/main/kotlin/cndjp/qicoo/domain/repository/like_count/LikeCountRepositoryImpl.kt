@@ -5,13 +5,11 @@ import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
-import cndjp.qicoo.utils.QicooError
-import cndjp.qicoo.utils.QicooErrorReason
-import cndjp.qicoo.utils.withLog
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import mu.KotlinLogging
 
 class LikeCountRepositoryImpl : LikeCountRepository {
     val likeCountListKey = "like_count_list"
@@ -19,7 +17,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError> {
         val total = RedisContext.zcount(qicooGlobalJedisPool.resource, likeCountListKey).toInt()
         if (total == per && page != 1) {
-            return Err(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog()))
+            return Err(QicooError(cndjp.qicoo.api.QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog()))
         }
         val end = when (total > (page * per)) {
             true -> page * per
@@ -45,7 +43,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                     rowList.subList(((page - 1) * per), end)
                 }.fold(
                     onSuccess = { Ok(LikeCountList(it, total)) },
-                    onFailure = { Err(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog())) }
+                    onFailure = { Err(QicooError(cndjp.qicoo.api.QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog())) }
                 )
             }
     }
@@ -67,7 +65,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun create(key: Int): Result<Unit, QicooError> =
         when (RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))) {
             1L -> Ok(Unit)
-            else -> Err(QicooError(QicooErrorReason.CannotCreateEntityFailure.withLog()))
+            else -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.CannotCreateEntityFailure.withLog()))
         }
 
     override fun incr(key: Int) =

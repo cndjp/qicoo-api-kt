@@ -4,7 +4,7 @@ import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
-import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.api.QicooError
 import com.github.michaelbull.result.Result
 
 interface QuestionAggrRepository {

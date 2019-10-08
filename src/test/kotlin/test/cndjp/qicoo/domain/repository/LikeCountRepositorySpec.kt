@@ -6,8 +6,8 @@ import test.cndjp.qicoo.domain.repository.support.dropDummyData
 import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
-import cndjp.qicoo.utils.QicooError
-import cndjp.qicoo.utils.QicooErrorReason
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.QicooErrorReason
 import com.github.michaelbull.result.get
 import com.github.michaelbull.result.getError
 import kotlin.test.assertEquals

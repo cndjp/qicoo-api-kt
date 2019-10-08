@@ -5,7 +5,7 @@ import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
-import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.api.QicooError
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
