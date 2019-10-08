@@ -43,12 +43,13 @@ fun Route.questionController(kodein: Kodein) {
                         success = { listDTO ->
                             call.respond(
                                 HttpStatusCode.OK,
-                            QuestionListResponse(
-                                listDTO.list.map { dto ->
-                                    QuestionResponse(dto)
-                                },
-                                listDTO.count
-                            ))
+                                QuestionListResponse(
+                                    listDTO.list.map { dto ->
+                                        QuestionResponse(dto)
+                                    },
+                                    listDTO.count
+                                )
+                            )
                         },
                         failure = { call.respond(HttpStatusCode.InternalServerError, it.reason.name) }
                     )
