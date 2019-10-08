@@ -55,7 +55,7 @@ fun Route.questionController(kodein: Kodein) {
                                 )
                             )
                         },
-                        failure = { call.respond(HttpStatusCode.InternalServerError, it.reason.name) }
+                        failure = { call.respond(HttpStatusCode.InternalServerError) }
                     )
         }
         post {
@@ -67,7 +67,7 @@ fun Route.questionController(kodein: Kodein) {
                     questionService.createQuestion(validatedRequest.comment)
                         .mapBoth(
                             success = { call.respond(HttpStatusCode.OK) },
-                            failure = { call.respond(HttpStatusCode.InternalServerError, it.reason.name) }
+                            failure = { call.respond(HttpStatusCode.InternalServerError) }
                         )
                 }
                 .onFailure { exception ->
