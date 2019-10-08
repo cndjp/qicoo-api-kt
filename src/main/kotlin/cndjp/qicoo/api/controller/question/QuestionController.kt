@@ -9,6 +9,7 @@ import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
+import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
 import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
@@ -78,14 +79,11 @@ fun Route.questionController(kodein: Kodein) {
             validQuestionId.toResultOr {
                 QicooError(QicooErrorReason.InvalidConvertFailure)
             }
+                .flatMap { validatedQuestionId ->
+                    questionService.answer(validatedQuestionId)
+                }
                 .mapBoth(
-                    success = { validatedQuestionId ->
-                            questionService.answer(validatedQuestionId)
-                            .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK) },
-                                failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
-                            )
-                    },
+                    success = { call.respond(HttpStatusCode.OK) },
                     failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                 )
         }
