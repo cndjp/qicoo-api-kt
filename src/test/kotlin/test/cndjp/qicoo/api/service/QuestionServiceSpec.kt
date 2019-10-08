@@ -28,6 +28,7 @@ import org.kodein.di.generic.singleton
 import org.spekframework.spek2.Spek
 import cndjp.qicoo.utils.EntityResult
 import cndjp.qicoo.utils.toJST
+import com.github.michaelbull.result.get
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -54,7 +55,7 @@ object QuestionServiceMockSpec : Spek({
                 order = QuestionGetOrderParameter.desc,
                 sort = QuestionGetSortParameter.like
             )
-            val dto1 = questionServiceImpl1.getAll(param1)
+            val dto1 = questionServiceImpl1.getAll(param1).get()!!
             assertEquals(5, dto1.count)
             assertEquals(1, dto1.list[0].qustion_id)
             assertEquals(ss.p1name, dto1.list[0].program_name)
@@ -70,7 +71,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q2date, dto1.list[1].created)
             assertEquals(ss.q2date, dto1.list[1].updated)
             assertEquals(ss.q2like.toInt(), dto1.list[1].like_count)
-            val dto2 = questionServiceImpl1.getAll(param2)
+            val dto2 = questionServiceImpl1.getAll(param2).get()!!
             assertEquals(5, dto2.count)
             assertEquals(3, dto2.list[0].qustion_id)
             assertEquals(ss.p3name, dto2.list[0].program_name)
@@ -96,15 +97,15 @@ object QuestionServiceMockSpec : Spek({
         }
 
         test("createQuestion()のmockテスト") {
-            assertEquals(EntityResult.Success, questionServiceImpl1.createQuestion("dummy"))
+            questionServiceImpl1.createQuestion("dummy").get()!!
         }
 
         test("incr()のmockテスト") {
-            assertEquals(EntityResult.Success, questionServiceImpl1.incr(1))
+            questionServiceImpl1.incr(1)
         }
 
         test("answer()のmockテスト") {
-            assertEquals(EntityResult.Success, questionServiceImpl1.answer(6))
+            questionServiceImpl1.answer(6).get()!!
         }
     }
 })
@@ -139,7 +140,7 @@ object QuestionServiceRealSpec: Spek({
                 order = QuestionGetOrderParameter.asc,
                 sort = QuestionGetSortParameter.like
             )
-            val dto1 = questionServiceImpl2.getAll(param1)
+            val dto1 = questionServiceImpl2.getAll(param1).get()!!
             assertEquals(5, dto1.count)
             assertEquals(3, dto1.list[0].qustion_id)
             assertEquals(ss.p3name, dto1.list[0].program_name)
@@ -155,7 +156,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q4date, dto1.list[1].created.toJST())
             assertEquals(ss.q4date, dto1.list[1].updated.toJST())
             assertEquals(ss.q4like.toInt(), dto1.list[1].like_count)
-            val dto2 = questionServiceImpl2.getAll(param2)
+            val dto2 = questionServiceImpl2.getAll(param2).get()!!
             assertEquals(5, dto2.count)
             assertEquals(2, dto2.list[0].qustion_id)
             assertEquals(ss.p2name, dto2.list[0].program_name)
@@ -182,7 +183,7 @@ object QuestionServiceRealSpec: Spek({
 
         test("createQuestion()の実データテスト") {
             transaction {
-                assertEquals(EntityResult.Success, questionServiceImpl2.createQuestion("dummy"))
+                questionServiceImpl2.createQuestion("dummy").get()!!
                 val todo =
                     todo_question.select { todo_question.question_id eq 6 }.map { it.toTodoQuestion() }.firstOrNull()
                 assertNotNull(todo)
@@ -192,7 +193,7 @@ object QuestionServiceRealSpec: Spek({
         }
 
         test("incr()の実データテスト") {
-            assertEquals(EntityResult.Success, questionServiceImpl2.incr(1))
+            questionServiceImpl2.incr(1)
             assertEquals(5.0, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
         }
 
@@ -202,7 +203,7 @@ object QuestionServiceRealSpec: Spek({
                     todo_question.select { todo_question.question_id eq 5 }.map { it.toTodoQuestion() }.firstOrNull()
                 val before_todo_6 =
                     done_question.select { done_question.question_id eq 5 }.map { it.toDoneQuestion() }.firstOrNull()
-                assertEquals(EntityResult.Success, questionServiceImpl2.answer(5))
+                questionServiceImpl2.answer(5).get()!!
                 val after_todo_5 =
                     todo_question.select { todo_question.question_id eq 5 }.map { it.toTodoQuestion() }.firstOrNull()
                 val after_todo_6 =

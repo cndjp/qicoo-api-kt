@@ -24,3 +24,13 @@ fun Long.checkCreate(): EntityResult =
         0L -> EntityResult.NotFoundEntityFailure
         else -> EntityResult.Success
     }
+
+data class QicooError(
+    val reason: QicooErrorReason
+)
+
+enum class QicooErrorReason {
+    MismatchDataStoreFailure,
+    CannotCreateEntityFailure,
+    NotFoundEntityFailure;
+}

@@ -17,7 +17,7 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
-import cndjp.qicoo.utils.EntityResult
+import com.github.michaelbull.result.mapBoth
 
 fun Route.questionController(kodein: Kodein) {
     val questionService by kodein.instance<QuestionService>()
@@ -38,18 +38,20 @@ fun Route.questionController(kodein: Kodein) {
                     else -> QuestionGetOrderParameter.desc
                 }
             )
-            call.respond(
-                HttpStatusCode.OK,
                 questionService.getAll(param)
-                    .let { result ->
-                        QuestionListResponse(
-                            result.list.map { dto ->
-                                QuestionResponse(dto)
-                            },
-                            result.count
-                        )
-                    }
-            )
+                    .mapBoth(
+                        success = { listDTO ->
+                            call.respond(
+                                HttpStatusCode.OK,
+                            QuestionListResponse(
+                                listDTO.list.map { dto ->
+                                    QuestionResponse(dto)
+                                },
+                                listDTO.count
+                            ))
+                        },
+                        failure = {call.respond(HttpStatusCode.InternalServerError, it.reason.name)}
+                    )
         }
         post {
             val validRequest = runCatching {
@@ -57,10 +59,11 @@ fun Route.questionController(kodein: Kodein) {
             }
             validRequest
                 .onSuccess { validatedRequest ->
-                    when (questionService.createQuestion(validatedRequest.comment)) {
-                        EntityResult.Success -> call.respond(HttpStatusCode.OK)
-                        EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
-                    }
+                    questionService.createQuestion(validatedRequest.comment)
+                        .mapBoth(
+                            success = {call.respond(HttpStatusCode.OK)},
+                            failure = {call.respond(HttpStatusCode.BadRequest, it.reason.name)}
+                        )
                 }
                 .onFailure { exception ->
                     call.respond(HttpStatusCode.BadRequest, "invalid json format: $exception")
@@ -68,17 +71,16 @@ fun Route.questionController(kodein: Kodein) {
         }
         post("/answer") {
             val questionId = call.parameters["question_id"]?.toInt() ?: 0
-            when (questionService.answer(questionId)) {
-                EntityResult.Success -> call.respond(HttpStatusCode.OK)
-                EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
-            }
+            questionService.answer(questionId)
+                .mapBoth(
+                    success = {call.respond(HttpStatusCode.OK)},
+                    failure = {call.respond(HttpStatusCode.BadRequest, it.reason.name)}
+                )
         }
         post("/like") {
             val questionId = call.parameters["question_id"]?.toInt() ?: 0
-            when (questionService.incr(questionId)) {
-                EntityResult.Success -> call.respond(HttpStatusCode.OK)
-                EntityResult.NotFoundEntityFailure -> call.respond(HttpStatusCode.BadRequest, EntityResult.NotFoundEntityFailure.returnReason())
-            }
+            questionService.incr(questionId)
+            call.respond(HttpStatusCode.OK)
         }
         get("/detail") {
             call.respond(HttpStatusCode.OK, "question detail routing ok")

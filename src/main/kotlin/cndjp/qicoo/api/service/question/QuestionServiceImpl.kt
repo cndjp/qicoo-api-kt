@@ -2,6 +2,7 @@ package cndjp.qicoo.api.service.question
 
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
@@ -11,19 +12,31 @@ import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
 import cndjp.qicoo.utils.EntityResult
+import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.utils.QicooErrorReason
 import cndjp.qicoo.utils.checkCreate
 import cndjp.qicoo.utils.checkNull
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.andThen
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.mapEither
+import com.github.michaelbull.result.mapError
+import com.github.michaelbull.result.toResultOr
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
     private val logger = KotlinLogging.logger {}
 
-    override fun getAll(param: QuestionGetParameter): QuestionListDTO =
+    override fun getAll(param: QuestionGetParameter): Result<QuestionListDTO, QicooError> =
         when (param.sort) {
             QuestionGetSortParameter.created -> questionAggrRepository.findAll(param.per, param.page, param.order.name)
                 .let { findResult ->
-                    QuestionListDTO(
+                    Ok(QuestionListDTO(
+                        // RedisのZRANGEにvalue(question id)でフィルタリングとかするコマンドなかったから全部単発で投げるけどいいよね
                         findResult.list.map { dao ->
                             val likeCount = likeCountRepository
                                 .findById(dao.question_id)?.count ?: 0
@@ -38,56 +51,67 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 dao.updated
                             )
                         }, findResult.total
-                    )
+                    ))
                 }
             QuestionGetSortParameter.like ->
                 likeCountRepository.findAll(param.per, param.page, param.order.name)
                     .let { findResult ->
-                        val mapFromMysql = questionAggrRepository.findByIds(
+                        questionAggrRepository.findByIds(
                             findResult.list.map {
                                 it.question_id ?: 0
                             }
-                        ).list.map { it.question_id to it }.toMap()
-
-                        if (findResult.list.size != mapFromMysql.size) {
-                            // 普通起きないと思うが、これが起きた時は大概mysqlとredisの間に不整合がある。
-                            logger.error("incorrect value between redis and mysql")
-                            return QuestionListDTO(
-                                listOf(),
-                                0
-                            )
-                        }
-
-                        QuestionListDTO(
-                            findResult.list.mapNotNull { dao ->
-                                mapFromMysql[dao.question_id]?.let {
-                                    QuestionDTO(
-                                        dao.question_id ?: 0,
-                                        it.program_name,
-                                        it.event_name,
-                                        it.display_name,
-                                        dao.count ?: 0,
-                                        it.comment,
-                                        it.created,
-                                        it.updated
-                                    )
-                                }
-                            },
-                            findResult.total
                         )
+                            .andThen {
+                                it.list.map { it.question_id to it }.toMap()
+                                    .let { when (findResult.list.size == it.size) {
+                                        true -> Ok(it)
+                                        false -> Err(QicooError(QicooErrorReason.MismatchDataStoreFailure))
+                                    } }
+                                    .andThen { mapFromMysql ->
+                                        Ok(QuestionListDTO(
+                                            findResult.list.mapNotNull { redisDAO ->
+                                                mapFromMysql[redisDAO.question_id]?.let { mysqlDAO ->
+                                                    QuestionDTO(
+                                                        redisDAO.question_id ?: 0,
+                                                        mysqlDAO.program_name,
+                                                        mysqlDAO.event_name,
+                                                        mysqlDAO.display_name,
+                                                        redisDAO.count ?: 0,
+                                                        mysqlDAO.comment,
+                                                        mysqlDAO.created,
+                                                        mysqlDAO.updated
+                                                    )
+                                                }
+                                            },
+                                            findResult.total
+                                        ))
+                                    }
+                            }
+                            .mapError {
+                                it
+                            }
                     }
         }
 
-    override fun createQuestion(comment: String): EntityResult {
-        val created = questionAggrRepository.insert(comment)
-        created?.question_id?.let { return likeCountRepository.create(it).checkCreate() }
+    override fun createQuestion(comment: String): Result<Unit, QicooError> =
+        questionAggrRepository.insert(comment)
+            .toResultOr {
+                QicooError(QicooErrorReason.CannotCreateEntityFailure)
+            }
+            .andThen {
+                likeCountRepository.create(it.question_id)
+            }
 
-        return EntityResult.NotFoundEntityFailure
+
+    override fun incr(questionId: Int) {
+        likeCountRepository.incr(questionId)
     }
 
-    override fun incr(questionId: Int): EntityResult =
-        likeCountRepository.incr(questionId).checkCreate()
-
-    override fun answer(questionId: Int): EntityResult =
-        questionAggrRepository.todo2done(questionId).checkNull()
+    override fun answer(questionId: Int): Result<Unit, QicooError> =
+        questionAggrRepository.todo2done(questionId)
+            .toResultOr { QicooError(QicooErrorReason.CannotCreateEntityFailure) }
+            .andThen {
+                logger.debug("question id ${it.question_id} from todo to done")
+                Ok(Unit)
+            }
 }

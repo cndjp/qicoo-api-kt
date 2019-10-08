@@ -3,10 +3,12 @@ package cndjp.qicoo.api.service.question
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.utils.EntityResult
+import cndjp.qicoo.utils.QicooError
+import com.github.michaelbull.result.Result
 
 interface QuestionService {
-    fun getAll(param: QuestionGetParameter): QuestionListDTO
-    fun createQuestion(comment: String): EntityResult
-    fun incr(questionId: Int): EntityResult
-    fun answer(questionId: Int): EntityResult
+    fun getAll(param: QuestionGetParameter): Result<QuestionListDTO, QicooError>
+    fun createQuestion(comment: String): Result<Unit, QicooError>
+    fun incr(questionId: Int)
+    fun answer(questionId: Int): Result<Unit, QicooError>
 }

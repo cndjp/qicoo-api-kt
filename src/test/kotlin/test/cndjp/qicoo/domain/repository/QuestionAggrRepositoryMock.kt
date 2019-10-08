@@ -5,6 +5,9 @@ import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
+import cndjp.qicoo.utils.QicooError
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 
 class QuestionAggrRepositoryMock : QuestionAggrRepository {
@@ -42,9 +45,9 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
         TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun findByIds(ids: List<Int>): QuestionAggrList =
+    override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> =
         when (ids) {
-            listOf(3, 4, 5) -> QuestionAggrList(
+            listOf(3, 4, 5) -> Ok(QuestionAggrList(
                 listOf(
                     QuestionAggr(
                         3,
@@ -75,7 +78,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                     )
                 ),
                 3
-            )
+            ))
             else -> TODO()
         }
 

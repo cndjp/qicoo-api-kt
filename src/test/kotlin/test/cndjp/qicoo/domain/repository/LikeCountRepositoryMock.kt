@@ -4,6 +4,9 @@ import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
+import cndjp.qicoo.utils.QicooError
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 
 class LikeCountRepositoryMock : LikeCountRepository {
@@ -72,7 +75,11 @@ class LikeCountRepositoryMock : LikeCountRepository {
             else -> TODO()
         }
 
-    override fun create(key: Int): Long = 1
+    override fun findByIds(keys: List<Int>): LikeCountList {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun create(key: Int): Result<Unit, QicooError> = Ok(Unit)
 
     override fun incr(key: Int): Double = 1.0
 }

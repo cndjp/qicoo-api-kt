@@ -19,6 +19,8 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.utils.QicooError
+import cndjp.qicoo.utils.QicooErrorReason
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
@@ -31,6 +33,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import cndjp.qicoo.utils.execAndMap
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     private val logger = KotlinLogging.logger {}
@@ -91,13 +96,10 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         TODO()
     }
 
-    override fun findByIds(ids: List<Int>): QuestionAggrList = transaction {
+    override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
             logger.error("ids is empty from QuestionAggrRepositoryImpl.findByIds(ids: List<Int>)")
-            return@transaction QuestionAggrList(
-                listOf(),
-                0
-            )
+            return@transaction Err(QicooError(QicooErrorReason.NotFoundEntityFailure))
         }
 
         val total = question.selectAll().count()
@@ -139,15 +141,15 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .also { prepare -> ids.map { prepare.orWhere { todo_question.question_id eq it } } }
             .map { it.toQuestionAggrFromTodo() }
 
-        QuestionAggrList(
+        Ok(QuestionAggrList(
             listOf(done_query, todo_sql).flatten(), total
-        )
+        ))
     }
 
     override fun insert(comment: String): TodoQuestionRow? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select {
-            (program.start_at lessEq now) and (program.end_at greaterEq now)
+            (program.start_at lessEq  now) and (program.end_at greaterEq now)
         }.firstOrNull()
         val question = NewQuestion.new {
             created = now

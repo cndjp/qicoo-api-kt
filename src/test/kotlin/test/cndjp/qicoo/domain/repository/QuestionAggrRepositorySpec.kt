@@ -15,6 +15,7 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.spekframework.spek2.Spek
 import cndjp.qicoo.utils.toJST
+import com.github.michaelbull.result.get
 
 object QuestionAggrRepositorySpec : Spek({
     val questionAggrRepositoryImpl = QuestionAggrRepositoryImpl()
@@ -63,7 +64,7 @@ object QuestionAggrRepositorySpec : Spek({
             }
         }
         test("findByIds()のテスト") {
-            val result1 = questionAggrRepositoryImpl.findByIds(listOf(2, 3, 4))
+            val result1 = questionAggrRepositoryImpl.findByIds(listOf(2, 3, 4)).get()!!
             val list1 = result1.list.sortedByDescending { it.created.toJST() }
             assertEquals(ss.q2comment, list1[0].comment)
             assertEquals(ss.e2name, list1[0].event_name)
@@ -86,7 +87,7 @@ object QuestionAggrRepositorySpec : Spek({
             assertEquals(ss.q4dname, list1[2].display_name)
             assertEquals(ss.q4date, list1[2].created.toJST())
             assertEquals(ss.q4date, list1[2].updated.toJST())
-            val result2 = questionAggrRepositoryImpl.findByIds(listOf(1, 4))
+            val result2 = questionAggrRepositoryImpl.findByIds(listOf(1, 4)).get()!!
             val list2 = result2.list.sortedByDescending { it.created.toJST() }
             assertEquals(ss.q1comment, list2[0].comment)
             assertEquals(ss.e1name, list2[0].event_name)
