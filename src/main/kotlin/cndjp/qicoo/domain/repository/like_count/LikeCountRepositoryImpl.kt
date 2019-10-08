@@ -1,12 +1,12 @@
 package cndjp.qicoo.domain.repository.like_count
 
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
-import cndjp.qicoo.api.QicooError
-import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result

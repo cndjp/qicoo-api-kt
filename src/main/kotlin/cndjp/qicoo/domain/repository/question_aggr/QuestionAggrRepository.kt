@@ -1,10 +1,10 @@
 package cndjp.qicoo.domain.repository.question_aggr
 
+import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
-import cndjp.qicoo.api.QicooError
 import com.github.michaelbull.result.Result
 
 interface QuestionAggrRepository {

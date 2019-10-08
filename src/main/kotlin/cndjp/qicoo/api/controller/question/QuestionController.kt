@@ -1,5 +1,7 @@
 package cndjp.qicoo.api.controller.question
 
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.QicooErrorReason
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetOrderParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
@@ -7,8 +9,6 @@ import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
-import cndjp.qicoo.api.QicooError
-import cndjp.qicoo.api.QicooErrorReason
 import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
@@ -91,7 +91,7 @@ fun Route.questionController(kodein: Kodein) {
         post("/like") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(cndjp.qicoo.api.QicooErrorReason.ParseRequestFailure.withLog())
+                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
             }
                 .mapBoth(
                     success = { validatedQuestionId ->

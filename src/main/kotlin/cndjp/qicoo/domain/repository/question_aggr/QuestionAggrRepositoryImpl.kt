@@ -1,5 +1,7 @@
 package cndjp.qicoo.domain.repository.question_aggr
 
+import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
 import cndjp.qicoo.domain.dao.done_question.NewDoneQuestion
 import cndjp.qicoo.domain.dao.done_question.toRaw
@@ -19,11 +21,9 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
-import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.utils.execAndMap
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
-import cndjp.qicoo.api.withLog
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
