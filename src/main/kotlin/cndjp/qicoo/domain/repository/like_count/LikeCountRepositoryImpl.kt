@@ -18,6 +18,9 @@ class LikeCountRepositoryImpl : LikeCountRepository {
 
     override fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError> {
         val total = RedisContext.zcount(qicooGlobalJedisPool.resource, likeCountListKey).toInt()
+        if (total == per && page != 1) {
+            return Err(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog()))
+        }
         val end = when (total > (page * per)) {
             true -> page * per
             false -> total
@@ -41,10 +44,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                 runCatching {
                     rowList.subList(((page - 1) * per), end)
                 }.fold(
-                    onSuccess = { when (it.isNotEmpty() || page == 1) {
-                        true -> Ok(LikeCountList(it, total))
-                        false -> Err(QicooError(QicooErrorReason.EmptyPagenationFailure.withLog()))
-                    } },
+                    onSuccess = { Ok(LikeCountList(it, total)) },
                     onFailure = { Err(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog())) }
                 )
             }

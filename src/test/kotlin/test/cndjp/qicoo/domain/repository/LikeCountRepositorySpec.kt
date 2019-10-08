@@ -46,7 +46,7 @@ object LikeCountRepositorySpec : Spek({
             assertEquals(1, list3[1].question_id)
             assertEquals(ss.q1like.toInt(), list3[1].count)
 
-            assertEquals(QicooError(QicooErrorReason.EmptyPagenationFailure), likeCountRepositoryImpl.findAll(5, 2, "desc").getError())
+            assertEquals(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure), likeCountRepositoryImpl.findAll(5, 2, "desc").getError())
             assertEquals(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure), likeCountRepositoryImpl.findAll(2, 10, "desc").getError())
         }
         test("findById()のテスト") {
