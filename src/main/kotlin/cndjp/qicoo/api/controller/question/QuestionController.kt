@@ -28,8 +28,8 @@ fun Route.questionController(kodein: Kodein) {
     route("/questions") {
         get {
             val param = QuestionGetParameter(
-                per = call.parameters["per"]?.toInt() ?: 10,
-                page = call.parameters["page"]?.toInt() ?: 1,
+                per = call.parameters["per"]?.toIntOrNull() ?: 10,
+                page = call.parameters["page"]?.toIntOrNull() ?: 1,
                 sort = when (call.parameters["sort"]) {
                     "created" -> QuestionGetSortParameter.created
                     "like" -> QuestionGetSortParameter.like
