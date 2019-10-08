@@ -91,9 +91,8 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                 likeCountRepository.create(it.question_id)
             }
 
-    override fun incr(questionId: Int) {
+    override fun incr(questionId: Int): Result<Unit, QicooError> =
         likeCountRepository.incr(questionId)
-    }
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)

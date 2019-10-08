@@ -10,6 +10,9 @@ import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.map
+import com.github.michaelbull.result.toResultOr
 
 class LikeCountRepositoryImpl : LikeCountRepository {
     val likeCountListKey = "like_count_list"
@@ -68,6 +71,13 @@ class LikeCountRepositoryImpl : LikeCountRepository {
             else -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog()))
         }
 
-    override fun incr(key: Int) =
-        RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
+    override fun incr(key: Int): Result<Unit, QicooError> =
+        this.findById(key)?.question_id
+            .toResultOr {
+                QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog())
+            }
+            .flatMap {
+                RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
+                Ok(Unit)
+            }
 }

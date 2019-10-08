@@ -93,11 +93,11 @@ fun Route.questionController(kodein: Kodein) {
             validQuestionId.toResultOr {
                 QicooError(QicooErrorReason.ParseRequestFailure.withLog())
             }
+                .flatMap { validatedQuestionId ->
+                    questionService.incr(validatedQuestionId)
+                }
                 .mapBoth(
-                    success = { validatedQuestionId ->
-                        questionService.incr(validatedQuestionId)
-                        call.respond(HttpStatusCode.OK)
-                    },
+                    success = { call.respond(HttpStatusCode.OK) },
                     failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                 )
         }

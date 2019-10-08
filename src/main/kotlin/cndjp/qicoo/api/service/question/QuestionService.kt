@@ -8,6 +8,6 @@ import com.github.michaelbull.result.Result
 interface QuestionService {
     fun getAll(param: QuestionGetParameter): Result<QuestionListDTO, QicooError>
     fun createQuestion(comment: String): Result<Unit, QicooError>
-    fun incr(questionId: Int)
+    fun incr(questionId: Int): Result<Unit, QicooError>
     fun answer(questionId: Int): Result<Unit, QicooError>
 }

@@ -82,5 +82,5 @@ LikeCountRepositoryMock : LikeCountRepository {
 
     override fun create(key: Int): Result<Unit, QicooError> = Ok(Unit)
 
-    override fun incr(key: Int): Double = 1.0
+    override fun incr(key: Int): Result<Unit, QicooError> = Ok(Unit)
 }

@@ -10,5 +10,5 @@ interface LikeCountRepository {
     fun findById(key: Int): LikeCount?
     fun findByIds(keys: List<Int>): LikeCountList
     fun create(key: Int): Result<Unit, QicooError>
-    fun incr(key: Int): Double
+    fun incr(key: Int): Result<Unit, QicooError>
 }
