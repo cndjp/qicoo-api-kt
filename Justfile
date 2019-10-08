@@ -32,7 +32,7 @@ build: load_dotenv
     ./gradlew --gradle-user-home=.gradle shadowJar
 
 run: build
-    java -jar build/libs/qicoo-0.0.1-all.jar
+    java -jar build/libs/qicoo-all.jar
 
 docker-build: load_dotenv
     docker build -t cndjp/qicoo/qpi:{{ DOCKER_TAG }} .

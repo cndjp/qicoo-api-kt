@@ -32,7 +32,7 @@ RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
 
 RUN mkdir -p /opt/app/
 WORKDIR /opt/app
-COPY --from=builder /opt/app/build/libs/qicoo-0.0.1-all.jar app.jar
+COPY --from=builder /opt/app/build/libs/qicoo-all.jar app.jar
 
 # expose port 8080
 EXPOSE 8080

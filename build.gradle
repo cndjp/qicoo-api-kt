@@ -84,6 +84,8 @@ dependencies {
 }
 
 shadowJar {
+    archivesBaseName = 'qicoo'
+    archiveVersion = ""
     manifest {
         attributes 'Main-Class': mainClassName
     }
