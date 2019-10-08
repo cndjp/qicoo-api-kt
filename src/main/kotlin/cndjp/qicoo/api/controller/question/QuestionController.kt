@@ -9,6 +9,7 @@ import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
+import cndjp.qicoo.utils.withLog
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
 import com.github.michaelbull.result.toResultOr
@@ -77,7 +78,7 @@ fun Route.questionController(kodein: Kodein) {
         post("/answer") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.InvalidConvertFailure)
+                QicooError(QicooErrorReason.InvalidConvertFailure.withLog())
             }
                 .flatMap { validatedQuestionId ->
                     questionService.answer(validatedQuestionId)
@@ -90,7 +91,7 @@ fun Route.questionController(kodein: Kodein) {
         post("/like") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.InvalidConvertFailure)
+                QicooError(QicooErrorReason.InvalidConvertFailure.withLog())
             }
                 .mapBoth(
                     success = { validatedQuestionId ->
