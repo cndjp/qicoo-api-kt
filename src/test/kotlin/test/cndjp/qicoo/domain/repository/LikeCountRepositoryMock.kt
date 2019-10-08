@@ -9,7 +9,8 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 
-class LikeCountRepositoryMock : LikeCountRepository {
+class
+LikeCountRepositoryMock : LikeCountRepository {
     private val ss = RepositorySpecSupport
 
     override fun findAll(per: Int, page: Int, order: String): LikeCountList =

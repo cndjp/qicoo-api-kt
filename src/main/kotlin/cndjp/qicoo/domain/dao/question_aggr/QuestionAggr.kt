@@ -5,9 +5,9 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.utils.toDateTimeJstForMySQL
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
-import cndjp.qicoo.utils.toDateTimeJstForMySQL
 
 class QuestionAggr {
     val question_id: Int

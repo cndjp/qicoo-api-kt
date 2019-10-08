@@ -26,7 +26,6 @@ import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
 import org.spekframework.spek2.Spek
-import cndjp.qicoo.utils.EntityResult
 import cndjp.qicoo.utils.toJST
 import com.github.michaelbull.result.get
 import kotlin.test.assertNotNull

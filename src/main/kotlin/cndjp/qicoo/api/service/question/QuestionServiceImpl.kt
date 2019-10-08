@@ -2,29 +2,23 @@ package cndjp.qicoo.api.service.question
 
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
-import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
-import mu.KotlinLogging
-import org.kodein.di.Kodein
-import org.kodein.di.KodeinAware
-import org.kodein.di.generic.instance
-import cndjp.qicoo.utils.EntityResult
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
-import cndjp.qicoo.utils.checkCreate
-import cndjp.qicoo.utils.checkNull
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.andThen
 import com.github.michaelbull.result.map
-import com.github.michaelbull.result.mapBoth
-import com.github.michaelbull.result.mapEither
 import com.github.michaelbull.result.mapError
 import com.github.michaelbull.result.toResultOr
+import mu.KotlinLogging
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.generic.instance
 
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
@@ -101,7 +95,6 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
             .andThen {
                 likeCountRepository.create(it.question_id)
             }
-
 
     override fun incr(questionId: Int) {
         likeCountRepository.incr(questionId)

@@ -8,8 +8,8 @@ import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
-import com.fasterxml.jackson.databind.SerializationFeature
 import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
+import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CallLogging

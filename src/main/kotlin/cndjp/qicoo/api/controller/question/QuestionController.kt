@@ -7,6 +7,7 @@ import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
+import com.github.michaelbull.result.mapBoth
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -17,7 +18,6 @@ import io.ktor.routing.post
 import io.ktor.routing.route
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
-import com.github.michaelbull.result.mapBoth
 
 fun Route.questionController(kodein: Kodein) {
     val questionService by kodein.instance<QuestionService>()
@@ -50,7 +50,7 @@ fun Route.questionController(kodein: Kodein) {
                                 listDTO.count
                             ))
                         },
-                        failure = {call.respond(HttpStatusCode.InternalServerError, it.reason.name)}
+                        failure = { call.respond(HttpStatusCode.InternalServerError, it.reason.name) }
                     )
         }
         post {
@@ -61,8 +61,8 @@ fun Route.questionController(kodein: Kodein) {
                 .onSuccess { validatedRequest ->
                     questionService.createQuestion(validatedRequest.comment)
                         .mapBoth(
-                            success = {call.respond(HttpStatusCode.OK)},
-                            failure = {call.respond(HttpStatusCode.BadRequest, it.reason.name)}
+                            success = { call.respond(HttpStatusCode.OK) },
+                            failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                         )
                 }
                 .onFailure { exception ->
@@ -73,8 +73,8 @@ fun Route.questionController(kodein: Kodein) {
             val questionId = call.parameters["question_id"]?.toInt() ?: 0
             questionService.answer(questionId)
                 .mapBoth(
-                    success = {call.respond(HttpStatusCode.OK)},
-                    failure = {call.respond(HttpStatusCode.BadRequest, it.reason.name)}
+                    success = { call.respond(HttpStatusCode.OK) },
+                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
                 )
         }
         post("/like") {

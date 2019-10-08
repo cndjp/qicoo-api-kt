@@ -7,9 +7,9 @@ import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
-import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import mu.KotlinLogging
 
 class LikeCountRepositoryImpl : LikeCountRepository {
@@ -67,7 +67,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
         }
 
     override fun findByIds(keys: List<Int>): LikeCountList {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
     }
 
     override fun create(key: Int): Result<Unit, QicooError> =

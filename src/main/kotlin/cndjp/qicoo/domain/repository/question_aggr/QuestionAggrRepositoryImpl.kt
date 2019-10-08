@@ -21,6 +21,12 @@ import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.todo_question.todo_question
 import cndjp.qicoo.utils.QicooError
 import cndjp.qicoo.utils.QicooErrorReason
+import cndjp.qicoo.utils.execAndMap
+import cndjp.qicoo.utils.getNowDateTimeJst
+import cndjp.qicoo.utils.orWhere
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.Ok
+import com.github.michaelbull.result.Result
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.QueryBuilder
 import org.jetbrains.exposed.sql.alias
@@ -30,12 +36,6 @@ import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
-import cndjp.qicoo.utils.execAndMap
-import cndjp.qicoo.utils.getNowDateTimeJst
-import cndjp.qicoo.utils.orWhere
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.Ok
-import com.github.michaelbull.result.Result
 
 class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     private val logger = KotlinLogging.logger {}
@@ -149,7 +149,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
     override fun insert(comment: String): TodoQuestionRow? = transaction {
         val now = getNowDateTimeJst()
         val nowProgram = program.select {
-            (program.start_at lessEq  now) and (program.end_at greaterEq now)
+            (program.start_at lessEq now) and (program.end_at greaterEq now)
         }.firstOrNull()
         val question = NewQuestion.new {
             created = now
