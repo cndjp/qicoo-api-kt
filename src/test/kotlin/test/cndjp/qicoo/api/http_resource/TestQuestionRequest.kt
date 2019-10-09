@@ -90,22 +90,30 @@ fun testPostRequestAnswer1(engine: Application.() -> Unit) = withTestApplication
 }
 
 fun testPostRequestAnswer2(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer?question_id=3")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer") {
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 3}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.OK, response.status())
     }
 }
 
 fun testPostRequestAnswer3(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer?question_id=8")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 8}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
         assertEquals("CouldNotCreateEntityFailure", response.content)
     }
 }
 
 fun testPostRequestAnswer4(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer?question_id=hoge")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": "魔王炎撃波"}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
-        assertEquals("ParseRequestFailure", response.content)
     }
 }
 
@@ -116,21 +124,29 @@ fun testPostRequestLike1(engine: Application.() -> Unit) = withTestApplication(e
 }
 
 fun testPostRequestLike2(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like?question_id=1")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 1}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.OK, response.status())
     }
 }
 
 fun testPostRequestLike3(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like?question_id=19")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 19}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
         assertEquals("CouldNotCreateEntityFailure", response.content)
     }
 }
 
 fun testPostRequestLike4(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like?question_id=hoge")) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": "善治郎頑張ります"}""".toByteArray())
+    }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
-        assertEquals("ParseRequestFailure", response.content)
     }
 }

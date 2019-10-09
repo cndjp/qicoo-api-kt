@@ -4,6 +4,8 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetOrderParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
+import cndjp.qicoo.api.http_resource.request.question.AnswerRequest
+import cndjp.qicoo.api.http_resource.request.question.IncrLikeRequest
 import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
@@ -78,30 +80,32 @@ fun Route.questionController(kodein: Kodein) {
                     }
             }
             post("/answer") {
-                val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
-                validQuestionId.toResultOr {
-                    QicooError.ParseRequestFailure.withLog()
+                val validRequest = runCatching {
+                    call.receive<AnswerRequest>()
                 }
-                    .flatMap { validatedQuestionId ->
-                        questionService.answer(validatedQuestionId)
+                validRequest
+                    .onSuccess { validatedRequest ->
+                        questionService.answer(validatedRequest.question_id)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK) },
+                                failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                            )
                     }
-                    .mapBoth(
-                        success = { call.respond(HttpStatusCode.OK) },
-                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                    )
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, it) }
             }
             post("/like") {
-                val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
-                validQuestionId.toResultOr {
-                    QicooError.ParseRequestFailure.withLog()
+                val validRequest = runCatching {
+                    call.receive<IncrLikeRequest>()
                 }
-                    .flatMap { validatedQuestionId ->
-                        questionService.incr(validatedQuestionId)
+                validRequest
+                    .onSuccess { validatedQuestionId ->
+                        questionService.incr(validatedQuestionId.question_id)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK) },
+                                failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                            )
                     }
-                    .mapBoth(
-                        success = { call.respond(HttpStatusCode.OK) },
-                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                    )
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, it) }
             }
             post("/reply") {
                 TODO()  // リプライを投稿する。
