@@ -91,7 +91,7 @@ fun Route.questionController(kodein: Kodein) {
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }
-                    .onFailure { call.respond(HttpStatusCode.BadRequest, it) }
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
             post("/like") {
                 val validRequest = runCatching {
@@ -105,7 +105,7 @@ fun Route.questionController(kodein: Kodein) {
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }
-                    .onFailure { call.respond(HttpStatusCode.BadRequest, it) }
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
             post("/reply") {
                 TODO()  // リプライを投稿する。
