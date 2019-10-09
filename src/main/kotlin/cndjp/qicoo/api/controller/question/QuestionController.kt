@@ -21,6 +21,7 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.routing.post
+import io.ktor.routing.put
 import io.ktor.routing.route
 import org.kodein.di.Kodein
 import org.kodein.di.generic.instance
@@ -79,7 +80,7 @@ fun Route.questionController(kodein: Kodein) {
                         )
                     }
             }
-            post("/answer") {
+            put("/answer") {
                 val validRequest = runCatching {
                     call.receive<AnswerRequest>()
                 }
@@ -93,7 +94,7 @@ fun Route.questionController(kodein: Kodein) {
                     }
                     .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
-            post("/like") {
+            put("/like") {
                 val validRequest = runCatching {
                     call.receive<IncrLikeRequest>()
                 }

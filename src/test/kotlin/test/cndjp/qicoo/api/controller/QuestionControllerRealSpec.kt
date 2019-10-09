@@ -70,43 +70,43 @@ object QuestionControllerRealSpec :Spek({
             }
         }
 
-        group("POST :+: /api/v1/questions/answer") {
-            test("POST :+: /api/v1/questions/answer") {
-                testPostRequestAnswer1(engine)
+        group("PUT :+: /api/v1/questions/answer") {
+            test("PUT :+: /api/v1/questions/answer") {
+                testPutRequestAnswer1(engine)
             }
-            test("POST :+: /api/v1/questions/answer?question_id=3 :=: 正常なパラメータ") {
+            test("PUT :+: /api/v1/questions/answer :=: 正常なJSON") {
                 transaction {
                     assertNotNull(todo_question.select { todo_question.question_id eq 3 }.map { it.toTodoQuestion() }.firstOrNull())
                     assertNull(done_question.select { done_question.question_id eq 3 }.map { it.toDoneQuestion() }.firstOrNull())
                 }
-                    testPostRequestAnswer2(engine)
+                    testPutRequestAnswer2(engine)
                 transaction {
                     assertNull(todo_question.select { todo_question.question_id eq 3 }.map { it.toTodoQuestion() }.firstOrNull())
                     assertNotNull(done_question.select { done_question.question_id eq 3 }.map { it.toDoneQuestion() }.firstOrNull())
                 }
             }
-            test("POST :+: /api/v1/questions/answer?question_id=8 :=: 存在しない質問へのリクエスト") {
-                testPostRequestAnswer3(engine)
+            test("PUT :+: /api/v1/questions/answer :=: 存在しない質問へのリクエスト") {
+                testPutRequestAnswer3(engine)
             }
-            test("POST :+: /api/v1/questions/answer?question_id=hoge :=: 異常なパラメータ") {
-                testPostRequestAnswer4(engine)
+            test("PUT :+: /api/v1/questions/answer :=: 異常なJSON") {
+                testPutRequestAnswer4(engine)
             }
         }
 
-        group("POST :+: /api/v1/questions/like") {
-            test("POST :+: /api/v1/questions/like") {
-                testPostRequestLike1(engine)
+        group("PUT :+: /api/v1/questions/like") {
+            test("PUT :+: /api/v1/questions/like") {
+                testPutRequestLike1(engine)
             }
-            test("POST :+: /api/v1/questions/like?question_id=1 :=: 正常なパラメータ") {
+            test("PUT :+: /api/v1/questions/like :=: 正常なJSON") {
                 assertEquals(ss.q1like, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
-                testPostRequestLike2(engine)
+                testPutRequestLike2(engine)
                 assertEquals(ss.q1like+1, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
             }
-            test("POST :+: /api/v1/questions/like?question_id=19 :=: 存在しない質問へのリクエスト") {
-                testPostRequestLike3(engine)
+            test("PUT :+: /api/v1/questions/like :=: 存在しない質問へのリクエスト") {
+                testPutRequestLike3(engine)
             }
-            test("POST :+: /api/v1/questions/like?question_id=hoge :=: 異常なパラメータ") {
-                testPostRequestLike4(engine)
+            test("PUT :+: /api/v1/questions/like :=: 異常なJSON") {
+                testPutRequestLike4(engine)
             }
         }
     }

@@ -83,14 +83,14 @@ fun testPostRequestQuestion3(engine: Application.() -> Unit) = withTestApplicati
     }
 }
 
-fun testPostRequestAnswer1(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer")) {
+fun testPutRequestAnswer1(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/answer")) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
     }
 }
 
-fun testPostRequestAnswer2(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer") {
+fun testPutRequestAnswer2(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/answer") {
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": 3}""".toByteArray())
     }) {
@@ -98,8 +98,8 @@ fun testPostRequestAnswer2(engine: Application.() -> Unit) = withTestApplication
     }
 }
 
-fun testPostRequestAnswer3(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer"){
+fun testPutRequestAnswer3(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/answer"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": 8}""".toByteArray())
     }) {
@@ -108,8 +108,8 @@ fun testPostRequestAnswer3(engine: Application.() -> Unit) = withTestApplication
     }
 }
 
-fun testPostRequestAnswer4(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/answer"){
+fun testPutRequestAnswer4(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/answer"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": "魔王炎撃波"}""".toByteArray())
     }) {
@@ -117,14 +117,14 @@ fun testPostRequestAnswer4(engine: Application.() -> Unit) = withTestApplication
     }
 }
 
-fun testPostRequestLike1(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like")) {
+fun testPutRequestLike1(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/like")) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
     }
 }
 
-fun testPostRequestLike2(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+fun testPutRequestLike2(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/like"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": 1}""".toByteArray())
     }) {
@@ -132,8 +132,8 @@ fun testPostRequestLike2(engine: Application.() -> Unit) = withTestApplication(e
     }
 }
 
-fun testPostRequestLike3(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+fun testPutRequestLike3(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/like"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": 19}""".toByteArray())
     }) {
@@ -142,8 +142,8 @@ fun testPostRequestLike3(engine: Application.() -> Unit) = withTestApplication(e
     }
 }
 
-fun testPostRequestLike4(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Post, "/api/v1/questions/like"){
+fun testPutRequestLike4(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Put, "/api/v1/questions/like"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
         setBody("""{"question_id": "善治郎頑張ります"}""".toByteArray())
     }) {

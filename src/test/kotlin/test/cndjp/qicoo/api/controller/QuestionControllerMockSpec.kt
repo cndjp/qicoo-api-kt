@@ -30,27 +30,27 @@ object QuestionControllerMockSpec : Spek({
             }
         }
 
-        group("POST :+: /api/v1/questions/answer") {
-            test("POST :+: /api/v1/questions/answer") {
-                testPostRequestAnswer1(engine)
+        group("PUT :+: /api/v1/questions/answer") {
+            test("PUT :+: /api/v1/questions/answer") {
+                testPutRequestAnswer1(engine)
             }
-            test("POST :+: /api/v1/questions/answer?question_id=3 :=: 正常なパラメータ") {
-                testPostRequestAnswer2(engine)
+            test("PUT :+: /api/v1/questions/answer :=: 正常なパラメータ") {
+                testPutRequestAnswer2(engine)
             }
-            test("POST :+: /api/v1/questions/answer?question_id=hoge :=: 異常なパラメータ") {
-                testPostRequestAnswer4(engine)
+            test("PUT :+: /api/v1/questions/answer :=: 異常なパラメータ") {
+                testPutRequestAnswer4(engine)
             }
         }
 
-        group("POST :+: /api/v1/questions/like") {
-            test("POST :+: /api/v1/questions/like") {
-                testPostRequestLike1(engine)
+        group("PUT :+: /api/v1/questions/like") {
+            test("PUT :+: /api/v1/questions/like") {
+                testPutRequestLike1(engine)
             }
-            test("POST :+: /api/v1/questions/like?question_id=1 :=: 正常なパラメータ") {
-                testPostRequestLike2(engine)
+            test("PUT :+: /api/v1/questions/like :=: 正常なパラメータ") {
+                testPutRequestLike2(engine)
             }
-            test("POST :+: /api/v1/questions/like?question_id=hoge :=: 異常なパラメータ") {
-                testPostRequestLike4(engine)
+            test("PUT :+: /api/v1/questions/like :=: 異常なパラメータ") {
+                testPutRequestLike4(engine)
             }
         }
     }
