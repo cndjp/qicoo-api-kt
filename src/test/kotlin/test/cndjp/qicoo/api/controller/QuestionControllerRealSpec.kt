@@ -44,7 +44,7 @@ object QuestionControllerRealSpec :Spek({
             test("GET :+: /questions?sort=like&order=asc&per=2&page=3") {
                 testGetRequestQuestion4(engine)
             }
-            test("GET :+: /questions?sort=like&order=asc&per=2&page=3") {
+            test("GET :+: /questions?sort=like&order=asc&per=10&page=3") {
                 testGetRequestQuestion5(engine)
             }
         }

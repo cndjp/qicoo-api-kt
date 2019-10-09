@@ -14,7 +14,10 @@ enum class QicooErrorReason {
     NotFoundEntityFailure;
 }
 
-fun QicooErrorReason.withLog(reason: String = this.name): QicooErrorReason =
-    this.also {
-        KotlinLogging.logger {}.error("error: $reason")
+fun QicooErrorReason.withLog(reason: String = this.name): QicooErrorReason {
+    var stackTrace = ""
+    Thread.currentThread().stackTrace.forEach { stackTrace += it }
+    return this.also {
+        KotlinLogging.logger {}.error("$reason - $stackTrace")
     }
+}
