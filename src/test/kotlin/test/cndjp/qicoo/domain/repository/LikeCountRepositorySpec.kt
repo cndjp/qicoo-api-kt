@@ -7,7 +7,6 @@ import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.api.QicooError
-import cndjp.qicoo.api.QicooErrorReason
 import com.github.michaelbull.result.get
 import com.github.michaelbull.result.getError
 import kotlin.test.assertEquals
@@ -46,8 +45,8 @@ object LikeCountRepositorySpec : Spek({
             assertEquals(1, list3[1].question_id)
             assertEquals(ss.q1like.toInt(), list3[1].count)
 
-            assertEquals(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure), likeCountRepositoryImpl.findAll(5, 2, "desc").getError())
-            assertEquals(QicooError(QicooErrorReason.ArrayIndexOutOfBoundsFailure), likeCountRepositoryImpl.findAll(2, 10, "desc").getError())
+            assertEquals(QicooError.ArrayIndexOutOfBoundsFailure, likeCountRepositoryImpl.findAll(5, 2, "desc").getError())
+            assertEquals(QicooError.ArrayIndexOutOfBoundsFailure, likeCountRepositoryImpl.findAll(2, 10, "desc").getError())
         }
         test("findById()のテスト") {
             val like1 = likeCountRepositoryImpl.findById(1)

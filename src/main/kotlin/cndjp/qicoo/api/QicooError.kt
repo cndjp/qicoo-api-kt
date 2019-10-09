@@ -2,11 +2,7 @@ package cndjp.qicoo.api
 
 import mu.KotlinLogging
 
-data class QicooError(
-    val reason: QicooErrorReason
-)
-
-enum class QicooErrorReason {
+enum class QicooError {
     ArrayIndexOutOfBoundsFailure,
     ParseRequestFailure,
     MismatchDataStoreFailure,
@@ -14,7 +10,7 @@ enum class QicooErrorReason {
     NotFoundEntityFailure;
 }
 
-fun QicooErrorReason.withLog(reason: String = this.name): QicooErrorReason {
+fun QicooError.withLog(reason: String = this.name): QicooError {
     var stackTrace = ""
     Thread.currentThread().stackTrace.forEach { stackTrace += it }
     return this.also {

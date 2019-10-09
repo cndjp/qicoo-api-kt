@@ -1,7 +1,6 @@
 package cndjp.qicoo.api.controller.question
 
 import cndjp.qicoo.api.QicooError
-import cndjp.qicoo.api.QicooErrorReason
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetOrderParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
@@ -72,33 +71,33 @@ fun Route.questionController(kodein: Kodein) {
                         )
                 }
                 .onFailure { exception ->
-                    call.respond(HttpStatusCode.BadRequest, QicooErrorReason.ParseRequestFailure.withLog(exception.toString()).name)
+                    call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog(exception.toString()).name)
                 }
         }
         post("/answer") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
+                QicooError.ParseRequestFailure.withLog()
             }
                 .flatMap { validatedQuestionId ->
                     questionService.answer(validatedQuestionId)
                 }
                 .mapBoth(
                     success = { call.respond(HttpStatusCode.OK) },
-                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                 )
         }
         post("/like") {
             val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
             validQuestionId.toResultOr {
-                QicooError(QicooErrorReason.ParseRequestFailure.withLog())
+                QicooError.ParseRequestFailure.withLog()
             }
                 .flatMap { validatedQuestionId ->
                     questionService.incr(validatedQuestionId)
                 }
                 .mapBoth(
                     success = { call.respond(HttpStatusCode.OK) },
-                    failure = { call.respond(HttpStatusCode.BadRequest, it.reason.name) }
+                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                 )
         }
         get("/detail") {

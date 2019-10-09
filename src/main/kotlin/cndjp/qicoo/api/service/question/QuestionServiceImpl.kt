@@ -57,7 +57,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 listFromMySQL.list.map { it.question_id to it }.toMap()
                                     .let { when (redisResult.list.size == it.size) {
                                         true -> Ok(it)
-                                        false -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.MismatchDataStoreFailure.withLog()))
+                                        false -> Err(QicooError.MismatchDataStoreFailure.withLog())
                                     } }
                                     .flatMap { mapFromMysql ->
                                         Ok(QuestionListDTO(
@@ -85,7 +85,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun createQuestion(comment: String): Result<Unit, QicooError> =
         questionAggrRepository.insert(comment)
             .toResultOr {
-                QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog())
+                QicooError.CouldNotCreateEntityFailure.withLog()
             }
             .flatMap {
                 likeCountRepository.create(it.question_id)
@@ -96,7 +96,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
-            .toResultOr { QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog()) }
+            .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
             .flatMap {
                 logger.debug("question id ${it.question_id} from todo to done")
                 Ok(Unit)

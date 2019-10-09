@@ -20,7 +20,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun findAll(per: Int, page: Int, order: String): Result<LikeCountList, QicooError> {
         val total = RedisContext.zcount(qicooGlobalJedisPool.resource, likeCountListKey).toInt()
         if (total == per && page != 1) {
-            return Err(QicooError(cndjp.qicoo.api.QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog()))
+            return Err(QicooError.ArrayIndexOutOfBoundsFailure.withLog())
         }
         val end = when (total > (page * per)) {
             true -> page * per
@@ -46,7 +46,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
                     rowList.subList(((page - 1) * per), end)
                 }.fold(
                     onSuccess = { Ok(LikeCountList(it, total)) },
-                    onFailure = { Err(QicooError(cndjp.qicoo.api.QicooErrorReason.ArrayIndexOutOfBoundsFailure.withLog())) }
+                    onFailure = { Err(QicooError.ArrayIndexOutOfBoundsFailure.withLog()) }
                 )
             }
     }
@@ -68,13 +68,13 @@ class LikeCountRepositoryImpl : LikeCountRepository {
     override fun create(key: Int): Result<Unit, QicooError> =
         when (RedisContext.zadd(qicooGlobalJedisPool.resource, likeCountListKey, mapOf(Pair(key.toString(), 0.0)))) {
             1L -> Ok(Unit)
-            else -> Err(QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog()))
+            else -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
         }
 
     override fun incr(key: Int): Result<Unit, QicooError> =
         this.findById(key)?.question_id
             .toResultOr {
-                QicooError(cndjp.qicoo.api.QicooErrorReason.CouldNotCreateEntityFailure.withLog())
+                QicooError.CouldNotCreateEntityFailure.withLog()
             }
             .flatMap {
                 RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())

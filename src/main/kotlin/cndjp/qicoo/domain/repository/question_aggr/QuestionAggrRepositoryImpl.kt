@@ -98,7 +98,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
-            return@transaction Err(QicooError(cndjp.qicoo.api.QicooErrorReason.NotFoundEntityFailure.withLog()))
+            return@transaction Err(QicooError.NotFoundEntityFailure.withLog())
         }
 
         val total = question.selectAll().count()
