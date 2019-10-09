@@ -32,6 +32,10 @@ sourceSets {
     test.resources.srcDirs = ['testresources']
 }
 
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}
+
 repositories {
     mavenLocal()
     mavenCentral()
@@ -46,24 +50,24 @@ configurations {
 
 dependencies {
     // stdlib
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     // kotlin-result
-    compile "com.michael-bull.kotlin-result:kotlin-result:1.1.0"
+    implementation "com.michael-bull.kotlin-result:kotlin-result:1.1.0"
     // gson
     implementation 'com.google.code.gson:gson:2.8.6'
     // lint
     ktlint "com.github.shyiko:ktlint:0.30.0"
     // ktor
-    compile "io.ktor:ktor-server-netty:$ktor_version"
-    compile "io.ktor:ktor-jackson:$ktor_version"
+    implementation "io.ktor:ktor-server-netty:$ktor_version"
+    implementation "io.ktor:ktor-jackson:$ktor_version"
     // log
-    compile "ch.qos.logback:logback-classic:$logback_version"
-    compile 'io.github.microutils:kotlin-logging:1.7.6'
+    implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation 'io.github.microutils:kotlin-logging:1.7.6'
     // redis
-    compile "redis.clients:jedis:$jedis_version"
+    implementation "redis.clients:jedis:$jedis_version"
     // rdb
-    compile "org.jetbrains.exposed:exposed:$exposed_version"
-    compile "mysql:mysql-connector-java:$mysql_version"
+    implementation "org.jetbrains.exposed:exposed:$exposed_version"
+    implementation "mysql:mysql-connector-java:$mysql_version"
     // di
     implementation "org.kodein.di:kodein-di-generic-jvm:$kodein_version"
         //jooqRuntime group: 'mysql', name: 'mysql-connector-java', version: "$mysql_version"
@@ -74,13 +78,13 @@ dependencies {
         //compile group: 'org.jooq', name: 'jooq-codegen', version: "$jooq_version"
         //compile group: 'org.jooq', name: 'jooq-codegen-maven', version: "$jooq_version"
     // test
-    compile "io.ktor:ktor-server-tests:$ktor_version"
-    compile "io.ktor:ktor-server-tests:$ktor_version"
-    compile 'org.junit.jupiter:junit-jupiter-api:5.5.2'
-    compile 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
-    compile "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
-    compile "org.spekframework.spek2:spek-runner-junit5:$spek_version"
-    compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.5.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.5.2'
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:$spek_version"
+    testImplementation "org.spekframework.spek2:spek-runner-junit5:$spek_version"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
 }
 
 shadowJar {
