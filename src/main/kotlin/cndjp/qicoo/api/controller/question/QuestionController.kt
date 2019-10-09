@@ -70,10 +70,10 @@ fun Route.questionController(kodein: Kodein) {
                                 failure = { call.respond(HttpStatusCode.InternalServerError) }
                             )
                     }
-                    .onFailure { exception ->
+                    .onFailure {
                         call.respond(
                             HttpStatusCode.BadRequest,
-                            QicooError.ParseRequestFailure.withLog(exception.toString()).name
+                            QicooError.ParseRequestFailure.withLog().name
                         )
                     }
             }
