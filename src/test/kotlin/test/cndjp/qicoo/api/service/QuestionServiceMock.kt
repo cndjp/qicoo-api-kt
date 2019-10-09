@@ -20,8 +20,9 @@ class QuestionServiceMock: QuestionService {
                      listOf(
                          QuestionDTO(
                              1,
-                             ss.p1name,
                              ss.e1name,
+                             ss.p1name,
+                             ss.q1dflg,
                              ss.q1dname,
                              ss.q1like.toInt(),
                              ss.q1comment,
@@ -30,8 +31,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              2,
-                             ss.p2name,
                              ss.e2name,
+                             ss.p2name,
+                             ss.q2dflg,
                              ss.q2dname,
                              ss.q2like.toInt(),
                              ss.q2comment,
@@ -40,8 +42,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              3,
-                             ss.p3name,
                              ss.e3name,
+                             ss.p3name,
+                             ss.q3dflg,
                              ss.q3dname,
                              ss.q3like.toInt(),
                              ss.q3comment,
@@ -50,8 +53,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              4,
-                             ss.p4name,
                              ss.e4name,
+                             ss.p4name,
+                             ss.q4dflg,
                              ss.q4dname,
                              ss.q4like.toInt(),
                              ss.q4comment,
@@ -60,8 +64,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              5,
-                             ss.p5name,
                              ss.e5name,
+                             ss.p5name,
+                             ss.q5dflg,
                              ss.q5dname,
                              ss.q5like.toInt(),
                              ss.q5comment,
@@ -77,8 +82,9 @@ class QuestionServiceMock: QuestionService {
                      listOf(
                          QuestionDTO(
                              3,
-                             ss.p3name,
                              ss.e3name,
+                             ss.p3name,
+                             ss.q3dflg,
                              ss.q3dname,
                              ss.q3like.toInt(),
                              ss.q3comment,
@@ -87,8 +93,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              4,
-                             ss.p4name,
                              ss.e4name,
+                             ss.p4name,
+                             ss.q4dflg,
                              ss.q4dname,
                              ss.q4like.toInt(),
                              ss.q4comment,
@@ -97,8 +104,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              5,
-                             ss.p5name,
                              ss.e5name,
+                             ss.p5name,
+                             ss.q5dflg,
                              ss.q5dname,
                              ss.q5like.toInt(),
                              ss.q5comment,
@@ -107,8 +115,9 @@ class QuestionServiceMock: QuestionService {
                          ),
                          QuestionDTO(
                              1,
-                             ss.p1name,
                              ss.e1name,
+                             ss.p1name,
+                             ss.q1dflg,
                              ss.q1dname,
                              ss.q1like.toInt(),
                              ss.q1comment,

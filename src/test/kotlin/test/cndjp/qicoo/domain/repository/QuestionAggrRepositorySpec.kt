@@ -1,9 +1,7 @@
 package test.cndjp.qicoo.domain.repository
 
-import cndjp.qicoo.domain.dao.done_question.toDoneQuestion
-import cndjp.qicoo.domain.dao.todo_question.toTodoQuestion
-import cndjp.qicoo.domain.model.done_question.done_question
-import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.dao.question.toQuestion
+import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 import test.cndjp.qicoo.domain.repository.support.dropDummyData
@@ -11,11 +9,12 @@ import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.spekframework.spek2.Spek
 import cndjp.qicoo.utils.toJST
 import com.github.michaelbull.result.get
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.select
 
 object QuestionAggrRepositorySpec : Spek({
     val questionAggrRepositoryImpl = QuestionAggrRepositoryImpl()
@@ -112,18 +111,16 @@ object QuestionAggrRepositorySpec : Spek({
                 val result2 = questionAggrRepositoryImpl.insert(newQuestionComment2)
                 assertNotNull(result1)
                 assertNotNull(result2)
-                assertNotNull(todo_question.select { todo_question.comment eq newQuestionComment1 }.map { it.toTodoQuestion() }.firstOrNull())
-                assertNotNull(todo_question.select { todo_question.comment eq newQuestionComment2 }.map { it.toTodoQuestion() }.firstOrNull())
+                assertNotNull(question.select { question.comment eq newQuestionComment1 }.map { it.toQuestion() }.firstOrNull())
+                assertNotNull(question.select { question.comment eq newQuestionComment2 }.map { it.toQuestion() }.firstOrNull())
             }
         }
         test("todo2done()のテスト") {
             transaction {
-                assertNotNull(todo_question.select { todo_question.question_id eq 5 }.map { it.toTodoQuestion() }.firstOrNull())
-                assertNull(done_question.select { done_question.question_id eq 5 }.map { it.toDoneQuestion() }.firstOrNull())
+                assertNull(question.select { (question.id eq 5) and (question.done_flag eq true ) }.map { it.toQuestion() }.firstOrNull())
                 val result5 = questionAggrRepositoryImpl.todo2done(5)
                 assertNotNull(result5)
-                assertNull(todo_question.select { todo_question.question_id eq 5 }.map { it.toTodoQuestion() }.firstOrNull())
-                assertNotNull(done_question.select { done_question.question_id eq 5 }.map { it.toDoneQuestion() }.firstOrNull())
+                assertNotNull(question.select { (question.id eq 5) and (question.done_flag eq true ) }.map { it.toQuestion() }.firstOrNull())
             }
         }
     }

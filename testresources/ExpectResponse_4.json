@@ -5,6 +5,7 @@
       "program_name": "program_name3",
       "event_name": "event_name3",
       "display_name": "poe",
+      "done_flg": false,
       "like_count": 10,
       "comment": "what is poe",
       "created": "2020-10-08 19:00:00",

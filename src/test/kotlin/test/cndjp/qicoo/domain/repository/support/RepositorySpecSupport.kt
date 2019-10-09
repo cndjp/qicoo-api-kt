@@ -1,17 +1,13 @@
 package test.cndjp.qicoo.domain.repository.support
 
-import cndjp.qicoo.domain.dao.done_question.NewDoneQuestion
 import cndjp.qicoo.domain.dao.event.NewEvent
 import cndjp.qicoo.domain.dao.program.NewProgram
 import cndjp.qicoo.domain.dao.question.NewQuestion
-import cndjp.qicoo.domain.dao.todo_question.NewTodoQuestion
-import cndjp.qicoo.domain.model.done_question.done_question
 import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.linked_user.linked_user
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.reply.reply
-import cndjp.qicoo.domain.model.todo_question.todo_question
 import cndjp.qicoo.domain.model.unlinked_user.unlinked_user
 import cndjp.qicoo.domain.model.user.user
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
@@ -76,6 +72,11 @@ object RepositorySpecSupport {
     val q3like = 10.0
     val q4like = 8.0
     val q5like = 6.0
+    val q1dflg = true
+    val q2dflg = true
+    val q3dflg = false
+    val q4dflg = false
+    val q5dflg = false
 }
 
 fun RepositorySpecSupport.insertDummyData() {
@@ -84,16 +85,12 @@ fun RepositorySpecSupport.insertDummyData() {
     transaction {
         SchemaUtils.drop(
             question,
-            done_question,
-            todo_question,
             event,
             program
         )
 
         SchemaUtils.create(
             question,
-            done_question,
-            todo_question,
             event,
             program
         )
@@ -178,60 +175,46 @@ fun RepositorySpecSupport.insertDummyData() {
             created = q5date
             updated = q5date
         }
-        val q1 = NewQuestion.new {
+        NewQuestion.new {
+            program_id = p1.id
+            done_flg = q1dflg
+            display_name = q1dname
+            comment = q1comment
             created = q1date
             updated = q1date
         }
-
-        val q2 = NewQuestion.new {
+        NewQuestion.new {
+            program_id = p2.id
+            done_flg = q2dflg
+            display_name = q2dname
+            comment = q2comment
             created = q2date
             updated = q2date
         }
-        val q3 = NewQuestion.new {
+        NewQuestion.new {
+            program_id = p3.id
+            done_flg = q3dflg
+            display_name = q3dname
+            comment = q3comment
             created = q3date
             updated = q3date
         }
-
-        val q4 = NewQuestion.new {
+        NewQuestion.new {
+            program_id = p4.id
+            done_flg = q4dflg
+            display_name = q4dname
+            comment = q4comment
             created = q4date
             updated = q4date
         }
-
-        val q5 = NewQuestion.new {
+        NewQuestion.new {
+            program_id = p5.id
+            done_flg = q5dflg
+            display_name = q5dname
+            comment = q5comment
             created = q5date
             updated = q5date
         }
-
-        NewDoneQuestion(
-            question_id = q1.id,
-            program_id = p1.id,
-            display_name = q1dname,
-            comment = q1comment
-        )
-        NewDoneQuestion(
-            question_id = q2.id,
-            program_id = p2.id,
-            display_name = q2dname,
-            comment = q2comment
-        )
-        NewTodoQuestion(
-            question_id = q3.id,
-            program_id = p3.id,
-            display_name = q3dname,
-            comment = q3comment
-        )
-        NewTodoQuestion(
-            question_id = q4.id,
-            program_id = p4.id,
-            display_name = q4dname,
-            comment = q4comment
-        )
-        NewTodoQuestion(
-            question_id = q5.id,
-            program_id = p5.id,
-            display_name = q5dname,
-            comment = q5comment
-        )
         RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1", q1like), Pair("2", q2like), Pair("3", q3like), Pair("4", q4like), Pair("5", q5like)))
     }
 }
@@ -242,8 +225,6 @@ fun RepositorySpecSupport.dropDummyData() {
         SchemaUtils.drop(
             question,
             reply,
-            done_question,
-            todo_question,
             event,
             program,
             user,

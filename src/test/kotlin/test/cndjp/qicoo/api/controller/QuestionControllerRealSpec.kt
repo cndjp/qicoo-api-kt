@@ -1,14 +1,13 @@
 package test.cndjp.qicoo.api.controller
 
 import cndjp.qicoo.api.main
-import cndjp.qicoo.domain.dao.done_question.toDoneQuestion
-import cndjp.qicoo.domain.dao.todo_question.toTodoQuestion
-import cndjp.qicoo.domain.model.done_question.done_question
-import cndjp.qicoo.domain.model.todo_question.todo_question
+import cndjp.qicoo.domain.dao.question.toQuestion
+import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import io.ktor.application.Application
+import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.spekframework.spek2.Spek
@@ -56,11 +55,11 @@ object QuestionControllerRealSpec :Spek({
             test("POST :+: /api/v1/questions :+: 正常なJSON") {
                 val beforeKeys = RedisContext.zcount(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey)
                 transaction {
-                    assertNull(todo_question.select { todo_question.comment eq "kimetsu no yaiba" }.map { it.toTodoQuestion() }.firstOrNull())
+                    assertNull(question.select { question.comment eq "kimetsu no yaiba" }.map { it.toQuestion() }.firstOrNull())
                 }
                     testPostRequestQuestion2(engine)
                  transaction {
-                     assertNotNull(todo_question.select { todo_question.comment eq "kimetsu no yaiba" }.map { it.toTodoQuestion() }.firstOrNull())
+                     assertNotNull(question.select { question.comment eq "kimetsu no yaiba" }.map { it.toQuestion() }.firstOrNull())
                  }
                 val afterKeys = RedisContext.zcount(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey)
                 assertEquals(beforeKeys+1, afterKeys)
@@ -76,13 +75,11 @@ object QuestionControllerRealSpec :Spek({
             }
             test("PUT :+: /api/v1/questions/answer :=: 正常なJSON") {
                 transaction {
-                    assertNotNull(todo_question.select { todo_question.question_id eq 3 }.map { it.toTodoQuestion() }.firstOrNull())
-                    assertNull(done_question.select { done_question.question_id eq 3 }.map { it.toDoneQuestion() }.firstOrNull())
+                    assertNull(question.select { (question.id eq 3) and (question.done_flag eq true) }.map { it.toQuestion() }.firstOrNull())
                 }
                     testPutRequestAnswer2(engine)
                 transaction {
-                    assertNull(todo_question.select { todo_question.question_id eq 3 }.map { it.toTodoQuestion() }.firstOrNull())
-                    assertNotNull(done_question.select { done_question.question_id eq 3 }.map { it.toDoneQuestion() }.firstOrNull())
+                    assertNotNull(question.select { (question.id eq 3) and (question.done_flag eq true) }.map { it.toQuestion() }.firstOrNull())
                 }
             }
             test("PUT :+: /api/v1/questions/answer :=: 存在しない質問へのリクエスト") {

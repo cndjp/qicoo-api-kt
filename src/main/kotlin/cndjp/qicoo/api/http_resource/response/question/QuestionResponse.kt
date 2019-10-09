@@ -7,6 +7,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
     val question_id: Int
     val program_name: String
     val event_name: String
+    val done_flg: Boolean
     val display_name: String
     val like_count: Int
     val comment: String
@@ -14,9 +15,10 @@ class QuestionResponse(questionDTO: QuestionDTO) {
     val updated: String
 
     init {
-        this.question_id = questionDTO.qustion_id
+        this.question_id = questionDTO.question_id
         this.program_name = questionDTO.program_name
         this.event_name = questionDTO.event_name
+        this.done_flg = questionDTO.done_flag
         this.display_name = questionDTO.display_name
         this.like_count = questionDTO.like_count
         this.comment = questionDTO.comment

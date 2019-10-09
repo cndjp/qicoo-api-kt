@@ -1,11 +1,10 @@
 package test.cndjp.qicoo.domain.repository
 
-import cndjp.qicoo.domain.dao.done_question.DoneQuestionRow
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
-import cndjp.qicoo.domain.dao.todo_question.TodoQuestionRow
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.domain.dao.question.NewQuestionResult
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -21,6 +20,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                         1,
                         ss.e1name,
                         ss.p1name,
+                        ss.q1dflg,
                         ss.q1dname,
                         ss.q1comment,
                         ss.q1date,
@@ -30,6 +30,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                         2,
                         ss.e2name,
                         ss.p2name,
+                        ss.q1dflg,
                         ss.q2dname,
                         ss.q2comment,
                         ss.q2date,
@@ -53,6 +54,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                         3,
                         ss.e3name,
                         ss.p3name,
+                        ss.q3dflg,
                         ss.q3dname,
                         ss.q3comment,
                         ss.q3date,
@@ -62,6 +64,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                         4,
                         ss.e4name,
                         ss.p4name,
+                        ss.q4dflg,
                         ss.q4dname,
                         ss.q4comment,
                         ss.q4date,
@@ -71,6 +74,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
                         5,
                         ss.e5name,
                         ss.p5name,
+                        ss.q5dflg,
                         ss.q5dname,
                         ss.q5comment,
                         ss.q5date,
@@ -82,19 +86,11 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
             else -> TODO()
         }
 
-    override fun insert(comment: String): TodoQuestionRow? =
-        TodoQuestionRow(
-            question_id = 6,
-            program_id = 6,
-            display_name = ss.p6name,
-            comment = ss.q6comment
-        )
+    override fun insert(comment: String): Result<NewQuestionResult, QicooError> =
+        Ok(NewQuestionResult(
+            question_id = 6
+        ))
 
-    override fun todo2done(id: Int): DoneQuestionRow? =
-        DoneQuestionRow(
-            question_id = 6,
-            program_id = 6,
-            display_name = ss.p6name,
-            comment = ss.q6comment
-        )
+    override fun todo2done(id: Int): Result<Unit, QicooError> =
+        Ok(Unit)
 }

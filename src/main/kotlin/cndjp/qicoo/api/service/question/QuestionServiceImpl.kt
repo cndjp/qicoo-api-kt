@@ -34,8 +34,9 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 .findById(dao.question_id)?.count ?: 0
                             QuestionDTO(
                                 dao.question_id,
-                                dao.program_name,
                                 dao.event_name,
+                                dao.program_name,
+                                dao.done_flag,
                                 dao.display_name,
                                 likeCount,
                                 dao.comment,
@@ -65,8 +66,9 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                                 mapFromMysql[redisDAO.question_id]?.let { mysqlDAO ->
                                                     QuestionDTO(
                                                         redisDAO.question_id ?: 0,
-                                                        mysqlDAO.program_name,
                                                         mysqlDAO.event_name,
+                                                        mysqlDAO.program_name,
+                                                        mysqlDAO.done_flag,
                                                         mysqlDAO.display_name,
                                                         redisDAO.count ?: 0,
                                                         mysqlDAO.comment,
@@ -84,9 +86,6 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun createQuestion(comment: String): Result<Unit, QicooError> =
         questionAggrRepository.insert(comment)
-            .toResultOr {
-                QicooError.CouldNotCreateEntityFailure.withLog()
-            }
             .flatMap {
                 likeCountRepository.create(it.question_id)
             }
@@ -96,9 +95,4 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
-            .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
-            .flatMap {
-                logger.debug("question id ${it.question_id} from todo to done")
-                Ok(Unit)
-            }
 }
