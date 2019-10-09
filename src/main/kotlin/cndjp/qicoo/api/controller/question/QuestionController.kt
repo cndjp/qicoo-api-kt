@@ -98,8 +98,8 @@ fun Route.questionController(kodein: Kodein) {
                     call.receive<IncrLikeRequest>()
                 }
                 validRequest
-                    .onSuccess { validatedQuestionId ->
-                        questionService.incr(validatedQuestionId.question_id)
+                    .onSuccess { validatedRequest ->
+                        questionService.incr(validatedRequest.question_id)
                             .mapBoth(
                                 success = { call.respond(HttpStatusCode.OK) },
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
