@@ -25,23 +25,23 @@ import org.kodein.di.generic.instance
 
 fun Route.questionController(kodein: Kodein) {
     val questionService by kodein.instance<QuestionService>()
-
-    route("/questions") {
-        get {
-            val param = QuestionGetParameter(
-                per = call.parameters["per"]?.toIntOrNull() ?: 10,
-                page = call.parameters["page"]?.toIntOrNull() ?: 1,
-                sort = when (call.parameters["sort"]) {
-                    "created" -> QuestionGetSortParameter.created
-                    "like" -> QuestionGetSortParameter.like
-                    else -> QuestionGetSortParameter.created
-                },
-                order = when (call.parameters["order"]) {
-                    "asc" -> QuestionGetOrderParameter.asc
-                    "desc" -> QuestionGetOrderParameter.desc
-                    else -> QuestionGetOrderParameter.desc
-                }
-            )
+    route("/api/v1/") {
+        route("/questions") {
+            get {
+                val param = QuestionGetParameter(
+                    per = call.parameters["per"]?.toIntOrNull() ?: 10,
+                    page = call.parameters["page"]?.toIntOrNull() ?: 1,
+                    sort = when (call.parameters["sort"]) {
+                        "created" -> QuestionGetSortParameter.created
+                        "like" -> QuestionGetSortParameter.like
+                        else -> QuestionGetSortParameter.created
+                    },
+                    order = when (call.parameters["order"]) {
+                        "asc" -> QuestionGetOrderParameter.asc
+                        "desc" -> QuestionGetOrderParameter.desc
+                        else -> QuestionGetOrderParameter.desc
+                    }
+                )
                 questionService.getAll(param)
                     .mapBoth(
                         success = { listDTO ->
@@ -57,51 +57,61 @@ fun Route.questionController(kodein: Kodein) {
                         },
                         failure = { call.respond(HttpStatusCode.InternalServerError) }
                     )
-        }
-        post {
-            val validRequest = runCatching {
-                call.receive<QuestionRequest>()
             }
-            validRequest
-                .onSuccess { validatedRequest ->
-                    questionService.createQuestion(validatedRequest.comment)
-                        .mapBoth(
-                            success = { call.respond(HttpStatusCode.OK) },
-                            failure = { call.respond(HttpStatusCode.InternalServerError) }
+            post {
+                val validRequest = runCatching {
+                    call.receive<QuestionRequest>()
+                }
+                validRequest
+                    .onSuccess { validatedRequest ->
+                        questionService.createQuestion(validatedRequest.comment)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK) },
+                                failure = { call.respond(HttpStatusCode.InternalServerError) }
+                            )
+                    }
+                    .onFailure { exception ->
+                        call.respond(
+                            HttpStatusCode.BadRequest,
+                            QicooError.ParseRequestFailure.withLog(exception.toString()).name
                         )
-                }
-                .onFailure { exception ->
-                    call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog(exception.toString()).name)
-                }
-        }
-        post("/answer") {
-            val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
-            validQuestionId.toResultOr {
-                QicooError.ParseRequestFailure.withLog()
+                    }
             }
-                .flatMap { validatedQuestionId ->
-                    questionService.answer(validatedQuestionId)
+            post("/answer") {
+                val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
+                validQuestionId.toResultOr {
+                    QicooError.ParseRequestFailure.withLog()
                 }
-                .mapBoth(
-                    success = { call.respond(HttpStatusCode.OK) },
-                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                )
-        }
-        post("/like") {
-            val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
-            validQuestionId.toResultOr {
-                QicooError.ParseRequestFailure.withLog()
+                    .flatMap { validatedQuestionId ->
+                        questionService.answer(validatedQuestionId)
+                    }
+                    .mapBoth(
+                        success = { call.respond(HttpStatusCode.OK) },
+                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                    )
             }
-                .flatMap { validatedQuestionId ->
-                    questionService.incr(validatedQuestionId)
+            post("/like") {
+                val validQuestionId = call.parameters["question_id"]?.toIntOrNull()
+                validQuestionId.toResultOr {
+                    QicooError.ParseRequestFailure.withLog()
                 }
-                .mapBoth(
-                    success = { call.respond(HttpStatusCode.OK) },
-                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                )
-        }
-        get("/detail") {
-            call.respond(HttpStatusCode.OK, "question detail routing ok")
+                    .flatMap { validatedQuestionId ->
+                        questionService.incr(validatedQuestionId)
+                    }
+                    .mapBoth(
+                        success = { call.respond(HttpStatusCode.OK) },
+                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                    )
+            }
+            post("/reply") {
+                TODO()  // リプライを投稿する。
+                        // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
+                        // リプライはRedisのソート付きリストに入れる。任意のQuestionに所属し、単体では存在しないオブジェクトとする
+            }
+
+            get("/detail") {
+                TODO() // 主に該当のQuestionとリプライ一覧を表示する。
+            }
         }
     }
 }

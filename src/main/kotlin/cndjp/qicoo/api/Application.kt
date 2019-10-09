@@ -12,13 +12,17 @@ import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install
+import io.ktor.features.CORS
 import io.ktor.features.CallLogging
 import io.ktor.features.ContentNegotiation
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.singleton
+import java.time.Duration
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -29,6 +33,19 @@ fun Application.main() {
         jackson {
             configure(SerializationFeature.INDENT_OUTPUT, true)
         }
+    }
+    install(CORS) {
+        method(HttpMethod.Get)
+        method(HttpMethod.Post)
+        method(HttpMethod.Put)
+        method(HttpMethod.Options)
+        header(HttpHeaders.ContentType)
+        header(HttpHeaders.ContentLength)
+        header(HttpHeaders.Authorization)
+        anyHost() // そのうち絞る
+        allowCredentials = true
+        allowNonSimpleContentTypes = true
+        maxAge = Duration.ofDays(1)
     }
     val serviceKodein = Kodein {
         val repoKodein = Kodein {
