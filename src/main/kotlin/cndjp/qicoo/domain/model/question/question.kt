@@ -8,7 +8,7 @@ object question : IntIdTable() {
         "program_id",
         program
     ) references program.id)
-    val done_flag = bool("done_flag") .default(false)
+    val done_flag = bool("done_flag").default(false)
     val display_name = varchar("display_name", 255).default("anonymous")
     val comment = varchar("comment", 255).default("")
     val created = datetime("created")

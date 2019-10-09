@@ -19,13 +19,11 @@ fun Route.accountController(kodein: Kodein) {
             }
 
             post("/signup") {
-                TODO() // サインアップする。こパスワードとかtwitterの認証情報を照会して、
-                       // user idだけど、JWTとかでやりとりしたい
+                TODO() // サインアップする。こパスワードとかtwitterの認証情報を照会して、user idだけど、JWTとかでやりとりしたい
             }
 
             post("/login") {
-                TODO() // パスワードとかtwitterの認証情報を照会して、
-                       // OKならJWTとかで認証ヘッダーをつけて、NGなら4XX 5XXを返す。
+                TODO() // パスワードとかtwitterの認証情報を照会して、 OKならJWTとかで認証ヘッダーをつけて、NGなら4XX 5XXを返す。
             }
         }
     }

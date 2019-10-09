@@ -11,9 +11,7 @@ import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.withLog
-import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
-import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -62,10 +60,9 @@ fun Route.questionController(kodein: Kodein) {
                     )
             }
             post {
-                val validRequest = runCatching {
+                runCatching {
                     call.receive<QuestionRequest>()
                 }
-                validRequest
                     .onSuccess { validatedRequest ->
                         questionService.createQuestion(validatedRequest.comment)
                             .mapBoth(
@@ -81,10 +78,9 @@ fun Route.questionController(kodein: Kodein) {
                     }
             }
             put("/answer") {
-                val validRequest = runCatching {
+                runCatching {
                     call.receive<AnswerRequest>()
                 }
-                validRequest
                     .onSuccess { validatedRequest ->
                         questionService.answer(validatedRequest.question_id)
                             .mapBoth(
@@ -95,10 +91,9 @@ fun Route.questionController(kodein: Kodein) {
                     .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
             put("/like") {
-                val validRequest = runCatching {
+                runCatching {
                     call.receive<IncrLikeRequest>()
                 }
-                validRequest
                     .onSuccess { validatedRequest ->
                         questionService.incr(validatedRequest.question_id)
                             .mapBoth(
@@ -109,7 +104,7 @@ fun Route.questionController(kodein: Kodein) {
                     .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
             post("/reply") {
-                TODO()  // リプライを投稿する。
+                TODO() // リプライを投稿する。
                         // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
                         // リプライはRedisのソート付きリストに入れる。任意のQuestionに所属し、単体では存在しないオブジェクトとする
             }

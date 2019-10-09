@@ -6,7 +6,7 @@ import cndjp.qicoo.domain.model.question.question
 import org.jetbrains.exposed.sql.ResultRow
 import org.joda.time.DateTime
 
-data class QuestionAggr (
+data class QuestionAggr(
     val question_id: Int,
     val event_name: String,
     val program_name: String,

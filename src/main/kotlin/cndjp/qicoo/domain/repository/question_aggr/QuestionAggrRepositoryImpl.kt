@@ -21,7 +21,6 @@ import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.alias
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.select
@@ -58,7 +57,6 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .map { it.toQuestionAggr() },
             total
         )
-
     }
     override fun findById(id: Int): QuestionAggr? {
         TODO()
@@ -84,8 +82,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 .slice(question.id, event.name, program.name, question.done_flag, question.display_name, question.comment, question.program_id, question.created, question.updated)
                 .selectAll()
             .also { prepare -> ids.map { prepare.orWhere { question.id eq it } } }
-            .map { it.toQuestionAggr() }
-            , total))
+            .map { it.toQuestionAggr() }, total))
     }
 
     override fun insert(comment: String): Result<NewQuestionResult, QicooError> = transaction {
@@ -101,16 +98,16 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 Ok(NewQuestion.new {
                     program_id = programRow.toProgram().id
                     done_flg = false
-                    display_name = "" //TODO
+                    display_name = "" // TODO
                     this.comment = comment
                     created = now
                     updated = now
-                })}
+                }) }
             .flatMap { Ok(NewQuestionResult(it.id.value)) }
     }
 
     override fun todo2done(id: Int): Result<Unit, QicooError> = transaction {
-        when (question.update ({(question.id eq id) and (question.done_flag eq false)}) {it[question.done_flag] = true } ) {
+        when (question.update({ (question.id eq id) and (question.done_flag eq false) }) { it[question.done_flag] = true }) {
             0 -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
             else -> Ok(Unit)
         }

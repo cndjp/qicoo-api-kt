@@ -12,7 +12,6 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
