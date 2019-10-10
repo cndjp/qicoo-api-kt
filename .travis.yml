@@ -19,6 +19,7 @@ env:
     - REDIS_PORT="6379"
     - DOCKER_CACHE_DIR="docker-cache"
     - DOCKER_CACHE_TAR="saved_images.tar"
+    - DOCKER_IMAGE_NAME="cndjp/qicoo-api-kt"
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -50,7 +51,7 @@ script:
 after_success:
   - |
     mkdir -p ${DOCKER_CACHE_DIR}
-    docker save -o "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
+    docker save -o "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
