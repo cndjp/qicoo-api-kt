@@ -40,12 +40,14 @@ before_script:
   - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
-  - |
-    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
+  #- |
+  #  if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
 
 script:
   - just test
   - just build
+  - |
+    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
   - just docker-build
 
 after_success:
