@@ -102,7 +102,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                     it[created] = now
                     it[updated] = now
                 } }
-            .toResultOr { QicooError.CouldNotCreateEntityFailure }
+            .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
             .flatMap { Ok(NewQuestionResult(it.value)) }
     }
 
