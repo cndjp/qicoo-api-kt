@@ -17,6 +17,8 @@ env:
     - MYSQL_PORT="3306"
     - REDIS_HOST="localhost"
     - REDIS_PORT="6379"
+    - DOCKER_CACHE_DIR="docker-cache"
+    - DOCKER_CACHE_TAR="saved_images.tar"
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -38,8 +40,7 @@ before_script:
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
   - |
-    filename=docker-cache/saved_images.tar
-    if [[ -f "$filename" ]]; then docker load < "$filename"; fi
+    if [[ -f "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; fi
 
 script:
   - just test
@@ -48,8 +49,8 @@ script:
 
 after_success:
   - |
-    mkdir -p docker-cache
-    docker save -o "$filename"
+    mkdir -p ${DOCKER_CACHE_DIR}
+    docker save -o "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
