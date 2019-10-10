@@ -41,7 +41,7 @@ before_script:
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
   - |
-    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; fi
+    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
 
 script:
   - just test
