@@ -36,7 +36,12 @@ run: build
     java -jar build/libs/qicoo-all.jar
 
 docker-build: load_dotenv
-    docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
+    #!/bin/bash
+    if [ ! -z ${TRAVIS:-} ]; then
+        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} --cache-from $(docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}}' | grep {{ DOCKER_IMAGE_NAME }}) .
+    else
+        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
+    fi
 
 docker-run: load_dotenv
     #!/bin/bash
