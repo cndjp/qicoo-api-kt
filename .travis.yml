@@ -17,6 +17,7 @@ env:
     - MYSQL_PORT="3306"
     - REDIS_HOST="localhost"
     - REDIS_PORT="6379"
+    - DOCKER_REPO="cndjp/qicoo-api-kt"
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -46,6 +47,7 @@ script:
   - just docker-build
 
 before_cache:
+  - docker images --filter=reference="${DOCKER_REPO}" --format '{{ .Repository }}:{{ .Tag }}' | tail -n +2 | xargs -I {} docker rmi {}
   # Save tagged docker images
   - >
     mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
