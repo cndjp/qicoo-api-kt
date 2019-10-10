@@ -41,7 +41,7 @@ before_script:
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
   - |
-    if [[ -f "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; fi
+    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; fi
 
 script:
   - just test
@@ -51,14 +51,14 @@ script:
 after_success:
   - |
     mkdir -p ${DOCKER_CACHE_DIR}
-    docker save -o "${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
+    docker save -o "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   directories:
-    - docker-cache
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
+    - ${HOME}/${DOCKER_CACHE_DIR}
+    - ${HOME}/.gradle/caches/
+    - ${HOME}/.gradle/wrapper/
+    - ${HOME}/.android/build-cache
