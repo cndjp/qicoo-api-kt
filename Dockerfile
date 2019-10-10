@@ -10,10 +10,10 @@ RUN set -eux; \
         unzip \
         curl && \
         rm -rf /var/lib/apt/lists/*
+RUN curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /opt/bin/
 RUN mkdir -p /opt/app/bin
 COPY . /opt/app
 WORKDIR /opt/app
-RUN curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /opt/bin/
 ENV PATH=/opt/bin:$PATH
 RUN just build
 

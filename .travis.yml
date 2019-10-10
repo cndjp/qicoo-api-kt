@@ -26,8 +26,8 @@ before_install:
   - curl -s api.sdkman.io | bash
   - source /home/travis/.sdkman/bin/sdkman-init.sh # ターミナル上での表示結果
   - sdk list gradle
-  - sdk install gradle 5.6
-  - sdk default gradle 5.6
+  - sdk install gradle 5.6.2
+  - sdk default gradle 5.6.2
 
 before_script:
   - echo 'Asia/Tokyo' | sudo tee /etc/timezone
@@ -52,6 +52,7 @@ after_success:
   - |
     mkdir -p ${DOCKER_CACHE_DIR}
     docker save -o "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
+    ls "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
