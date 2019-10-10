@@ -41,7 +41,8 @@ docker-image:
 docker-build: load_dotenv
     #!/bin/bash
     if [ ! -z ${TRAVIS:-} ]; then
-        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} --cache-from $(docker images -a --filter='dangling=false' --format '{{ "{{" }}.Repository{{ "}}" }}:{{ "{{" }}.Tag{{ "}}" }}' | grep {{ DOCKER_IMAGE_NAME }} | head -n 1) --target=buidler --target=1 .
+        docker build -t {{ DOCKER_IMAGE_NAME }}:buidler --target=buidler --cache-from {{ DOCKER_IMAGE_NAME }}:buidler .
+        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} --cache-from $(docker images -a --filter='dangling=false' --format '{{ "{{" }}.Repository{{ "}}" }}:{{ "{{" }}.Tag{{ "}}" }}' | grep {{ DOCKER_IMAGE_NAME }} | head -n 1) .
     else
         docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
     fi
