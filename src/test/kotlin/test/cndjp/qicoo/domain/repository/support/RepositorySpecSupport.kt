@@ -177,7 +177,7 @@ fun RepositorySpecSupport.insertDummyData() {
         }
         NewQuestion.new {
             program_id = p1.id
-            done_flg = q1dflg
+            done_flag = q1dflg
             display_name = q1dname
             comment = q1comment
             created = q1date
@@ -185,7 +185,7 @@ fun RepositorySpecSupport.insertDummyData() {
         }
         NewQuestion.new {
             program_id = p2.id
-            done_flg = q2dflg
+            done_flag = q2dflg
             display_name = q2dname
             comment = q2comment
             created = q2date
@@ -193,7 +193,7 @@ fun RepositorySpecSupport.insertDummyData() {
         }
         NewQuestion.new {
             program_id = p3.id
-            done_flg = q3dflg
+            done_flag = q3dflg
             display_name = q3dname
             comment = q3comment
             created = q3date
@@ -201,7 +201,7 @@ fun RepositorySpecSupport.insertDummyData() {
         }
         NewQuestion.new {
             program_id = p4.id
-            done_flg = q4dflg
+            done_flag = q4dflg
             display_name = q4dname
             comment = q4comment
             created = q4date
@@ -209,7 +209,7 @@ fun RepositorySpecSupport.insertDummyData() {
         }
         NewQuestion.new {
             program_id = p5.id
-            done_flg = q5dflg
+            done_flag = q5dflg
             display_name = q5dname
             comment = q5comment
             created = q5date

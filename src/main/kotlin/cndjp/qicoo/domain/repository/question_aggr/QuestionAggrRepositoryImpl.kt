@@ -24,6 +24,7 @@ import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.innerJoin
+import org.jetbrains.exposed.sql.insertIgnoreAndGetId
 import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -93,15 +94,16 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
         }
             .firstOrNull()
             .let { programRow ->
-                Ok(NewQuestion.new {
-                    program_id = programRow?.toProgram()?.id ?: unknownProgram.id
-                    done_flg = false
-                    display_name = "" // TODO
-                    this.comment = comment
-                    created = now
-                    updated = now
-                }) }
-            .flatMap { Ok(NewQuestionResult(it.id.value)) }
+                question.insertIgnoreAndGetId {
+                    it[program_id] =  programRow?.toProgram()?.id ?: unknownProgram.id
+                    it[done_flag] = false
+                    it[display_name] = "" // TODO
+                    it[this.comment] = comment
+                    it[created] = now
+                    it[updated] = now
+                } }
+            .toResultOr { QicooError.CouldNotCreateEntityFailure }
+            .flatMap { Ok(NewQuestionResult(it.value)) }
     }
 
     override fun todo2done(id: Int): Result<Unit, QicooError> = transaction {
