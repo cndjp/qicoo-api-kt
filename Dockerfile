@@ -17,7 +17,7 @@ WORKDIR /opt/app
 ENV PATH=/opt/bin:$PATH
 RUN just build
 
-FROM openjdk:11-jre
+FROM openjdk:11-jre as runner
 # set up timezone to Asia/Tokyo
 ENV DEBIAN_FRONTEND=noninteractive
 RUN set -eux; \
