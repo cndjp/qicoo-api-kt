@@ -17,9 +17,9 @@ env:
     - MYSQL_PORT="3306"
     - REDIS_HOST="localhost"
     - REDIS_PORT="6379"
-    - DOCKER_CACHE_DIR="docker-cache"
-    - DOCKER_CACHE_TAR="saved_images.tar"
-    - DOCKER_IMAGE_NAME="cndjp/qicoo-api-kt"
+    #- DOCKER_CACHE_DIR="docker-cache"
+    #- DOCKER_CACHE_TAR="saved_images.tar"
+    #- DOCKER_IMAGE_NAME="cndjp/qicoo-api-kt"
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -28,6 +28,8 @@ before_install:
   - sdk list gradle
   - sdk install gradle 5.6.2
   - sdk default gradle 5.6.2
+  # Load cached docker images
+  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
 
 before_script:
   - echo 'Asia/Tokyo' | sudo tee /etc/timezone
@@ -40,28 +42,29 @@ before_script:
   - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
-  #- |
-  #  if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
 
 script:
   - just test
   - just build
-  - |
-    if [[ -f "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" ]]; then docker load < "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"; else echo "not found" ; fi
   - just docker-build
 
-after_success:
-  - |
-    mkdir -p ${DOCKER_CACHE_DIR}
-    docker save -o "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
-    ls "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
+#after_success:
+#  - |
+#    mkdir -p ${DOCKER_CACHE_DIR}
+#    docker save -o "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
+#    ls "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
 
 before_cache:
+  # Save tagged docker images
+  - >
+    mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
+  bundler: true
   directories:
-    - ${HOME}/${DOCKER_CACHE_DIR}
+    - ${HOME}/docker
     - ${HOME}/.gradle/caches/
     - ${HOME}/.gradle/wrapper/
     - ${HOME}/.android/build-cache
