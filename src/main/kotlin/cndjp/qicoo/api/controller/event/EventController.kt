@@ -8,7 +8,7 @@ import io.ktor.routing.put
 import io.ktor.routing.route
 import org.kodein.di.Kodein
 
-fun Route.accountController(kodein: Kodein) {
+fun Route.eventController(kodein: Kodein) {
     route("/api/v1/") {
 
         // 基本的に /eventと/programは勉強会登録およびプログラムの登録を行う。
