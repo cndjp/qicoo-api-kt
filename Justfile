@@ -11,6 +11,7 @@ REDIS_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi;
 REDIS_VERSION := "5.0.0"
 
 DOCKER_NAME := "qicoo-api-kt"
+DOCKER_IMAGE_NAME := "cndjp/qicoo-api-kt"
 DOCKER_TAG := `git rev-parse HEAD`
 
 version:
@@ -35,7 +36,7 @@ run: build
     java -jar build/libs/qicoo-all.jar
 
 docker-build: load_dotenv
-    docker build -t cndjp/qicoo/qpi:{{ DOCKER_TAG }} .
+    docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
 
 docker-run: load_dotenv
     #!/bin/bash
