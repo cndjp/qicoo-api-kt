@@ -16,7 +16,7 @@ fun Route.accountController(kodein: Kodein) {
         // データ構造が肝と思われる。
         // 余力があればAccountControllerと連携して、Adminユーザだけリクエストを受けるみたいなことをしていいかもしれない
 
-        route("/event/{id}") {
+        route("/event/{event_id}") {
 
             get {
                 TODO() // EventResponseクラスとかを返す。
@@ -30,7 +30,7 @@ fun Route.accountController(kodein: Kodein) {
                 TODO() // JSONを受けてイベントを更新する。
             }
 
-            route("/program/{id}") {
+            route("/program/{program_id}") {
 
                 get {
                     TODO() // ProgramResponseクラスとかを返す。
