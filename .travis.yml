@@ -47,7 +47,7 @@ script:
   - just docker-build
 
 before_cache:
-  - docker images --filter=reference="${DOCKER_REPO}" --format '{{ .Repository }}:{{ .Tag }}' | tail -n +2 | xargs -I {} docker rmi {}
+  - docker images --filter=reference="${DOCKER_REPO}" --format '{{ .Repository }}:{{ .Tag }}' | grep -v cndjp/qicoo-api-kt:builder | tail -n +2 | xargs -I {} docker rmi {}
   # Save tagged docker images
   - >
     mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
