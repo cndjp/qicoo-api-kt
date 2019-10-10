@@ -3,6 +3,7 @@ package cndjp.qicoo.domain.repository.question_aggr
 import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.program.toProgram
+import cndjp.qicoo.domain.dao.program.unknownProgram
 import cndjp.qicoo.domain.dao.question.NewQuestion
 import cndjp.qicoo.domain.dao.question.NewQuestionResult
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
@@ -91,12 +92,9 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             (program.start_at lessEq now) and (program.end_at greaterEq now)
         }
             .firstOrNull()
-            .toResultOr {
-                QicooError.NotFoundEntityFailure.withLog()
-            }
-            .flatMap { programRow ->
+            .let { programRow ->
                 Ok(NewQuestion.new {
-                    program_id = programRow.toProgram().id
+                    program_id = programRow?.toProgram()?.id ?: unknownProgram.id
                     done_flg = false
                     display_name = "" // TODO
                     this.comment = comment
