@@ -37,8 +37,26 @@ before_script:
   - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
   - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
   - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
+  - |
+    filename=docker-cache/saved_images.tar
+    if [[ -f "$filename" ]]; then docker load < "$filename"; fi
 
 script:
   - just test
   - just build
   - just docker-build
+
+after_success:
+  - |
+    mkdir -p docker-cache
+    docker save -o "$filename"
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+    - docker-cache
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
