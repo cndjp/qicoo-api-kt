@@ -17,9 +17,6 @@ env:
     - MYSQL_PORT="3306"
     - REDIS_HOST="localhost"
     - REDIS_PORT="6379"
-    #- DOCKER_CACHE_DIR="docker-cache"
-    #- DOCKER_CACHE_TAR="saved_images.tar"
-    #- DOCKER_IMAGE_NAME="cndjp/qicoo-api-kt"
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -47,12 +44,6 @@ script:
   - just test
   - just build
   - just docker-build
-
-#after_success:
-#  - |
-#    mkdir -p ${DOCKER_CACHE_DIR}
-#    docker save -o "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}" "${DOCKER_IMAGE_NAME}:$(git rev-parse HEAD)"
-#    ls "${HOME}/${DOCKER_CACHE_DIR}/${DOCKER_CACHE_TAR}"
 
 before_cache:
   # Save tagged docker images
