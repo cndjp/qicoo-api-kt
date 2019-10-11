@@ -4,7 +4,7 @@ import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.api.QicooError
-import cndjp.qicoo.domain.dao.question.NewQuestionResult
+import cndjp.qicoo.domain.dao.question.NewQuestionId
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -94,7 +94,7 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
             else -> TODO()
         }
 
-    override fun insert(comment: String): Result<Int, QicooError> =
+    override fun insert(comment: String): Result<NewQuestionId, QicooError> =
         Ok(6)
 
     override fun todo2done(id: Int): Result<Unit, QicooError> =

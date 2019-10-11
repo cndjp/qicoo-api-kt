@@ -4,8 +4,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.program.toProgram
 import cndjp.qicoo.domain.dao.program.unknownProgram
-import cndjp.qicoo.domain.dao.question.NewQuestion
-import cndjp.qicoo.domain.dao.question.NewQuestionResult
+import cndjp.qicoo.domain.dao.question.NewQuestionId
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggrList
 import cndjp.qicoo.domain.dao.question_aggr.toQuestionAggr
@@ -21,7 +20,6 @@ import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.toResultOr
 import mu.KotlinLogging
 import org.jetbrains.exposed.sql.SortOrder
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.innerJoin
 import org.jetbrains.exposed.sql.insertIgnoreAndGetId
@@ -104,23 +102,27 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .map { it.toQuestionAggr() }, total))
     }
 
-    override fun insert(comment: String): Result<Int, QicooError> = transaction {
+    override fun insert(comment: String): Result<NewQuestionId, QicooError> = transaction {
         val now = getNowDateTimeJst()
         program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)
         }
             .firstOrNull()
             .let { programRow ->
+                val new_prgram_id = programRow?.toProgram()?.id ?: unknownProgram.id
+                val new_done_flag = false
+                val new_display_name = "anonymous" // TODO
                 question.insertIgnoreAndGetId {
-                    it[program_id] =  programRow?.toProgram()?.id ?: unknownProgram.id
-                    it[done_flag] = false
-                    it[display_name] = "anonymous" // TODO
+                    it[program_id] = new_prgram_id
+                    it[done_flag] = new_done_flag
+                    it[display_name] = new_display_name
                     it[this.comment] = comment
                     it[created] = now
                     it[updated] = now
-                } }
-            .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
-            .flatMap { Ok(it.value) }
+                }
+                    .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
+                    .flatMap { Ok(it.value) }
+            }
     }
 
     override fun todo2done(id: Int): Result<Unit, QicooError> = transaction {

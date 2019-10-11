@@ -15,3 +15,5 @@ class NewQuestion(id: EntityID<Int>) : IntEntity(id) {
     var created by question.created
     var updated by question.updated
 }
+
+typealias NewQuestionId = Int
