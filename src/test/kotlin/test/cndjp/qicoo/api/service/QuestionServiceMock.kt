@@ -4,6 +4,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.service.question.QuestionService
+import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import com.github.michaelbull.result.Ok
@@ -133,5 +134,5 @@ class QuestionServiceMock: QuestionService {
 
     override fun createQuestion(comment: String): Result<Unit, QicooError> = Ok(Unit)
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
-    override fun incr(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
+    override fun incr(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
 }

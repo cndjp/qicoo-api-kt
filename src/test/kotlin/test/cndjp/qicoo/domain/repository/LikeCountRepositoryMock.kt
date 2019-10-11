@@ -5,6 +5,7 @@ import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.api.QicooError
+import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -82,5 +83,5 @@ LikeCountRepositoryMock : LikeCountRepository {
 
     override fun create(key: Int): Result<Unit, QicooError> = Ok(Unit)
 
-    override fun incr(key: Int): Result<Unit, QicooError> = Ok(Unit)
+    override fun incr(key: Int): Result<LikeCountValue, QicooError> = Ok(5)
 }

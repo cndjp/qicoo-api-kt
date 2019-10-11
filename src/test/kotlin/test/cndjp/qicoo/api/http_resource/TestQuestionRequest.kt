@@ -129,6 +129,10 @@ fun testPutRequestLike2(engine: Application.() -> Unit) = withTestApplication(en
         setBody("""{"question_id": 1}""".toByteArray())
     }) {
         assertEquals(HttpStatusCode.OK, response.status())
+        assertEquals(
+            getTestResources("ExpectResponse_5.json").readText().asJsonObject(),
+            response.content!!.asJsonObject()
+        )
     }
 }
 

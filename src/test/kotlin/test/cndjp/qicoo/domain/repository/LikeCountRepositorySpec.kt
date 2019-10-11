@@ -7,6 +7,7 @@ import test.cndjp.qicoo.domain.repository.support.insertDummyData
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.api.QicooError
+import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.get
 import com.github.michaelbull.result.getError
 import kotlin.test.assertEquals
@@ -66,11 +67,9 @@ object LikeCountRepositorySpec : Spek({
             assertEquals(0.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "12"))
         }
         test("incr()のテスト") {
-            likeCountRepositoryImpl.incr(1)
-            likeCountRepositoryImpl.incr(3)
-            likeCountRepositoryImpl.incr(3)
-            assertEquals(5.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "1"))
-            assertEquals(12.0, RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountRepositoryImpl.likeCountListKey, "3"))
+            assertEquals(Ok(5), likeCountRepositoryImpl.incr(1))
+            assertEquals(Ok(11), likeCountRepositoryImpl.incr(3))
+            assertEquals(Ok(12), likeCountRepositoryImpl.incr(3))
         }
     }
 })

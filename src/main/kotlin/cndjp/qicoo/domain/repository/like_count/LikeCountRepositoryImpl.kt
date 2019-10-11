@@ -4,6 +4,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
+import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
@@ -71,13 +72,12 @@ class LikeCountRepositoryImpl : LikeCountRepository {
             else -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
         }
 
-    override fun incr(key: Int): Result<Unit, QicooError> =
+    override fun incr(key: Int): Result<LikeCountValue, QicooError> =
         this.findById(key)?.question_id
             .toResultOr {
                 QicooError.CouldNotCreateEntityFailure.withLog()
             }
             .flatMap {
-                RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString())
-                Ok(Unit)
+                Ok(RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString()).toInt())
             }
 }

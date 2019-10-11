@@ -4,6 +4,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.withLog
+import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
@@ -89,7 +90,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                 likeCountRepository.create(it.question_id)
             }
 
-    override fun incr(questionId: Int): Result<Unit, QicooError> =
+    override fun incr(questionId: Int): Result<LikeCountValue, QicooError> =
         likeCountRepository.incr(questionId)
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =

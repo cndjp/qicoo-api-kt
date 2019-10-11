@@ -7,6 +7,7 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.http_resource.request.question.AnswerRequest
 import cndjp.qicoo.api.http_resource.request.question.IncrLikeRequest
 import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
+import cndjp.qicoo.api.http_resource.response.question.LikeCountResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
@@ -97,7 +98,7 @@ fun Route.questionController(kodein: Kodein) {
                     .onSuccess { validatedRequest ->
                         questionService.incr(validatedRequest.question_id)
                             .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK) },
+                                success = { call.respond(HttpStatusCode.OK, LikeCountResponse(it)) },
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }
