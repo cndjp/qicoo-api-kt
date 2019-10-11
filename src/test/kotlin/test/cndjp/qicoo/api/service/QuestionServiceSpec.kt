@@ -99,7 +99,7 @@ object QuestionServiceMockSpec : Spek({
         }
 
         test("incr()のmockテスト") {
-            questionServiceImpl1.incr(1)
+            questionServiceImpl1.incrLike(1)
         }
 
         test("answer()のmockテスト") {
@@ -181,17 +181,14 @@ object QuestionServiceRealSpec: Spek({
 
         test("createQuestion()の実データテスト") {
             transaction {
-                questionServiceImpl2.createQuestion("dummy").get()!!
-                val todo =
-                    question.select { question.id eq 6 }.map { it.toQuestion() }.firstOrNull()
-                assertNotNull(todo)
-                assertEquals(todo.id.value, 6)
-                assertEquals(todo.comment, "dummy")
+                val dumComment = "dummy"
+                val q = questionServiceImpl2.createQuestion(dumComment).get()!!
+                assertNotNull(dumComment, q.comment)
             }
         }
 
         test("incr()の実データテスト") {
-            questionServiceImpl2.incr(1)
+            questionServiceImpl2.incrLike(1)
             assertEquals(5.0, RedisContext.zscore(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, "1"))
         }
 

@@ -43,7 +43,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                     otherColumn = { program.event_id },
                     onColumn = { event.id }
                 ),
-                otherColumn = { question.id },
+                otherColumn = { question.program_id },
                 onColumn = { program.id }
             )
             .slice(question.id, event.name, program.name, question.done_flag, question.display_name, question.comment, question.created, question.updated)
@@ -60,9 +60,26 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             total
         )
     }
-    override fun findById(id: Int): QuestionAggr? {
-        TODO()
-    }
+    override fun findById(id: Int): Result<QuestionAggr, QicooError> = transaction {
+        question
+            .innerJoin(
+                otherTable = program.innerJoin(
+                    otherTable = event,
+                    otherColumn = { program.event_id },
+                    onColumn = { event.id }
+                ),
+                otherColumn = { question.program_id },
+                onColumn = { program.id }
+            )
+            .slice(question.id, event.name, program.name, question.done_flag, question.display_name, question.comment, question.program_id, question.created, question.updated)
+            .select { question.id eq id }
+            .firstOrNull()
+            .toResultOr {
+                QicooError.NotFoundEntityFailure.withLog()
+            }
+            .flatMap { Ok(it.toQuestionAggr()) }
+        }
+
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
@@ -78,7 +95,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                         otherColumn = { program.event_id },
                         onColumn = { event.id }
                     ),
-                    otherColumn = { question.id },
+                    otherColumn = { question.program_id },
                     onColumn = { program.id }
                 )
                 .slice(question.id, event.name, program.name, question.done_flag, question.display_name, question.comment, question.program_id, question.created, question.updated)
@@ -87,7 +104,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .map { it.toQuestionAggr() }, total))
     }
 
-    override fun insert(comment: String): Result<NewQuestionResult, QicooError> = transaction {
+    override fun insert(comment: String): Result<Int, QicooError> = transaction {
         val now = getNowDateTimeJst()
         program.select {
             (program.start_at lessEq now) and (program.end_at greaterEq now)
@@ -97,13 +114,13 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
                 question.insertIgnoreAndGetId {
                     it[program_id] =  programRow?.toProgram()?.id ?: unknownProgram.id
                     it[done_flag] = false
-                    it[display_name] = "" // TODO
+                    it[display_name] = "anonymous" // TODO
                     it[this.comment] = comment
                     it[created] = now
                     it[updated] = now
                 } }
             .toResultOr { QicooError.CouldNotCreateEntityFailure.withLog() }
-            .flatMap { Ok(NewQuestionResult(it.value)) }
+            .flatMap { Ok(it.value) }
     }
 
     override fun todo2done(id: Int): Result<Unit, QicooError> = transaction {

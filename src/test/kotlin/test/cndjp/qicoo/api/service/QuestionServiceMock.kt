@@ -132,7 +132,18 @@ class QuestionServiceMock: QuestionService {
              else -> TODO()
          }
 
-    override fun createQuestion(comment: String): Result<Unit, QicooError> = Ok(Unit)
+    override fun createQuestion(comment: String): Result<QuestionDTO, QicooError> = Ok(
+        QuestionDTO(
+            6,
+            ss.e6name,
+            ss.p6name,
+            ss.q6dflg,
+            ss.q6dname,
+            0,
+            ss.q6comment,
+            ss.q6date,
+            ss.q6date
+    ))
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
-    override fun incr(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
+    override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
 }

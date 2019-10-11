@@ -5,6 +5,7 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
+import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
@@ -13,6 +14,8 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.mapEither
 import mu.KotlinLogging
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
@@ -21,7 +24,6 @@ import org.kodein.di.generic.instance
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
-    private val logger = KotlinLogging.logger {}
 
     override fun getAll(param: QuestionGetParameter): Result<QuestionListDTO, QicooError> =
         when (param.sort) {
@@ -84,13 +86,30 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                     }
         }
 
-    override fun createQuestion(comment: String): Result<Unit, QicooError> =
+    override fun createQuestion(comment: String): Result<QuestionDTO, QicooError> =
         questionAggrRepository.insert(comment)
-            .flatMap {
-                likeCountRepository.create(it.question_id)
+            .flatMap { questionId ->
+                likeCountRepository.create(questionId)
+                    .flatMap {
+                        questionAggrRepository.findById(questionId)
+                            .flatMap { dao ->
+                                Ok(QuestionDTO(
+                                    dao.question_id,
+                                    dao.event_name,
+                                    dao.program_name,
+                                    dao.done_flag,
+                                    dao.display_name,
+                                    0,
+                                    dao.comment,
+                                    dao.created,
+                                    dao.updated
+                                ))
+                            }
+                    }
             }
 
-    override fun incr(questionId: Int): Result<LikeCountValue, QicooError> =
+
+    override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> =
         likeCountRepository.incr(questionId)
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =

@@ -25,6 +25,7 @@ object RepositorySpecSupport {
     val q3date = q2date.minusDays(1)
     val q4date = q3date.minusDays(1)
     val q5date = q4date.minusDays(1)
+    val q6date = q4date.minusDays(1)
     val event1StartAt = "2018-01-01 19:00:00".toDateTimeJst()
     val event1EndAt = "2018-01-02 19:00:00".toDateTimeJst()
     val event2StartAt = "2018-02-01 19:00:00".toDateTimeJst()
@@ -50,6 +51,7 @@ object RepositorySpecSupport {
     val e3name = "event_name3"
     val e4name = "event_name4"
     val e5name = "event_name5"
+    val e6name = "event_name6"
     val p1name = "program_name1"
     val p2name = "program_name2"
     val p3name = "program_name3"
@@ -67,6 +69,7 @@ object RepositorySpecSupport {
     val q5dname = "mere"
     val q5comment = "what is hugai"
     val q6comment = "what is kiali"
+    val q6dname = "mogemogemo"
     val q1like = 4.0
     val q2like = 1.0
     val q3like = 10.0
@@ -77,6 +80,7 @@ object RepositorySpecSupport {
     val q3dflg = false
     val q4dflg = false
     val q5dflg = false
+    val q6dflg = false
 }
 
 fun RepositorySpecSupport.insertDummyData() {

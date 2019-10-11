@@ -67,7 +67,9 @@ fun Route.questionController(kodein: Kodein) {
                     .onSuccess { validatedRequest ->
                         questionService.createQuestion(validatedRequest.comment)
                             .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK) },
+                                success = { dto ->
+                                    call.respond(HttpStatusCode.OK, QuestionResponse(dto))
+                                },
                                 failure = { call.respond(HttpStatusCode.InternalServerError) }
                             )
                     }
@@ -96,7 +98,7 @@ fun Route.questionController(kodein: Kodein) {
                     call.receive<IncrLikeRequest>()
                 }
                     .onSuccess { validatedRequest ->
-                        questionService.incr(validatedRequest.question_id)
+                        questionService.incrLike(validatedRequest.question_id)
                             .mapBoth(
                                 success = { call.respond(HttpStatusCode.OK, LikeCountResponse(it)) },
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }

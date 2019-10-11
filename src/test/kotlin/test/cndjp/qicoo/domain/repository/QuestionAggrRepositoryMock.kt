@@ -42,9 +42,17 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
             else -> TODO()
         }
 
-    override fun findById(id: Int): QuestionAggr? {
-        TODO("not implemented") // To change body of created functions use File | Settings | File Templates.
-    }
+    override fun findById(id: Int): Result<QuestionAggr, QicooError> =
+        Ok(QuestionAggr(
+            6,
+            ss.e6name,
+            ss.p6name,
+            ss.q6dflg,
+            ss.q6dname,
+            ss.q6comment,
+            ss.q6date,
+            ss.q6date
+        ))
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> =
         when (ids) {
@@ -86,10 +94,8 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
             else -> TODO()
         }
 
-    override fun insert(comment: String): Result<NewQuestionResult, QicooError> =
-        Ok(NewQuestionResult(
-            question_id = 6
-        ))
+    override fun insert(comment: String): Result<Int, QicooError> =
+        Ok(6)
 
     override fun todo2done(id: Int): Result<Unit, QicooError> =
         Ok(Unit)
