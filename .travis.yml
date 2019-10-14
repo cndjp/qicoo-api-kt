@@ -27,7 +27,7 @@ before_install:
   - sdk install gradle 5.6.2
   - sdk default gradle 5.6.2
   # Load cached docker images
-  - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
+  # - if [[ -d $HOME/docker ]]; then ls $HOME/docker/*.tar.gz | xargs -I {file} sh -c "zcat {file} | docker load"; fi
 
 before_script:
   - echo 'Asia/Tokyo' | sudo tee /etc/timezone
@@ -47,17 +47,17 @@ script:
   - just docker-build
 
 before_cache:
-  - docker images --filter=reference="${DOCKER_REPO}" --format '{{ .Repository }}:{{ .Tag }}' | grep -v "${DOCKER_REPO}:builder" | tail -n +2 | xargs -I {} docker rmi {}
+  # - docker images --filter=reference="${DOCKER_REPO}" --format '{{ .Repository }}:{{ .Tag }}' | grep -v "${DOCKER_REPO}:builder" | tail -n +2 | xargs -I {} docker rmi {}
   # Save tagged docker images
-  - >
-    mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
-    | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
+  # - >
+  #  mkdir -p $HOME/docker && docker images -a --filter='dangling=false' --format '{{.Repository}}:{{.Tag}} {{.ID}}'
+  #  | xargs -n 2 -t sh -c 'test -e $HOME/docker/$1.tar.gz || docker save $0 | gzip -2 > $HOME/docker/$1.tar.gz'
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   bundler: true
   directories:
-    - ${HOME}/docker
+   # - ${HOME}/docker
     - ${HOME}/.gradle/caches/
     - ${HOME}/.gradle/wrapper/
     - ${HOME}/.android/build-cache
