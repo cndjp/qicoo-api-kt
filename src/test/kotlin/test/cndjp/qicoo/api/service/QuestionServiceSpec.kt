@@ -12,6 +12,8 @@ import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
+import cndjp.qicoo.domain.repository.reply.ReplyRepository
+import cndjp.qicoo.domain.repository.reply.ReplyRepositoryImpl
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
 import test.cndjp.qicoo.domain.repository.support.dropDummyData
 import test.cndjp.qicoo.domain.repository.support.insertDummyData
@@ -27,6 +29,7 @@ import cndjp.qicoo.utils.toJST
 import com.github.michaelbull.result.get
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.select
+import test.cndjp.qicoo.domain.repository.ReplyRepositoryMock
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
@@ -37,6 +40,7 @@ object QuestionServiceMockSpec : Spek({
         val kodein1 = Kodein {
             bind<QuestionAggrRepository>() with singleton { QuestionAggrRepositoryMock() }
             bind<LikeCountRepository>() with singleton { LikeCountRepositoryMock() }
+            bind<ReplyRepository>() with singleton { ReplyRepositoryMock() }
         }
         val questionServiceImpl1 = QuestionServiceImpl(kodein1)
 
@@ -104,6 +108,10 @@ object QuestionServiceMockSpec : Spek({
 
         test("answer()のmockテスト") {
             questionServiceImpl1.answer(6).get()!!
+        }
+
+        test("addReply()のmockテスト") {
+            questionServiceImpl1.addReply(6, "にゃんにゃん").get()!!
         }
     }
 })
