@@ -8,6 +8,8 @@ import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
+import cndjp.qicoo.domain.repository.reply.ReplyRepository
+import cndjp.qicoo.domain.repository.reply.ReplyRepositoryImpl
 import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
@@ -51,6 +53,7 @@ fun Application.main() {
         val repoKodein = Kodein {
             bind<QuestionAggrRepository>() with singleton { QuestionAggrRepositoryImpl() }
             bind<LikeCountRepository>() with singleton { LikeCountRepositoryImpl() }
+            bind<ReplyRepository>() with singleton { ReplyRepositoryImpl() }
         }
         bind<QuestionService>() with singleton { QuestionServiceImpl(repoKodein) }
     }

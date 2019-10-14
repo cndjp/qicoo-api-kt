@@ -4,6 +4,7 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeZone
 import org.joda.time.LocalDateTime
 import org.joda.time.format.DateTimeFormat
+import java.util.Date
 
 fun getNowDateTimeJst(): DateTime = DateTime.now(DateTimeZone.forID("Asia/Tokyo"))
 
@@ -27,3 +28,5 @@ fun String.toDateTimeLocal(): DateTime {
 fun DateTime.toJST(): DateTime = this.toDateTime(DateTimeZone.forID("Asia/Tokyo"))
 
 fun DateTime.toFomatString(): String = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").print(this)
+
+fun Long.toDateTimeFromUnixTime(): DateTime = DateTime(Date(this))

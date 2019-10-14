@@ -10,6 +10,7 @@ import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
+import cndjp.qicoo.domain.repository.reply.ReplyRepository
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
@@ -24,6 +25,7 @@ import org.kodein.di.generic.instance
 class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, KodeinAware {
     private val questionAggrRepository: QuestionAggrRepository by instance()
     private val likeCountRepository: LikeCountRepository by instance()
+    private val replyRepository: ReplyRepository by instance()
 
     override fun getAll(param: QuestionGetParameter): Result<QuestionListDTO, QicooError> =
         when (param.sort) {
@@ -114,4 +116,10 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
 
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
+
+    override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> =
+        questionAggrRepository.findById(questionId)
+            .flatMap {
+                replyRepository.add(questionId, comment)
+            }
 }

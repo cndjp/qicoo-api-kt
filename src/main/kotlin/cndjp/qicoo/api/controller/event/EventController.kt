@@ -19,6 +19,7 @@ fun Route.eventController(kodein: Kodein) {
         route("/event/{event_id}") {
 
             get {
+
                 TODO() // EventResponseクラスとかを返す。
             }
 

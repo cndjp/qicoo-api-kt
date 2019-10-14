@@ -7,6 +7,7 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.http_resource.request.question.AnswerRequest
 import cndjp.qicoo.api.http_resource.request.question.IncrLikeRequest
 import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
+import cndjp.qicoo.api.http_resource.request.question.ReplyRequest
 import cndjp.qicoo.api.http_resource.response.question.LikeCountResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
@@ -106,10 +107,23 @@ fun Route.questionController(kodein: Kodein) {
                     }
                     .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
             }
+            // リプライを投稿する。
+            // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
+            // リプライはRedisのソート付きリストに入れる。任意のQuestionに所属し、単体では存在しないオブジェクトとする
             post("/reply") {
-                TODO() // リプライを投稿する。
-                        // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
-                        // リプライはRedisのソート付きリストに入れる。任意のQuestionに所属し、単体では存在しないオブジェクトとする
+                kotlin.runCatching {
+                    call.receive<ReplyRequest>()
+                }
+                    .onSuccess { validatedRequest ->
+                        questionService.addReply(validatedRequest.question_id, validatedRequest.comment)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK) },
+                                failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                            )
+                    }
+                    .onFailure {
+                        call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog())
+                    }
             }
 
             get("/detail") {
