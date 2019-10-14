@@ -170,7 +170,7 @@ fun testPostRequestReply2(engine: Application.() -> Unit) = withTestApplication(
         setBody("""{"question_id": 19, "comment": "存在しないIDにだと・・・！？"}""".toByteArray())
     }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
-        assertEquals("CouldNotCreateEntityFailure", response.content)
+        assertEquals("NotFoundEntityFailure", response.content)
     }
 }
 

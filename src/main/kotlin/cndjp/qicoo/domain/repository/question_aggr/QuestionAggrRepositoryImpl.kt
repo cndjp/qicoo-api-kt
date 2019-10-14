@@ -65,7 +65,7 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .count()
             .let {
                 when (it) {
-                    0 -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
+                    0 -> Err(QicooError.NotFoundEntityFailure.withLog())
                     else -> Ok(Unit)
                 }
             }
