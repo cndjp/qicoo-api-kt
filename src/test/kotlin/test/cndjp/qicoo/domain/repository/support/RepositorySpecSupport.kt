@@ -7,7 +7,6 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.linked_user.linked_user
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
-import cndjp.qicoo.domain.model.reply.reply
 import cndjp.qicoo.domain.model.unlinked_user.unlinked_user
 import cndjp.qicoo.domain.model.user.user
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
@@ -228,7 +227,6 @@ fun RepositorySpecSupport.dropDummyData() {
     transaction {
         SchemaUtils.drop(
             question,
-            reply,
             event,
             program,
             user,

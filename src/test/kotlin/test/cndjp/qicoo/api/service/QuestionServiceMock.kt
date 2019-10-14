@@ -146,7 +146,5 @@ class QuestionServiceMock: QuestionService {
     ))
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
-    override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
+    override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> = Ok(Unit)
 }

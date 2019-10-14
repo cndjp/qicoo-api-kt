@@ -154,3 +154,31 @@ fun testPutRequestLike4(engine: Application.() -> Unit) = withTestApplication(en
         assertEquals(HttpStatusCode.BadRequest, response.status())
     }
 }
+
+fun testPostRequestReply1(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/reply"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 1, "comment": "表なら話す、裏なら話さないって決めたの"}""".toByteArray())
+    }) {
+        assertEquals(HttpStatusCode.OK, response.status())
+    }
+}
+
+fun testPostRequestReply2(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/reply"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{"question_id": 19, "comment": "存在しないIDにだと・・・！？"}""".toByteArray())
+    }) {
+        assertEquals(HttpStatusCode.BadRequest, response.status())
+        assertEquals("CouldNotCreateEntityFailure", response.content)
+    }
+}
+
+fun testPostRequestReply3(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Post, "/api/v1/questions/reply"){
+        addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
+        setBody("""{ "hoge": "私がいうことが全て正しい"}""".toByteArray())
+    }) {
+        assertEquals(HttpStatusCode.BadRequest, response.status())
+    }
+}

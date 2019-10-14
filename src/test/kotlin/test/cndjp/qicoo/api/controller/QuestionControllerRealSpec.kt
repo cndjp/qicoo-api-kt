@@ -106,5 +106,17 @@ object QuestionControllerRealSpec :Spek({
                 testPutRequestLike4(engine)
             }
         }
+
+        group("POST :+: /api/v1/questions/reply") {
+            test("POST :+: /api/v1/questions/reply :=: 正常なJSON") {
+                testPostRequestReply1(engine)
+            }
+            test("POST :+: /api/v1/questions/reply :=: 存在しない質問へのリクエスト") {
+                testPostRequestReply2(engine)
+            }
+            test("POST :+: /api/v1/questions/reply :=: 異常なJSON") {
+                testPostRequestReply3(engine)
+            }
+        }
     }
 })

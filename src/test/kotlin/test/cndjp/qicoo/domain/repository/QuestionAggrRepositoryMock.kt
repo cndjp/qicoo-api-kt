@@ -42,6 +42,8 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
             else -> TODO()
         }
 
+    override fun checkExistById(id: Int): Result<Unit, QicooError> = Ok(Unit)
+
     override fun findById(id: Int): Result<QuestionAggr, QicooError> =
         Ok(QuestionAggr(
             6,

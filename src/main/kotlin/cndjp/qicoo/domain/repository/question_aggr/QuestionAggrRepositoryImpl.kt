@@ -58,6 +58,19 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             total
         )
     }
+
+    override fun checkExistById(id: Int): Result<Unit, QicooError> = transaction {
+        question
+            .select { question.id eq id }
+            .count()
+            .let {
+                when (it) {
+                    0 -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
+                    else -> Ok(Unit)
+                }
+            }
+    }
+
     override fun findById(id: Int): Result<QuestionAggr, QicooError> = transaction {
         question
             .innerJoin(

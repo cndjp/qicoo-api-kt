@@ -27,7 +27,7 @@ object RedisContext {
         it.incr(key)
     }
     fun zadd(context: Jedis, key: String, value: Map<String, Double>): Long = context.use {
-        logger.debug("redis> ZADD $value")
+        logger.debug("redis> ZADD $key $value")
         it.zadd(key, value)
     }
     fun zincrby(context: Jedis, key: String, score: Double, value: String): Double = context.use {

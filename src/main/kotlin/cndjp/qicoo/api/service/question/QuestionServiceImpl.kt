@@ -118,7 +118,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
         questionAggrRepository.todo2done(questionId)
 
     override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> =
-        questionAggrRepository.findById(questionId)
+        questionAggrRepository.checkExistById(questionId)
             .flatMap {
                 replyRepository.add(questionId, comment)
             }

@@ -9,6 +9,7 @@ import com.github.michaelbull.result.Result
 interface QuestionAggrRepository {
     fun findAll(per: Int, page: Int, order: String): QuestionAggrList
     fun findById(id: Int): Result<QuestionAggr, QicooError>
+    fun checkExistById(id: Int): Result<Unit, QicooError>
     fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError>
     fun insert(comment: String): Result<NewQuestionId, QicooError>
     fun todo2done(id: Int): Result<Unit, QicooError>
