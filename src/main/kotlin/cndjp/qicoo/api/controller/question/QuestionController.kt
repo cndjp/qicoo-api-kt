@@ -111,7 +111,7 @@ fun Route.questionController(kodein: Kodein) {
             // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
             // リプライはRedisのソート付きリストに入れる。任意のQuestionに所属し、単体では存在しないオブジェクトとする
             post("/reply") {
-                kotlin.runCatching {
+                runCatching {
                     call.receive<ReplyRequest>()
                 }
                     .onSuccess { validatedRequest ->
