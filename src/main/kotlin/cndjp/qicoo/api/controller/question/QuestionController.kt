@@ -92,7 +92,7 @@ fun Route.questionController(kodein: Kodein) {
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }
-                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name) }
             }
             put("/like") {
                 runCatching {
@@ -105,7 +105,7 @@ fun Route.questionController(kodein: Kodein) {
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }
-                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog()) }
+                    .onFailure { call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name) }
             }
             // リプライを投稿する。
             // リプライは↓の/detailを叩くと質問詳細とリプライのリストが表示されるイメージがある
@@ -122,7 +122,7 @@ fun Route.questionController(kodein: Kodein) {
                             )
                     }
                     .onFailure {
-                        call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog())
+                        call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name)
                     }
             }
 
