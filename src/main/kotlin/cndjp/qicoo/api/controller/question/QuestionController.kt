@@ -15,7 +15,10 @@ import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.withLog
+import com.github.michaelbull.result.Err
+import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
+import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -129,20 +132,19 @@ fun Route.questionController(kodein: Kodein) {
             }
 
             get("/detail") {
-                // 主に該当のQuestionとリプライ一覧を表示する。
-                runCatching {
-                    call.receive<QuestionDetailRequest>()
-                }
-                    .onSuccess { validatedRequest ->
-                        questionService.getQuestionWithReply(validatedRequest.question_id)
-                            .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
-                                failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                            )
+                call.parameters["question_id"]?.toIntOrNull()
+                    .toResultOr {
+                        Err(QicooError.ParseParamaterFailure.withLog().name)
                     }
-                    .onFailure {
-                        call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name)
-                    }
+                    .mapBoth(
+                        success = { validatedQuestionId ->
+                            questionService.getQuestionWithReply(validatedQuestionId)
+                                .mapBoth(
+                                    success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
+                                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                                ) },
+                        failure = { call.respond(HttpStatusCode.BadRequest, it.error) }
+                    )
             }
         }
     }

@@ -4,6 +4,7 @@ import mu.KotlinLogging
 
 enum class QicooError {
     ArrayIndexOutOfBoundsFailure,
+    ParseParamaterFailure,
     ParseRequestFailure,
     MismatchDataStoreFailure,
     CouldNotCreateEntityFailure,
