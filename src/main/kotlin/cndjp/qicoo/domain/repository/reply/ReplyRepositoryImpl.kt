@@ -25,7 +25,7 @@ class ReplyRepositoryImpl: ReplyRepository {
     override fun findById(id: Int): ReplyList {
         val total = RedisContext.zcount(qicooGlobalJedisPool.resource, keyFactory(id)).toInt()
         return ReplyList(
-        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, keyFactory(id), 0.0, 10000000.0)
+        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, keyFactory(id), 0.0, 100000000000000.0)
             .map {
                 Reply(
                     ReplyRow(

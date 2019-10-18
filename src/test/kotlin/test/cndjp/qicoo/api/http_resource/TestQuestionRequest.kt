@@ -184,7 +184,7 @@ fun testPostRequestReply3(engine: Application.() -> Unit) = withTestApplication(
 }
 
 fun testGetRequestQuestionDeital1(engine: Application.() -> Unit) = withTestApplication(engine) {
-    with(handleRequest(HttpMethod.Get, "/api/v1/questions/detail?question_id=1")) {
+    with(handleRequest(HttpMethod.Get, "/api/v1/questions/detail?question_id=3")) {
         assertEquals(HttpStatusCode.OK, response.status())
         assertEquals(
             getTestResources("ExpectResponse_6.json").readText().asJsonObject(),

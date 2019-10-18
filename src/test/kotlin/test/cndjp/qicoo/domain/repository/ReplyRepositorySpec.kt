@@ -21,8 +21,19 @@ object ReplyRepositorySpec : Spek({
     }
 
     test("add()のテスト") {
-        assertEquals(0, RedisContext.zcount(qicooGlobalJedisPool.resource, "reply_list:1"))
-        replyRepositoryImpl.add(1, "へいへい")
-        assertEquals(1, RedisContext.zcount(qicooGlobalJedisPool.resource, "reply_list:1"))
+        assertEquals(0, RedisContext.zcount(qicooGlobalJedisPool.resource, "reply_list:2"))
+        replyRepositoryImpl.add(2, "へいへい")
+        assertEquals(1, RedisContext.zcount(qicooGlobalJedisPool.resource, "reply_list:2"))
+    }
+
+    test("findById()のテスト") {
+        val result = replyRepositoryImpl.findById(3)
+        assertEquals(3, result.total)
+        assertEquals(ss.q3reply1, result.list[0].comment)
+        assertEquals(ss.q3reply1date, result.list[0].created.millis.toDouble())
+        assertEquals(ss.q3reply2, result.list[1].comment)
+        assertEquals(ss.q3reply2date, result.list[1].created.millis.toDouble())
+        assertEquals(ss.q3reply3, result.list[2].comment)
+        assertEquals(ss.q3reply3date, result.list[2].created.millis.toDouble())
     }
 })
