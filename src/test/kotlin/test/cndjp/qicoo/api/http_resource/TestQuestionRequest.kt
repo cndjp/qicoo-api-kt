@@ -182,3 +182,19 @@ fun testPostRequestReply3(engine: Application.() -> Unit) = withTestApplication(
         assertEquals(HttpStatusCode.BadRequest, response.status())
     }
 }
+
+fun testGetRequestQuestionDeital1(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Get, "/api/v1/questions/detail?question_id=1")) {
+        assertEquals(HttpStatusCode.OK, response.status())
+        assertEquals(
+            getTestResources("ExpectResponse_6.json").readText().asJsonObject(),
+            response.content!!.asJsonObject()
+        )
+    }
+}
+
+fun testGetRequestQuestionDeital2(engine: Application.() -> Unit) = withTestApplication(engine) {
+    with(handleRequest(HttpMethod.Get, "/api/v1/questions/detail?question_id=hoge")) {
+        assertEquals(HttpStatusCode.BadRequest, response.status())
+    }
+}

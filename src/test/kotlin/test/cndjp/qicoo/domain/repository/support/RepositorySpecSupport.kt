@@ -80,6 +80,12 @@ object RepositorySpecSupport {
     val q4dflg = false
     val q5dflg = false
     val q6dflg = false
+    val q1reply1 = "sorette nani"
+    val q1reply2 = "sorette moni"
+    val q1reply3 = "sorette pase"
+    val q1reply1date = "1999-04-01 19:30:00".toDateTimeJst().millis.toDouble()
+    val q1reply2date = "1999-04-01 19:40:00".toDateTimeJst().millis.toDouble()
+    val q1reply3date = "1999-04-01 19:50:00".toDateTimeJst().millis.toDouble()
 }
 
 fun RepositorySpecSupport.insertDummyData() {
@@ -219,6 +225,7 @@ fun RepositorySpecSupport.insertDummyData() {
             updated = q5date
         }
         RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1", q1like), Pair("2", q2like), Pair("3", q3like), Pair("4", q4like), Pair("5", q5like)))
+        RedisContext.zadd(qicooGlobalJedisPool.resource, "reply_list:1", mapOf(Pair(q1reply1, q1reply1date), Pair(q1reply2, q1reply2date), Pair(q1reply3, q1reply3date)))
     }
 }
 
