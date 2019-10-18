@@ -8,6 +8,9 @@ import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
+import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
+import cndjp.qicoo.domain.dto.reply.ReplyDTO
+import cndjp.qicoo.domain.dto.reply.ReplyListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.reply.ReplyRepository
@@ -121,5 +124,28 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
         questionAggrRepository.checkExistById(questionId)
             .flatMap {
                 replyRepository.add(questionId, comment)
+            }
+
+    override fun getQuestionWithReply(questionId: Int): Result<QuestionDetailDTO, QicooError> =
+        questionAggrRepository.findById(questionId)
+            .flatMap { dao ->
+                val replyList = replyRepository.findById(questionId)
+                Ok(QuestionDetailDTO(
+                QuestionDTO(
+                    dao.question_id,
+                    dao.event_name,
+                    dao.program_name,
+                    dao.done_flag,
+                    dao.display_name,
+                    likeCountRepository.findById(questionId)?.count ?: 0,
+                    dao.comment,
+                    dao.created,
+                    dao.updated
+                ),
+                    ReplyListDTO(
+                        replyList.list.map { ReplyDTO(it.comment, it.created) },
+                        replyList.total
+                    )
+                ))
             }
 }

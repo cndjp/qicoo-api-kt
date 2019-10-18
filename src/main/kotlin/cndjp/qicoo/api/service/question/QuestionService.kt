@@ -5,6 +5,7 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
+import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
 import com.github.michaelbull.result.Result
 
 interface QuestionService {
@@ -13,4 +14,5 @@ interface QuestionService {
     fun incrLike(questionId: Int): Result<LikeCountValue, QicooError>
     fun answer(questionId: Int): Result<Unit, QicooError>
     fun addReply(questionId: Int, comment: String): Result<Unit, QicooError>
+    fun getQuestionWithReply(questionId: Int): Result<QuestionDetailDTO, QicooError>
 }

@@ -7,12 +7,10 @@ import org.joda.time.DateTime
 typealias ReplyValue = String
 
 class Reply (row: ReplyRow) {
-    val question_id: Int?
     val created: DateTime
     val comment: String
 
     init {
-        this.question_id = row.key.toIntOrNull()
         this.created = row.score.toLong().toDateTimeFromUnixTime()
         this.comment = row.value
     }

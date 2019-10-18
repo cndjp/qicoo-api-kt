@@ -6,9 +6,11 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.http_resource.request.question.AnswerRequest
 import cndjp.qicoo.api.http_resource.request.question.IncrLikeRequest
+import cndjp.qicoo.api.http_resource.request.question.QuestionDetailRequest
 import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.request.question.ReplyRequest
 import cndjp.qicoo.api.http_resource.response.question.LikeCountResponse
+import cndjp.qicoo.api.http_resource.response.question.QuestionDetailResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
@@ -127,7 +129,20 @@ fun Route.questionController(kodein: Kodein) {
             }
 
             get("/detail") {
-                TODO() // 主に該当のQuestionとリプライ一覧を表示する。
+                // 主に該当のQuestionとリプライ一覧を表示する。
+                runCatching {
+                    call.receive<QuestionDetailRequest>()
+                }
+                    .onSuccess { validatedRequest ->
+                        questionService.getQuestionWithReply(validatedRequest.question_id)
+                            .mapBoth(
+                                success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
+                                failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+                            )
+                    }
+                    .onFailure {
+                        call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name)
+                    }
             }
         }
     }
