@@ -52,14 +52,18 @@ class LikeCountRepositoryImpl : LikeCountRepository {
             }
     }
 
-    override fun findById(key: Int): LikeCount? =
-        RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())?.let {
-            LikeCount(
-                LikeCountRow(
-                    key.toString(),
-                    it
-                )
-            )
+    override fun findById(key: Int): Result<LikeCount, QicooError> =
+        RedisContext.zscore(qicooGlobalJedisPool.resource, likeCountListKey, key.toString())
+            .toResultOr {
+                QicooError.NotFoundEntityFailure.withLog()
+            }
+            .flatMap {
+                Ok(LikeCount(
+                    LikeCountRow(
+                        key.toString(),
+                        it
+                    )
+                ))
         }
 
     override fun findByIds(keys: List<Int>): LikeCountList {
@@ -73,10 +77,7 @@ class LikeCountRepositoryImpl : LikeCountRepository {
         }
 
     override fun incr(key: Int): Result<LikeCountValue, QicooError> =
-        this.findById(key)?.question_id
-            .toResultOr {
-                QicooError.CouldNotCreateEntityFailure.withLog()
-            }
+        this.findById(key)
             .flatMap {
                 Ok(RedisContext.zincrby(qicooGlobalJedisPool.resource, likeCountListKey, 1.0, key.toString()).toInt())
             }

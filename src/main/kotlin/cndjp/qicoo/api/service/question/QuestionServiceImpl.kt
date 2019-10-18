@@ -4,6 +4,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.withLog
+import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dto.question.QuestionDTO
@@ -18,6 +19,8 @@ import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
+import com.github.michaelbull.result.get
+import com.github.michaelbull.result.getOr
 import com.github.michaelbull.result.mapBoth
 import com.github.michaelbull.result.mapEither
 import mu.KotlinLogging
@@ -38,7 +41,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                         // RedisのZRANGEにvalue(question id)でフィルタリングとかするコマンドなかったから全部単発で投げるけどいいよね
                         findResult.list.map { dao ->
                             val likeCount = likeCountRepository
-                                .findById(dao.question_id)?.count ?: 0
+                                .findById(dao.question_id).get()?.count ?: 0
                             QuestionDTO(
                                 dao.question_id,
                                 dao.event_name,
@@ -137,7 +140,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                     dao.program_name,
                     dao.done_flag,
                     dao.display_name,
-                    likeCountRepository.findById(questionId)?.count ?: 0,
+                    likeCountRepository.findById(questionId).get()?.count ?: 0,
                     dao.comment,
                     dao.created,
                     dao.updated

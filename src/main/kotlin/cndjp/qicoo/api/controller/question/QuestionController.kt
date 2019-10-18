@@ -134,7 +134,7 @@ fun Route.questionController(kodein: Kodein) {
             get("/detail") {
                 call.parameters["question_id"]?.toIntOrNull()
                     .toResultOr {
-                        Err(QicooError.ParseParamaterFailure.withLog().name)
+                        QicooError.ParseParamaterFailure.withLog()
                     }
                     .mapBoth(
                         success = { validatedQuestionId ->
@@ -143,7 +143,7 @@ fun Route.questionController(kodein: Kodein) {
                                     success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
                                     failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                                 ) },
-                        failure = { call.respond(HttpStatusCode.BadRequest, it.error) }
+                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                     )
             }
         }

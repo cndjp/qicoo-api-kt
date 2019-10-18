@@ -53,12 +53,11 @@ object LikeCountRepositorySpec : Spek({
             val like1 = likeCountRepositoryImpl.findById(1)
             val like2 = likeCountRepositoryImpl.findById(2)
             val like9 = likeCountRepositoryImpl.findById(9)
-            assertNull(like9?.question_id)
-            assertNull(like9?.count)
-            assertEquals(1, like1?.question_id)
-            assertEquals(4, like1?.count)
-            assertEquals(2, like2?.question_id)
-            assertEquals(1, like2?.count)
+            assertNull(like9.get())
+            assertEquals(1, like1.get()!!.question_id)
+            assertEquals(4, like1.get()!!.count)
+            assertEquals(2, like2.get()!!.question_id)
+            assertEquals(1, like2.get()!!.count)
         }
         test("create()のテスト") {
             likeCountRepositoryImpl.create(11).get()!!

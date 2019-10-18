@@ -42,37 +42,37 @@ LikeCountRepositoryMock : LikeCountRepository {
             else -> TODO()
         }
 
-    override fun findById(key: Int): LikeCount? =
+    override fun findById(key: Int): Result<LikeCount, QicooError> =
         when (key) {
-            1 -> LikeCount(
+            1 -> Ok(LikeCount(
                 LikeCountRow(
                     "1",
                     ss.q1like
-                )
+                ))
             )
-            2 -> LikeCount(
+            2 -> Ok(LikeCount(
                 LikeCountRow(
                     "2",
                     ss.q2like
-                )
+                ))
             )
-            3 -> LikeCount(
+            3 -> Ok(LikeCount(
                 LikeCountRow(
                     "3",
                     ss.q3like
-                )
+                ))
             )
-            4 -> LikeCount(
+            4 -> Ok(LikeCount(
                 LikeCountRow(
                     "4",
                     ss.q4like
-                )
+                ))
             )
-            5 -> LikeCount(
+            5 -> Ok(LikeCount(
                 LikeCountRow(
                     "5",
                     ss.q5like
-                )
+                ))
             )
             else -> TODO()
         }

@@ -142,7 +142,7 @@ fun testPutRequestLike3(engine: Application.() -> Unit) = withTestApplication(en
         setBody("""{"question_id": 19}""".toByteArray())
     }) {
         assertEquals(HttpStatusCode.BadRequest, response.status())
-        assertEquals("CouldNotCreateEntityFailure", response.content)
+        assertEquals("NotFoundEntityFailure", response.content)
     }
 }
 
