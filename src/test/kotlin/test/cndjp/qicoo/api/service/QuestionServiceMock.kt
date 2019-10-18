@@ -7,6 +7,7 @@ import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
+import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -147,4 +148,7 @@ class QuestionServiceMock: QuestionService {
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
     override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> = Ok(Unit)
+    override fun getQuestionWithReply(questionId: Int): Result<QuestionDetailDTO, QicooError> {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 }
