@@ -29,7 +29,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q1like.toInt(),
                              ss.q1comment,
                              ss.q1date,
-                             ss.q1date
+                             ss.q1date,
+                             0
                          ),
                          QuestionDTO(
                              2,
@@ -40,7 +41,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q2like.toInt(),
                              ss.q2comment,
                              ss.q2date,
-                             ss.q2date
+                             ss.q2date,
+                             0
                          ),
                          QuestionDTO(
                              3,
@@ -51,7 +53,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q3like.toInt(),
                              ss.q3comment,
                              ss.q3date,
-                             ss.q3date
+                             ss.q3date,
+                             3
                          ),
                          QuestionDTO(
                              4,
@@ -62,7 +65,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q4like.toInt(),
                              ss.q4comment,
                              ss.q4date,
-                             ss.q4date
+                             ss.q4date,
+                             0
                          ),
                          QuestionDTO(
                              5,
@@ -73,7 +77,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q5like.toInt(),
                              ss.q5comment,
                              ss.q5date,
-                             ss.q5date
+                             ss.q5date,
+                             0
                          )
                      ),
                      5
@@ -91,7 +96,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q3like.toInt(),
                              ss.q3comment,
                              ss.q3date,
-                             ss.q3date
+                             ss.q3date,
+                             3
                          ),
                          QuestionDTO(
                              4,
@@ -102,7 +108,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q4like.toInt(),
                              ss.q4comment,
                              ss.q4date,
-                             ss.q4date
+                             ss.q4date,
+                             0
                          ),
                          QuestionDTO(
                              5,
@@ -113,7 +120,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q5like.toInt(),
                              ss.q5comment,
                              ss.q5date,
-                             ss.q5date
+                             ss.q5date,
+                             0
                          ),
                          QuestionDTO(
                              1,
@@ -124,7 +132,8 @@ class QuestionServiceMock: QuestionService {
                              ss.q1like.toInt(),
                              ss.q1comment,
                              ss.q1date,
-                             ss.q1date
+                             ss.q1date,
+                             0
                          )
                      ),
                      5
@@ -143,7 +152,8 @@ class QuestionServiceMock: QuestionService {
             0,
             ss.q6comment,
             ss.q6date,
-            ss.q6date
+            ss.q6date,
+            0
     ))
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)

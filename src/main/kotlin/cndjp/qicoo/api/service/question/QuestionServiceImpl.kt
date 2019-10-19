@@ -42,6 +42,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                         findResult.list.map { dao ->
                             val likeCount = likeCountRepository
                                 .findById(dao.question_id).get()?.count ?: 0
+                            val replyTotal = replyRepository.findTotalById(dao.question_id)
                             QuestionDTO(
                                 dao.question_id,
                                 dao.event_name,
@@ -51,7 +52,8 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                 likeCount,
                                 dao.comment,
                                 dao.created,
-                                dao.updated
+                                dao.updated,
+                                replyTotal
                             )
                         }, findResult.total
                     ))
@@ -74,6 +76,7 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                         Ok(QuestionListDTO(
                                             redisResult.list.mapNotNull { redisDAO ->
                                                 mapFromMysql[redisDAO.question_id]?.let { mysqlDAO ->
+                                                    val replyTotal = replyRepository.findTotalById(mysqlDAO.question_id)
                                                     QuestionDTO(
                                                         redisDAO.question_id ?: 0,
                                                         mysqlDAO.event_name,
@@ -83,7 +86,8 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                                         redisDAO.count ?: 0,
                                                         mysqlDAO.comment,
                                                         mysqlDAO.created,
-                                                        mysqlDAO.updated
+                                                        mysqlDAO.updated,
+                                                        replyTotal
                                                     )
                                                 }
                                             },
@@ -110,7 +114,8 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                                     0,
                                     dao.comment,
                                     dao.created,
-                                    dao.updated
+                                    dao.updated,
+                                    0
                                 ))
                             }
                     }
@@ -133,21 +138,22 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
         questionAggrRepository.findById(questionId)
             .flatMap { dao ->
                 val replyList = replyRepository.findById(questionId)
+                val replyTotal = replyRepository.findTotalById(questionId)
                 Ok(QuestionDetailDTO(
-                QuestionDTO(
-                    dao.question_id,
-                    dao.event_name,
-                    dao.program_name,
-                    dao.done_flag,
-                    dao.display_name,
-                    likeCountRepository.findById(questionId).get()?.count ?: 0,
-                    dao.comment,
-                    dao.created,
-                    dao.updated
-                ),
+                    QuestionDTO(
+                        dao.question_id,
+                        dao.event_name,
+                        dao.program_name,
+                        dao.done_flag,
+                        dao.display_name,
+                        likeCountRepository.findById(questionId).get()?.count ?: 0,
+                        dao.comment,
+                        dao.created,
+                        dao.updated,
+                        replyTotal
+                    ),
                     ReplyListDTO(
-                        replyList.list.map { ReplyDTO(it.comment, it.created) },
-                        replyList.total
+                        replyList.list.map { ReplyDTO(it.comment, it.created) }
                     )
                 ))
             }

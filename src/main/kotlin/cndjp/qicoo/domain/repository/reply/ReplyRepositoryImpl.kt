@@ -22,18 +22,19 @@ class ReplyRepositoryImpl: ReplyRepository {
             else -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
         }
 
-    override fun findById(id: Int): ReplyList {
-        val total = RedisContext.zcount(qicooGlobalJedisPool.resource, keyFactory(id)).toInt()
-        return ReplyList(
-        RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, keyFactory(id), 0.0, 100000000000000.0)
-            .map {
-                Reply(
-                    ReplyRow(
-                        it.score,
-                        it.element
+    override fun findTotalById(id: Int): Int =
+        RedisContext.zcount(qicooGlobalJedisPool.resource, keyFactory(id)).toInt()
+
+    override fun findById(id: Int): ReplyList =
+        ReplyList(
+            RedisContext.zrangeByScoreWithScores(qicooGlobalJedisPool.resource, keyFactory(id), 0.0, 100000000000000.0)
+                .map {
+                    Reply(
+                        ReplyRow(
+                            it.score,
+                            it.element
+                        )
                     )
-                )
-            }, total
+                }
         )
-    }
 }

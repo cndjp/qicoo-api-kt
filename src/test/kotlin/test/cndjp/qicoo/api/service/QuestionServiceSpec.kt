@@ -66,6 +66,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q1date, dto1.list[0].created)
             assertEquals(ss.q1date, dto1.list[0].updated)
             assertEquals(ss.q1like.toInt(), dto1.list[0].like_count)
+            assertEquals(0, dto1.list[0].reply_total)
             assertEquals(2, dto1.list[1].question_id)
             assertEquals(ss.p2name, dto1.list[1].program_name)
             assertEquals(ss.e2name, dto1.list[1].event_name)
@@ -73,6 +74,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q2date, dto1.list[1].created)
             assertEquals(ss.q2date, dto1.list[1].updated)
             assertEquals(ss.q2like.toInt(), dto1.list[1].like_count)
+            assertEquals(0, dto1.list[1].reply_total)
             val dto2 = questionServiceImpl1.getAll(param2).get()!!
             assertEquals(5, dto2.count)
             assertEquals(3, dto2.list[0].question_id)
@@ -81,6 +83,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q3dname, dto2.list[0].display_name)
             assertEquals(ss.q3date, dto2.list[0].created)
             assertEquals(ss.q3date, dto2.list[0].updated)
+            assertEquals(3, dto2.list[0].reply_total)
             assertEquals(ss.q3like.toInt(), dto2.list[0].like_count)
             assertEquals(4, dto2.list[1].question_id)
             assertEquals(ss.p4name, dto2.list[1].program_name)
@@ -89,6 +92,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q4date, dto2.list[1].created)
             assertEquals(ss.q4date, dto2.list[1].updated)
             assertEquals(ss.q4like.toInt(), dto2.list[1].like_count)
+            assertEquals(0, dto2.list[1].reply_total)
             assertEquals(5, dto2.list[2].question_id)
             assertEquals(ss.p5name, dto2.list[2].program_name)
             assertEquals(ss.e5name, dto2.list[2].event_name)
@@ -96,6 +100,7 @@ object QuestionServiceMockSpec : Spek({
             assertEquals(ss.q5date, dto2.list[2].created)
             assertEquals(ss.q5date, dto2.list[2].updated)
             assertEquals(ss.q5like.toInt(), dto2.list[2].like_count)
+            assertEquals(0, dto2.list[2].reply_total)
         }
 
         test("createQuestion()のmockテスト") {
@@ -130,6 +135,7 @@ object QuestionServiceRealSpec: Spek({
         val kodein2 = Kodein {
             bind<QuestionAggrRepository>() with singleton { QuestionAggrRepositoryImpl() }
             bind<LikeCountRepository>() with singleton { LikeCountRepositoryImpl() }
+            bind<ReplyRepository>() with singleton { ReplyRepositoryImpl() }
         }
         val questionServiceImpl2 = QuestionServiceImpl(kodein2)
 
@@ -155,6 +161,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q3date, dto1.list[0].created.toJST())
             assertEquals(ss.q3date, dto1.list[0].updated.toJST())
             assertEquals(ss.q3like.toInt(), dto1.list[0].like_count)
+            assertEquals(3, dto1.list[0].reply_total)
             assertEquals(4, dto1.list[1].question_id)
             assertEquals(ss.p4name, dto1.list[1].program_name)
             assertEquals(ss.e4name, dto1.list[1].event_name)
@@ -162,6 +169,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q4date, dto1.list[1].created.toJST())
             assertEquals(ss.q4date, dto1.list[1].updated.toJST())
             assertEquals(ss.q4like.toInt(), dto1.list[1].like_count)
+            assertEquals(0, dto1.list[1].reply_total)
             val dto2 = questionServiceImpl2.getAll(param2).get()!!
             assertEquals(5, dto2.count)
             assertEquals(2, dto2.list[0].question_id)
@@ -171,6 +179,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q2date, dto2.list[0].created.toJST())
             assertEquals(ss.q2date, dto2.list[0].updated.toJST())
             assertEquals(ss.q2like.toInt(), dto2.list[0].like_count)
+            assertEquals(0, dto2.list[0].reply_total)
             assertEquals(1, dto2.list[1].question_id)
             assertEquals(ss.p1name, dto2.list[1].program_name)
             assertEquals(ss.e1name, dto2.list[1].event_name)
@@ -178,6 +187,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q1date, dto2.list[1].created.toJST())
             assertEquals(ss.q1date, dto2.list[1].updated.toJST())
             assertEquals(ss.q1like.toInt(), dto2.list[1].like_count)
+            assertEquals(0, dto2.list[1].reply_total)
             assertEquals(5, dto2.list[2].question_id)
             assertEquals(ss.p5name, dto2.list[2].program_name)
             assertEquals(ss.e5name, dto2.list[2].event_name)
@@ -185,6 +195,7 @@ object QuestionServiceRealSpec: Spek({
             assertEquals(ss.q5date, dto2.list[2].created.toJST())
             assertEquals(ss.q5date, dto2.list[2].updated.toJST())
             assertEquals(ss.q5like.toInt(), dto2.list[2].like_count)
+            assertEquals(0, dto2.list[2].reply_total)
         }
 
         test("createQuestion()の実データテスト") {

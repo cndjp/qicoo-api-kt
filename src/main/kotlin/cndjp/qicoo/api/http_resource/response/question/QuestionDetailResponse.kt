@@ -13,8 +13,9 @@ class QuestionDetailResponse(questionDetailDTO: QuestionDetailDTO) {
     val comment: String
     val created: String
     val updated: String
-    val reply_list: List<ReplyResponse>
     val reply_total: Int
+    val reply_list: List<ReplyResponse>
+
 
     init {
         this.question_id = questionDetailDTO.questionDTO.question_id
@@ -26,7 +27,7 @@ class QuestionDetailResponse(questionDetailDTO: QuestionDetailDTO) {
         this.comment = questionDetailDTO.questionDTO.comment
         this.created = questionDetailDTO.questionDTO.created.toFomatString()
         this.updated = questionDetailDTO.questionDTO.updated.toFomatString()
+        this.reply_total = questionDetailDTO.questionDTO.reply_total
         this.reply_list = questionDetailDTO.replyListDTO.list.map {ReplyResponse(it)}
-        this.reply_total = questionDetailDTO.replyListDTO.total
     }
 }

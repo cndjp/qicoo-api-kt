@@ -9,7 +9,8 @@
       "like_count": 10,
       "comment": "what is poe",
       "created": "2020-10-08 19:00:00",
-      "updated": "2020-10-08 19:00:00"
+      "updated": "2020-10-08 19:00:00",
+      "reply_total": 3
     },
     {
       "question_id": 4,
@@ -20,7 +21,8 @@
       "like_count": 8,
       "comment": "what is myas",
       "created": "2020-10-07 19:00:00",
-      "updated": "2020-10-07 19:00:00"
+      "updated": "2020-10-07 19:00:00",
+      "reply_total": 0
     },
     {
       "question_id": 5,
@@ -31,7 +33,8 @@
       "like_count": 6,
       "comment": "what is hugai",
       "created": "2020-10-06 19:00:00",
-      "updated": "2020-10-06 19:00:00"
+      "updated": "2020-10-06 19:00:00",
+      "reply_total": 0
     },
     {
       "question_id": 1,
@@ -42,7 +45,8 @@
       "like_count": 4,
       "comment": "what is qicoo",
       "created": "2020-10-10 19:00:00",
-      "updated": "2020-10-10 19:00:00"
+      "updated": "2020-10-10 19:00:00",
+      "reply_total": 0
     }
   ],
   "total": 5

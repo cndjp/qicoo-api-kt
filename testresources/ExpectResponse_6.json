@@ -8,6 +8,7 @@
   "comment": "what is poe",
   "created": "2020-10-08 19:00:00",
   "updated": "2020-10-08 19:00:00",
+  "reply_total": 3,
   "reply_list": [
     {
       "comment": "sorette nani",
@@ -21,6 +22,5 @@
       "comment": "sorette pase",
       "created": "1999-04-01 19:50:00"
     }
-  ],
-  "reply_total": 3
+  ]
 }

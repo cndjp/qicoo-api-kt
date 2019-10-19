@@ -11,5 +11,6 @@ data class QuestionDTO(
     val like_count: Int,
     val comment: String,
     val created: DateTime,
-    val updated: DateTime
+    val updated: DateTime,
+    val reply_total: Int
 )

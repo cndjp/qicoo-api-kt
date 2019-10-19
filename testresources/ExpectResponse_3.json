@@ -9,7 +9,8 @@
       "like_count": 10,
       "comment": "what is poe",
       "created": "2020-10-08 19:00:00",
-      "updated": "2020-10-08 19:00:00"
+      "updated": "2020-10-08 19:00:00",
+      "reply_total": 3
     },
     {
       "question_id": 2,
@@ -20,7 +21,8 @@
       "like_count": 1,
       "comment": "what is mayo",
       "created": "2020-10-09 19:00:00",
-      "updated": "2020-10-09 19:00:00"
+      "updated": "2020-10-09 19:00:00",
+      "reply_total": 0
     }
   ],
   "total": 5
