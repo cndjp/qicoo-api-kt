@@ -45,16 +45,29 @@ class QuestionAggrRepositoryMock : QuestionAggrRepository {
     override fun checkExistById(id: Int): Result<Unit, QicooError> = Ok(Unit)
 
     override fun findById(id: Int): Result<QuestionAggr, QicooError> =
-        Ok(QuestionAggr(
-            6,
-            ss.e6name,
-            ss.p6name,
-            ss.q6dflg,
-            ss.q6dname,
-            ss.q6comment,
-            ss.q6date,
-            ss.q6date
-        ))
+        when (id) {
+            3 -> Ok(QuestionAggr(
+                3,
+                ss.e3name,
+                ss.p3name,
+                ss.q3dflg,
+                ss.q3dname,
+                ss.q3comment,
+                ss.q3date,
+                ss.q3date
+            ))
+            6 -> Ok(QuestionAggr(
+                6,
+                ss.e6name,
+                ss.p6name,
+                ss.q6dflg,
+                ss.q6dname,
+                ss.q6comment,
+                ss.q6date,
+                ss.q6date
+            ))
+            else -> TODO()
+        }
 
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> =
         when (ids) {

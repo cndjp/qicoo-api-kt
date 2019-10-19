@@ -118,6 +118,26 @@ object QuestionServiceMockSpec : Spek({
         test("addReply()のmockテスト") {
             questionServiceImpl1.addReply(6, "にゃんにゃん").get()!!
         }
+
+        test("getQuestionWithReply()のmockテスト") {
+            val result = questionServiceImpl1.getQuestionWithReply(3).get()!!
+            assertEquals(3, result.questionDTO.question_id)
+            assertEquals(ss.e3name, result.questionDTO.event_name)
+            assertEquals(ss.p3name, result.questionDTO.program_name)
+            assertEquals(ss.q3like.toInt(), result.questionDTO.like_count)
+            assertEquals(ss.q3comment, result.questionDTO.comment)
+            assertEquals(ss.q3dflg, result.questionDTO.done_flag)
+            assertEquals(ss.q3date, result.questionDTO.created)
+            assertEquals(ss.q3date, result.questionDTO.updated)
+            assertEquals(ss.q3dname, result.questionDTO.display_name)
+            assertEquals(3, result.questionDTO.reply_total)
+            assertEquals(ss.q3reply1, result.replyListDTO.list[0].comment)
+            assertEquals(ss.q3reply1date, result.replyListDTO.list[0].created.millis.toDouble())
+            assertEquals(ss.q3reply2, result.replyListDTO.list[1].comment)
+            assertEquals(ss.q3reply2date, result.replyListDTO.list[1].created.millis.toDouble())
+            assertEquals(ss.q3reply3, result.replyListDTO.list[2].comment)
+            assertEquals(ss.q3reply3date, result.replyListDTO.list[2].created.millis.toDouble())
+        }
     }
 })
 
