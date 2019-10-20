@@ -39,13 +39,8 @@ docker-image:
     `docker images -a --filter='dangling=false' --format '{{ "{{" }}.Repository{{ "}}" }}:{{ "{{" }}.Tag{{ "}}" }}'| grep "{{ DOCKER_IMAGE_NAME }}"`
 
 docker-build: load_dotenv
-    #!/bin/bash
-    if [ ! -z ${TRAVIS:-} ]; then
-        docker build -t {{ DOCKER_IMAGE_NAME }}:builder --target=builder --cache-from {{ DOCKER_IMAGE_NAME }}:builder .
-        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} --cache-from $(docker images -a --filter='dangling=false' --format '{{ "{{" }}.Repository{{ "}}" }}:{{ "{{" }}.Tag{{ "}}" }}' | grep {{ DOCKER_IMAGE_NAME }} | head -n 1) .
-    else
-        docker build -t {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
-    fi
+    docker build -t docker.io/{{ DOCKER_IMAGE_NAME }}:base -f base.Dockerfile .
+    ./gradlew jibDockerBuild
 
 docker-run: load_dotenv
     #!/bin/bash
