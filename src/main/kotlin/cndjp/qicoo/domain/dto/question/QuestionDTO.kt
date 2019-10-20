@@ -1,5 +1,6 @@
 package cndjp.qicoo.domain.dto.question
 
+import cndjp.qicoo.domain.dao.reply.Reply
 import org.joda.time.DateTime
 
 data class QuestionDTO(
@@ -12,5 +13,6 @@ data class QuestionDTO(
     val comment: String,
     val created: DateTime,
     val updated: DateTime,
+    val reply_list: List<Reply>,
     val reply_total: Int
 )

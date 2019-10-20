@@ -13,6 +13,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
     val comment: String
     val created: String
     val updated: String
+    val reply_list: List<ReplyResponse>
     val reply_total: Int
 
     init {
@@ -25,6 +26,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
         this.comment = questionDTO.comment
         this.created = questionDTO.created.toFomatString()
         this.updated = questionDTO.updated.toFomatString()
+        this.reply_list = questionDTO.reply_list.map {ReplyResponse(it)}
         this.reply_total = questionDTO.reply_total
     }
 }

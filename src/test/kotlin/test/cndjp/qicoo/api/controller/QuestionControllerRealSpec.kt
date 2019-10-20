@@ -118,14 +118,5 @@ object QuestionControllerRealSpec :Spek({
                 testPostRequestReply3(engine)
             }
         }
-
-        group("GET :+: /api/v1/questions/detail") {
-            test("GET :+: /api/v1/questions/detail?question_id=3 :=: 正常なパラメータ") {
-                testGetRequestQuestionDeital1(engine)
-            }
-            test("GET :+: /api/v1/questions/detail?question_id=hoge :=: 異常なパラメータ") {
-                testGetRequestQuestionDeital2(engine)
-            }
-        }
     }
 })

@@ -28,6 +28,7 @@ object ReplyRepositorySpec : Spek({
 
     test("findById()のテスト") {
         val result = replyRepositoryImpl.findById(3)
+        assertEquals(3, result.total)
         assertEquals(ss.q3reply1, result.list[0].comment)
         assertEquals(ss.q3reply1date, result.list[0].created.millis.toDouble())
         assertEquals(ss.q3reply2, result.list[1].comment)

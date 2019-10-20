@@ -15,8 +15,8 @@ class ReplyRepositoryMock: ReplyRepository {
     override fun add(id: Int, comment: String): Result<Unit, QicooError> = Ok(Unit)
     override fun findById(id: Int): ReplyList =
         when (id) {
-            1 -> ReplyList(listOf())
-            2 -> ReplyList(listOf())
+            1 -> ReplyList(listOf(), 0)
+            2 -> ReplyList(listOf(), 0)
             3 -> ReplyList(listOf(
                 Reply(
                     ReplyRow(
@@ -36,21 +36,11 @@ class ReplyRepositoryMock: ReplyRepository {
                         ss.q3reply3
                     )
                 )
-            ))
-            4 -> ReplyList(listOf())
-            5 -> ReplyList(listOf())
-            6 -> ReplyList(listOf())
+            ), 3)
+            4 -> ReplyList(listOf(), 0)
+            5 -> ReplyList(listOf(), 0)
+            6 -> ReplyList(listOf(), 0)
             else -> TODO()
         }
 
-    override fun findTotalById(id: Int): Int =
-        when (id) {
-            1 -> 0
-            2 -> 0
-            3 -> 3
-            4 -> 0
-            5 -> 0
-            6 -> 0
-            else -> TODO()
-        }
 }

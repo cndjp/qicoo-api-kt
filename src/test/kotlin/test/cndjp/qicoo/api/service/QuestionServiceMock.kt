@@ -5,9 +5,11 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
+import cndjp.qicoo.domain.dao.reply.Reply
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
+import cndjp.qicoo.domain.model.reply.ReplyRow
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -30,6 +32,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q1comment,
                              ss.q1date,
                              ss.q1date,
+                             listOf(),
                              0
                          ),
                          QuestionDTO(
@@ -42,6 +45,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q2comment,
                              ss.q2date,
                              ss.q2date,
+                             listOf(),
                              0
                          ),
                          QuestionDTO(
@@ -54,6 +58,26 @@ class QuestionServiceMock: QuestionService {
                              ss.q3comment,
                              ss.q3date,
                              ss.q3date,
+                             listOf(
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply1date,
+                                         ss.q3reply1
+                                     )
+                                 ),
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply2date,
+                                         ss.q3reply2
+                                     )
+                                 ),
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply3date,
+                                         ss.q3reply3
+                                     )
+                                 )
+                             ),
                              3
                          ),
                          QuestionDTO(
@@ -66,6 +90,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q4comment,
                              ss.q4date,
                              ss.q4date,
+                             listOf(),
                              0
                          ),
                          QuestionDTO(
@@ -78,6 +103,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q5comment,
                              ss.q5date,
                              ss.q5date,
+                             listOf(),
                              0
                          )
                      ),
@@ -97,6 +123,26 @@ class QuestionServiceMock: QuestionService {
                              ss.q3comment,
                              ss.q3date,
                              ss.q3date,
+                             listOf(
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply1date,
+                                         ss.q3reply1
+                                     )
+                                 ),
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply2date,
+                                         ss.q3reply2
+                                     )
+                                 ),
+                                 Reply(
+                                     ReplyRow(
+                                         ss.q3reply3date,
+                                         ss.q3reply3
+                                     )
+                                 )
+                             ),
                              3
                          ),
                          QuestionDTO(
@@ -109,6 +155,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q4comment,
                              ss.q4date,
                              ss.q4date,
+                             listOf(),
                              0
                          ),
                          QuestionDTO(
@@ -121,6 +168,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q5comment,
                              ss.q5date,
                              ss.q5date,
+                             listOf(),
                              0
                          ),
                          QuestionDTO(
@@ -133,6 +181,7 @@ class QuestionServiceMock: QuestionService {
                              ss.q1comment,
                              ss.q1date,
                              ss.q1date,
+                             listOf(),
                              0
                          )
                      ),
@@ -153,12 +202,10 @@ class QuestionServiceMock: QuestionService {
             ss.q6comment,
             ss.q6date,
             ss.q6date,
+            listOf(),
             0
     ))
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
     override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> = Ok(Unit)
-    override fun getQuestionWithReply(questionId: Int): Result<QuestionDetailDTO, QicooError> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
 }

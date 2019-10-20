@@ -6,6 +6,5 @@ import com.github.michaelbull.result.Result
 
 interface ReplyRepository {
     fun add(id: Int, comment: String): Result<Unit, QicooError>
-    fun findTotalById(id: Int): Int
     fun findById(id: Int): ReplyList
 }

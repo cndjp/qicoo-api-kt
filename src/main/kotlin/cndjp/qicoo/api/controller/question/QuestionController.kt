@@ -6,19 +6,14 @@ import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.http_resource.request.question.AnswerRequest
 import cndjp.qicoo.api.http_resource.request.question.IncrLikeRequest
-import cndjp.qicoo.api.http_resource.request.question.QuestionDetailRequest
 import cndjp.qicoo.api.http_resource.request.question.QuestionRequest
 import cndjp.qicoo.api.http_resource.request.question.ReplyRequest
 import cndjp.qicoo.api.http_resource.response.question.LikeCountResponse
-import cndjp.qicoo.api.http_resource.response.question.QuestionDetailResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionListResponse
 import cndjp.qicoo.api.http_resource.response.question.QuestionResponse
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.withLog
-import com.github.michaelbull.result.Err
-import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.mapBoth
-import com.github.michaelbull.result.toResultOr
 import io.ktor.application.call
 import io.ktor.http.HttpStatusCode
 import io.ktor.request.receive
@@ -131,21 +126,21 @@ fun Route.questionController(kodein: Kodein) {
                     }
             }
 
-            get("/detail") {
-                call.parameters["question_id"]?.toIntOrNull()
-                    .toResultOr {
-                        QicooError.ParseParamaterFailure.withLog()
-                    }
-                    .mapBoth(
-                        success = { validatedQuestionId ->
-                            questionService.getQuestionWithReply(validatedQuestionId)
-                                .mapBoth(
-                                    success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
-                                    failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                                ) },
-                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-                    )
-            }
+            //get("/detail") {
+            //    call.parameters["question_id"]?.toIntOrNull()
+            //        .toResultOr {
+            //            QicooError.ParseParamaterFailure.withLog()
+            //        }
+            //        .mapBoth(
+            //            success = { validatedQuestionId ->
+            //                questionService.getQuestionWithReply(validatedQuestionId)
+            //                    .mapBoth(
+            //                        success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
+            //                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+            //                    ) },
+            //            failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
+            //        )
+            //}
         }
     }
 }

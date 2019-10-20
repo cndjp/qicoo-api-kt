@@ -10,6 +10,20 @@
       "comment": "what is poe",
       "created": "2020-10-08 19:00:00",
       "updated": "2020-10-08 19:00:00",
+      "reply_list": [
+        {
+          "comment": "sorette nani",
+          "created": "1999-04-01 19:30:00"
+        },
+        {
+          "comment": "sorette moni",
+          "created": "1999-04-01 19:40:00"
+        },
+        {
+          "comment": "sorette pase",
+          "created": "1999-04-01 19:50:00"
+        }
+      ],
       "reply_total": 3
     },
     {
@@ -22,6 +36,7 @@
       "comment": "what is myas",
       "created": "2020-10-07 19:00:00",
       "updated": "2020-10-07 19:00:00",
+      "reply_list": [],
       "reply_total": 0
     },
     {
@@ -34,6 +49,7 @@
       "comment": "what is hugai",
       "created": "2020-10-06 19:00:00",
       "updated": "2020-10-06 19:00:00",
+      "reply_list": [],
       "reply_total": 0
     },
     {
@@ -46,6 +62,7 @@
       "comment": "what is qicoo",
       "created": "2020-10-10 19:00:00",
       "updated": "2020-10-10 19:00:00",
+      "reply_list": [],
       "reply_total": 0
     }
   ],
