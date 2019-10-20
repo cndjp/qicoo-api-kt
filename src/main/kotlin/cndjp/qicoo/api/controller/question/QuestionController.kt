@@ -125,22 +125,6 @@ fun Route.questionController(kodein: Kodein) {
                         call.respond(HttpStatusCode.BadRequest, QicooError.ParseRequestFailure.withLog().name)
                     }
             }
-
-            //get("/detail") {
-            //    call.parameters["question_id"]?.toIntOrNull()
-            //        .toResultOr {
-            //            QicooError.ParseParamaterFailure.withLog()
-            //        }
-            //        .mapBoth(
-            //            success = { validatedQuestionId ->
-            //                questionService.getQuestionWithReply(validatedQuestionId)
-            //                    .mapBoth(
-            //                        success = { call.respond(HttpStatusCode.OK, QuestionDetailResponse(it)) },
-            //                        failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-            //                    ) },
-            //            failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
-            //        )
-            //}
         }
     }
 }
