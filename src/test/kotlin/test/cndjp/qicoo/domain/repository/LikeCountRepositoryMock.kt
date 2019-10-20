@@ -74,6 +74,12 @@ LikeCountRepositoryMock : LikeCountRepository {
                     ss.q5like
                 ))
             )
+            6 -> Ok(LikeCount(
+                LikeCountRow(
+                    "6",
+                    ss.q6like
+                ))
+            )
             else -> TODO()
         }
 

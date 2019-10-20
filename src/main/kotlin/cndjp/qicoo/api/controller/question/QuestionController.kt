@@ -117,7 +117,7 @@ fun Route.questionController(kodein: Kodein) {
                     .onSuccess { validatedRequest ->
                         questionService.addReply(validatedRequest.question_id, validatedRequest.comment)
                             .mapBoth(
-                                success = { call.respond(HttpStatusCode.OK) },
+                                success = { call.respond(HttpStatusCode.OK, QuestionResponse(it)) },
                                 failure = { call.respond(HttpStatusCode.BadRequest, it.name) }
                             )
                     }

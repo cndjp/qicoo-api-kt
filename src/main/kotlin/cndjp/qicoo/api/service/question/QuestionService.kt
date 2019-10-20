@@ -13,5 +13,5 @@ interface QuestionService {
     fun createQuestion(comment: String): Result<QuestionDTO, QicooError>
     fun incrLike(questionId: Int): Result<LikeCountValue, QicooError>
     fun answer(questionId: Int): Result<Unit, QicooError>
-    fun addReply(questionId: Int, comment: String): Result<Unit, QicooError>
+    fun addReply(questionId: Int, comment: String): Result<QuestionDTO, QicooError>
 }

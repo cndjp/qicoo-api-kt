@@ -158,7 +158,7 @@ fun testPutRequestLike4(engine: Application.() -> Unit) = withTestApplication(en
 fun testPostRequestReply1(engine: Application.() -> Unit) = withTestApplication(engine) {
     with(handleRequest(HttpMethod.Post, "/api/v1/questions/reply"){
         addHeader(HttpHeaders.ContentType, ContentType.Application.Json.toString())
-        setBody("""{"question_id": 1, "comment": "表なら話す、裏なら話さないって決めたの"}""".toByteArray())
+        setBody("""{"question_id": 1, "comment": "omote nara hanasu"}""".toByteArray())
     }) {
         assertEquals(HttpStatusCode.OK, response.status())
     }

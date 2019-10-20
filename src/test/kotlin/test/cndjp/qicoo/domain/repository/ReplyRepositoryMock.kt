@@ -39,7 +39,17 @@ class ReplyRepositoryMock: ReplyRepository {
             ), 3)
             4 -> ReplyList(listOf(), 0)
             5 -> ReplyList(listOf(), 0)
-            6 -> ReplyList(listOf(), 0)
+            6 -> ReplyList(
+                listOf(
+                    Reply(
+                        ReplyRow(
+                            ss.q6reply1date,
+                            ss.q6reply1
+                        )
+                    )
+                ),
+                1
+            )
             else -> TODO()
         }
 

@@ -116,7 +116,10 @@ object QuestionServiceMockSpec : Spek({
         }
 
         test("addReply()のmockテスト") {
-            questionServiceImpl1.addReply(6, "にゃんにゃん").get()!!
+            val result = questionServiceImpl1.addReply(6, ss.q6reply1).get()!!
+            println(result)
+            assertEquals(ss.q6reply1, result.reply_list[0].comment)
+            assertEquals(ss.q6reply1date, result.reply_list[0].created.millis.toDouble())
         }
     }
 })

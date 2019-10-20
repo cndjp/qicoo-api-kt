@@ -74,6 +74,7 @@ object RepositorySpecSupport {
     val q3like = 10.0
     val q4like = 8.0
     val q5like = 6.0
+    val q6like = 99.0
     val q1dflg = true
     val q2dflg = true
     val q3dflg = false
@@ -86,6 +87,8 @@ object RepositorySpecSupport {
     val q3reply1date = "1999-04-01 19:30:00".toDateTimeJst().millis.toDouble()
     val q3reply2date = "1999-04-01 19:40:00".toDateTimeJst().millis.toDouble()
     val q3reply3date = "1999-04-01 19:50:00".toDateTimeJst().millis.toDouble()
+    val q6reply1 = "nyannyan"
+    val q6reply1date = "2003-12-31 01:50:00".toDateTimeJst().millis.toDouble()
 }
 
 fun RepositorySpecSupport.insertDummyData() {

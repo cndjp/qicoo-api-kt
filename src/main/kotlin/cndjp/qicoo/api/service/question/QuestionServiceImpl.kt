@@ -131,9 +131,27 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
     override fun answer(questionId: Int): Result<Unit, QicooError> =
         questionAggrRepository.todo2done(questionId)
 
-    override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> =
-        questionAggrRepository.checkExistById(questionId)
-            .flatMap {
-                replyRepository.add(questionId, comment)
+    override fun addReply(questionId: Int, comment: String): Result<QuestionDTO, QicooError> =
+        questionAggrRepository.findById(questionId)
+            .flatMap { dao ->
+                replyRepository.add(dao.question_id, comment)
+                    .flatMap {
+                        val likeCount = likeCountRepository
+                            .findById(dao.question_id).get()?.count ?: 0
+                        val replyList = replyRepository.findById(dao.question_id)
+                        Ok(QuestionDTO(
+                            dao.question_id,
+                            dao.event_name,
+                            dao.program_name,
+                            dao.done_flag,
+                            dao.display_name,
+                            likeCount,
+                            dao.comment,
+                            dao.created,
+                            dao.updated,
+                            replyList.list,
+                            replyList.total
+                        ))
+                    }
             }
 }

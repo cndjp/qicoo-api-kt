@@ -10,6 +10,7 @@ import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
 import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
 import cndjp.qicoo.domain.model.reply.ReplyRow
+import cndjp.qicoo.utils.getNowDateTimeJst
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
@@ -207,5 +208,26 @@ class QuestionServiceMock: QuestionService {
     ))
     override fun answer(questionId: Int): Result<Unit, QicooError> = Ok(Unit)
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> = Ok(5)
-    override fun addReply(questionId: Int, comment: String): Result<Unit, QicooError> = Ok(Unit)
+    override fun addReply(questionId: Int, comment: String): Result<QuestionDTO, QicooError> = Ok(
+        QuestionDTO(
+            6,
+            ss.e6name,
+            ss.p6name,
+            ss.q6dflg,
+            ss.q6dname,
+            0,
+            ss.q6comment,
+            ss.q6date,
+            ss.q6date,
+            listOf(
+                Reply(
+                    ReplyRow(
+                        ss.q6reply1date,
+                        ss.q6reply1
+                    )
+                )
+            ),
+            1
+        )
+    )
 }
