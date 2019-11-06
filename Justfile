@@ -119,6 +119,12 @@ setup-mysql-db: load_dotenv
     echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB} DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci" | mysql -h${MYSQL_HOST} -u${MYSQL_USER} 2>/dev/null
     echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -u${MYSQL_USER} 2>/dev/null
 
+data-migrate-db: load_dotenv
+    ./gradlew runMigrate
+
+data-clean-db: load_dotenv
+    ./gradlew runClean
+
 run-mysql-db: lunch-mysql-db check-mysql-db setup-mysql-db
 
 run-redis-db: load_dotenv
@@ -134,7 +140,7 @@ run-redis-db: load_dotenv
             -p ${REDIS_PORT}:${REDIS_PORT} redis:{{ REDIS_VERSION }}
     fi
 
-run-db: run-redis-db run-mysql-db
+run-db: run-redis-db run-mysql-db data-migrate-db
 
 clean-mysql-db:
     #!/bin/bash

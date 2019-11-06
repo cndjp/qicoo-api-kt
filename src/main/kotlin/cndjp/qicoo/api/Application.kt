@@ -24,7 +24,9 @@ import io.ktor.routing.routing
 import java.time.Duration
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
+import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
+import org.kodein.di.jvmType
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 

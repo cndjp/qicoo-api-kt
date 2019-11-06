@@ -117,6 +117,16 @@ compileKotlin {
     }
 }
 
+task runMigrate(type: JavaExec) {
+    main ='test.cndjp.qicoo.domain.repository.support.migration_run.migrate.MainKt'
+    classpath = sourceSets.test.runtimeClasspath
+}
+
+task runClean(type: JavaExec) {
+    main ='test.cndjp.qicoo.domain.repository.support.migration_run.clean.MainKt'
+    classpath = sourceSets.test.runtimeClasspath
+}
+
 jib {
     def details = versionDetails()
     from {
