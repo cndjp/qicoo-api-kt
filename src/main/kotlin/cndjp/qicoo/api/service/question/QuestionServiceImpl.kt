@@ -61,39 +61,39 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                 }
             QuestionGetSortParameter.like ->
                 likeCountRepository.findAll(param.per, param.page, param.order.name)
-                    .flatMap { redisResult ->
+                    .flatMap { likeCountResult ->
                         questionAggrRepository.findByIds(
-                            redisResult.list.map {
+                            likeCountResult.list.map {
                                 it.question_id ?: 0
                             }
                         )
-                            .flatMap { listFromMySQL ->
-                                listFromMySQL.list.map { it.question_id to it }.toMap()
-                                    .let { when (redisResult.list.size == it.size) {
+                            .flatMap { questionAggrList ->
+                                questionAggrList.list.map { it.question_id to it }.toMap()
+                                    .let { when (likeCountResult.list.size == it.size) {
                                         true -> Ok(it)
                                         false -> Err(QicooError.MismatchDataStoreFailure.withLog())
                                     } }
-                                    .flatMap { mapFromMysql ->
+                                    .flatMap { questionDAOMap ->
                                         Ok(QuestionListDTO(
-                                            redisResult.list.mapNotNull { redisDAO ->
-                                                mapFromMysql[redisDAO.question_id]?.let { mysqlDAO ->
-                                                    val replyList = replyRepository.findById(mysqlDAO.question_id)
+                                            likeCountResult.list.mapNotNull { likeCountDAO ->
+                                                questionDAOMap[likeCountDAO.question_id]?.let { questionDAO ->
+                                                    val replyList = replyRepository.findById(questionDAO.question_id)
                                                     QuestionDTO(
-                                                        redisDAO.question_id ?: 0,
-                                                        mysqlDAO.event_name,
-                                                        mysqlDAO.program_name,
-                                                        mysqlDAO.done_flag,
-                                                        mysqlDAO.display_name,
-                                                        redisDAO.count ?: 0,
-                                                        mysqlDAO.comment,
-                                                        mysqlDAO.created,
-                                                        mysqlDAO.updated,
+                                                        likeCountDAO.question_id ?: 0,
+                                                        questionDAO.event_name,
+                                                        questionDAO.program_name,
+                                                        questionDAO.done_flag,
+                                                        questionDAO.display_name,
+                                                        likeCountDAO.count ?: 0,
+                                                        questionDAO.comment,
+                                                        questionDAO.created,
+                                                        questionDAO.updated,
                                                         replyList.list,
                                                         replyList.total
                                                     )
                                                 }
                                             },
-                                            redisResult.total
+                                            likeCountResult.total
                                         ))
                                     }
                             }
