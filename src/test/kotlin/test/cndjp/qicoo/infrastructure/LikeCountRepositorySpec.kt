@@ -1,9 +1,9 @@
-package test.cndjp.qicoo.domain.repository
+package test.cndjp.qicoo.infrastructure
 
-import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
-import test.cndjp.qicoo.domain.repository.support.dropDummyData
-import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import cndjp.qicoo.infrastructure.repository.LikeCountRepositoryImpl
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.dropDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.insertDummyData
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.api.QicooError

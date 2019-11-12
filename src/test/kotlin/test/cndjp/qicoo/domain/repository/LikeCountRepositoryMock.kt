@@ -8,7 +8,7 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
 
 class
 LikeCountRepositoryMock : LikeCountRepository {

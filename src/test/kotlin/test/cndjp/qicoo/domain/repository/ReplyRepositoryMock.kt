@@ -7,7 +7,7 @@ import cndjp.qicoo.domain.model.reply.ReplyRow
 import cndjp.qicoo.domain.repository.reply.ReplyRepository
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
 
 class ReplyRepositoryMock: ReplyRepository {
     private val ss = RepositorySpecSupport

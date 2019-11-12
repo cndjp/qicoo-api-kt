@@ -3,7 +3,7 @@ package test.cndjp.qicoo.api.controller
 import cndjp.qicoo.api.main
 import cndjp.qicoo.domain.dao.question.toQuestion
 import cndjp.qicoo.domain.model.question.question
-import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
+import cndjp.qicoo.infrastructure.repository.LikeCountRepositoryImpl
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import io.ktor.application.Application
@@ -12,9 +12,9 @@ import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.spekframework.spek2.Spek
 import test.cndjp.qicoo.api.http_resource.*
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
-import test.cndjp.qicoo.domain.repository.support.dropDummyData
-import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.dropDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.insertDummyData
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

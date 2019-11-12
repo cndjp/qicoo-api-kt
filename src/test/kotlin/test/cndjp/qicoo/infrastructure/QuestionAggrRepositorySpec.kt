@@ -1,11 +1,11 @@
-package test.cndjp.qicoo.domain.repository
+package test.cndjp.qicoo.infrastructure
 
 import cndjp.qicoo.domain.dao.question.toQuestion
 import cndjp.qicoo.domain.model.question.question
-import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepositoryImpl
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
-import test.cndjp.qicoo.domain.repository.support.dropDummyData
-import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import cndjp.qicoo.infrastructure.repository.QuestionAggrRepositoryImpl
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.dropDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.insertDummyData
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull

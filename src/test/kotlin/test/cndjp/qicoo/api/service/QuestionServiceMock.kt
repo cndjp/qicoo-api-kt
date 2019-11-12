@@ -8,12 +8,10 @@ import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.dao.reply.Reply
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
-import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
 import cndjp.qicoo.domain.model.reply.ReplyRow
-import cndjp.qicoo.utils.getNowDateTimeJst
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
 
 class QuestionServiceMock: QuestionService {
     private val ss = RepositorySpecSupport

@@ -1,4 +1,4 @@
-package cndjp.qicoo.domain.repository.like_count
+package cndjp.qicoo.infrastructure.repository
 
 import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
@@ -6,13 +6,13 @@ import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountList
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
 import cndjp.qicoo.domain.model.like_count.LikeCountRow
+import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
-import com.github.michaelbull.result.map
 import com.github.michaelbull.result.toResultOr
 
 class LikeCountRepositoryImpl : LikeCountRepository {

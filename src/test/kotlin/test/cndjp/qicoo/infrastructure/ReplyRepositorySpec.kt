@@ -1,12 +1,12 @@
-package test.cndjp.qicoo.domain.repository
+package test.cndjp.qicoo.infrastructure
 
-import cndjp.qicoo.domain.repository.reply.ReplyRepositoryImpl
+import cndjp.qicoo.infrastructure.repository.ReplyRepositoryImpl
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import org.spekframework.spek2.Spek
-import test.cndjp.qicoo.domain.repository.support.RepositorySpecSupport
-import test.cndjp.qicoo.domain.repository.support.dropDummyData
-import test.cndjp.qicoo.domain.repository.support.insertDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.RepositorySpecSupport
+import test.cndjp.qicoo.infrastructure.support.migration_run.dropDummyData
+import test.cndjp.qicoo.infrastructure.support.migration_run.insertDummyData
 import kotlin.test.assertEquals
 
 object ReplyRepositorySpec : Spek({

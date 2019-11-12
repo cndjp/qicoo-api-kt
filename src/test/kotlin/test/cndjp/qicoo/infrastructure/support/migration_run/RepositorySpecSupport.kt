@@ -1,4 +1,4 @@
-package test.cndjp.qicoo.domain.repository.support
+package test.cndjp.qicoo.infrastructure.support.migration_run
 
 import cndjp.qicoo.domain.dao.event.NewEvent
 import cndjp.qicoo.domain.dao.program.NewProgram
@@ -9,7 +9,7 @@ import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.model.unlinked_user.unlinked_user
 import cndjp.qicoo.domain.model.user.user
-import cndjp.qicoo.domain.repository.like_count.LikeCountRepositoryImpl
+import cndjp.qicoo.infrastructure.repository.LikeCountRepositoryImpl
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
@@ -92,7 +92,6 @@ object RepositorySpecSupport {
 }
 
 fun RepositorySpecSupport.insertDummyData() {
-    val ss = this
     initMysqlClient()
     transaction {
         SchemaUtils.drop(
@@ -227,8 +226,23 @@ fun RepositorySpecSupport.insertDummyData() {
             created = q5date
             updated = q5date
         }
-        RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1", q1like), Pair("2", q2like), Pair("3", q3like), Pair("4", q4like), Pair("5", q5like)))
-        RedisContext.zadd(qicooGlobalJedisPool.resource, "reply_list:3", mapOf(Pair(q3reply1, q3reply1date), Pair(q3reply2, q3reply2date), Pair(q3reply3, q3reply3date)))
+        RedisContext.zadd(qicooGlobalJedisPool.resource, LikeCountRepositoryImpl().likeCountListKey, mapOf(Pair("1",
+            q1like
+        ), Pair("2", q2like), Pair("3",
+            q3like
+        ), Pair("4", q4like), Pair("5",
+            q5like
+        )))
+        RedisContext.zadd(qicooGlobalJedisPool.resource, "reply_list:3", mapOf(Pair(
+            q3reply1,
+            q3reply1date
+        ), Pair(
+            q3reply2,
+            q3reply2date
+        ), Pair(
+            q3reply3,
+            q3reply3date
+        )))
     }
 }
 

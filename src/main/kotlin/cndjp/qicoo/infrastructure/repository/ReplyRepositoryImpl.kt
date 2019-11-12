@@ -1,10 +1,11 @@
-package cndjp.qicoo.domain.repository.reply
+package cndjp.qicoo.infrastructure.repository
 
 import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
 import cndjp.qicoo.domain.dao.reply.Reply
 import cndjp.qicoo.domain.dao.reply.ReplyList
 import cndjp.qicoo.domain.model.reply.ReplyRow
+import cndjp.qicoo.domain.repository.reply.ReplyRepository
 import cndjp.qicoo.infrastructure.cache.client.qicooGlobalJedisPool
 import cndjp.qicoo.infrastructure.cache.context.RedisContext
 import cndjp.qicoo.utils.getNowDateTimeJst

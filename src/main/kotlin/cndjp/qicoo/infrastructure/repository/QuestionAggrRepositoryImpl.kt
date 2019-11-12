@@ -1,4 +1,4 @@
-package cndjp.qicoo.domain.repository.question_aggr
+package cndjp.qicoo.infrastructure.repository
 
 import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.withLog
@@ -11,6 +11,7 @@ import cndjp.qicoo.domain.dao.question_aggr.toQuestionAggr
 import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
+import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
 import com.github.michaelbull.result.Err
