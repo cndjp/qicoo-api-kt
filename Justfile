@@ -10,6 +10,7 @@ REDIS_DOCKER := "qicoo-test-redis"
 REDIS_DOCKER_EXISTS_FLAG := `if [ ! -z ${CIRCLECI:-} ]; then echo 1; exit 0; fi; docker ps --format "{{ .Names }}" --filter "name=qicoo-test-redis" | wc -l`
 REDIS_VERSION := "5.0.0"
 
+DOCKER_REGISTORY := "docker.io"
 DOCKER_NAME := "qicoo-api-kt"
 DOCKER_IMAGE_NAME := "cndjp/qicoo-api-kt"
 DOCKER_TAG := `git rev-parse HEAD`
@@ -39,12 +40,17 @@ docker-image:
     `docker images -a --filter='dangling=false' --format '{{ "{{" }}.Repository{{ "}}" }}:{{ "{{" }}.Tag{{ "}}" }}'| grep "{{ DOCKER_IMAGE_NAME }}"`
 
 docker-build: load_dotenv
-    docker build -t docker.io/{{ DOCKER_IMAGE_NAME }}:base -f base.Dockerfile .
+    docker build -t {{ DOCKER_IMAGE_NAME }}:base -f base.Dockerfile .
     ./gradlew jibDockerBuild
 
 docker-run: load_dotenv
     #!/bin/bash
-    docker run --name {{ DOCKER_NAME }} -it --rm -p 8080:8080 cndjp/qicoo/qpi:{{ DOCKER_TAG }} .
+    docker run --name {{ DOCKER_NAME }} -it --rm -p 8080:8080 {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
+
+docker-release: docker-build
+    docker login -u cndjpintegrate -p ${DOCKERHUB_PASSWORD}
+    docker tag {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} {{ DOCKER_REGISTORY }}/{{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }}
+    docker push {{ DOCKER_REGISTORY }}/{{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }}
 
 create_dotenv:
     #!/bin/bash
@@ -54,6 +60,9 @@ create_dotenv:
         echo 'MYSQL_PORT="3306"' >> ./.env
         echo 'MYSQL_DB="qicoo2db"' >> ./.env
         echo 'MYSQL_OPTS="prefer_socket=false&timeout=30s&parseTime=true&loc=Asia%2FTokyo"' >> ./.env
+        echo 'DOCKERHUB_PASSWORD=' >> ./.env
+        echo 'REDIS_HOST="localhost" >> ./.env
+        echo 'REDIS_PORT="6379" >> ./.env
     fi
 
 load_dotenv: create_dotenv
