@@ -1,56 +1,50 @@
 language: java
 jdk:
-  - openjdk11
-
+- openjdk11
 sudo: required
-
 services:
-  - docker
-  - mysql
-  - redis-server
-
+- docker
+- mysql
+- redis-server
 env:
   global:
-    - MYSQL_USER="root"
-    - MYSQL_HOST="127.0.0.1"
-    - MYSQL_DB="qicoo2db"
-    - MYSQL_PORT="3306"
-    - REDIS_HOST="localhost"
-    - REDIS_PORT="6379"
-    - DOCKER_REPO='cndjp/qicoo-api-kt'
-    #- secure: 'K9PIzQ1jB2iKuU+NZHLvIcpW+TDQE8BhI+3tKpBy+SFBtoCFoIITFj25SE1zqErKsuek0qk/7Ci0IojdGRrJjKjnUXlfofkXPNAEVs1ONafSrzc1ar5Iu9F0/6D15NGg45WZcWlSI8zMiuk7DP/PC1UImImXjsiLzDx7R5TgFk9QucRQbDLgKj6V2MRkqDTc8av2sPedNOJQSEckfq8sF3znUQCMo8WOj2DckDAmfrVK4Y5cgCYKbF9TwvXP82q+3Ror9LB7luI7RIr3NfXydN8Gsb0bNQ0qWuH73zblHEwFPVzMK+Sqj4c8SFZq3dNnNRR4lwB64qGEnGnVwNRePy2/1LWdfMY5o0NzXJOOPRCknD++6qgXziiIWrqHuYQnmtB2MUe1l2YTn5gRb01LdBVtGy2xWig5ecXF20DSM/MBW8GRaYi71I9R7G8zbiHRdJ8wz3mwoMc2CKe2T6Vpgy20ldR4gZzFv5DswkjdzpIkjSlSI22r7Gmo9rKXOy03zZP0pruM4sgxaMJED3F7pYPeGMM4pEDjn4Bqe6aP9+fuahp5ARF0DvWI1mCEpMNo51kzZgmBdEPcE8N0lTXVRx17gHt4GPlIMb4XJWyhNU2yWGHux+9kHW8elw7QUThP/OTHEeoTwMVk5ONPn64z2g9C3CFEyYzob2N4RzTwb+Q='
-
+  - MYSQL_USER="root"
+  - MYSQL_HOST="127.0.0.1"
+  - MYSQL_DB="qicoo2db"
+  - MYSQL_PORT="3306"
+  - REDIS_HOST="localhost"
+  - REDIS_PORT="6379"
+  - DOCKER_REPO='cndjp/qicoo-api-kt'
+  - secure: T7BmsgRT942VRdjYaTkQy9mqgJvSm36Wu/yt2CFMvg5MhpFBdOGTDEbkMeBmmroB95+z88eHZxNwgL56r3r6qLF9tJoGYu9oQoYskTkT1hm8l7sV1rfIhVGMvJq4k3Gld8vAc9r8ihaBA0p7PXZLoYki/SuywqOnJxSa4poTujDKwoLaGzGfWfK+7497DhtDHInkjatx9ELQGA/XYHVemyZ1vO9G6Oa3oMFKSh0BKtjFMn3rjlMywhuYfBlScpvoci4f98bqc7XUxP21kGkMvi8jclxWlyzp6rJ6t0N2T+EQmectAL2+u8Cl93KXWcCYfc5Q9l6RMsfkGB3Rkorfr8So6i4uw8OfpM+nqZOLiwta5cZL6v+DlWWQfNXn71+cozGwT10cq0URkAA/RpIe60yDupgTyHLpUTnU2qsz3KN9zKTHKx1CqM7mxqe4rEdPy/FFzjM4jLxiu1fVysQ3TLcal0QxmnVeWy1hCDcjPfuwFNT/FNEu/ozR/8LqvHeziRNZL8YNUlFL6mDAyOeoGob628aKx6XEF/dXCbs8DKai5RbxieO0jZ985hjhFDsLXplEsXaq/Otl6pg/VvY18+6zFntlnxpMUKR4rrBYrxhKgdkM4xX/QDAG7SzRdHfh3OLn+W+ZtwYGmCGcALiNVWo4jsBSd8MCobUQWS6zyYI=
 before_install:
-  - export TZ=Asia/Tokyo
-  - curl -s api.sdkman.io | bash
-  - source /home/travis/.sdkman/bin/sdkman-init.sh # ターミナル上での表示結果
-  - sdk list gradle
-  - sdk install gradle 5.6.2
-  - sdk default gradle 5.6.2
-
+- export TZ=Asia/Tokyo
+- curl -s api.sdkman.io | bash
+- source /home/travis/.sdkman/bin/sdkman-init.sh
+- sdk list gradle
+- sdk install gradle 5.6.2
+- sdk default gradle 5.6.2
 before_script:
-  - echo 'Asia/Tokyo' | sudo tee /etc/timezone
-  - sudo dpkg-reconfigure --frontend noninteractive tzdata
-  - date
-  - mkdir /opt/bin
-  - curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just --target x86_64-unknown-linux-musl --to /opt/bin/
-  - export PATH=/opt/bin:$PATH
-  - just version
-  - mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
-  - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
-  - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
-
+- echo 'Asia/Tokyo' | sudo tee /etc/timezone
+- sudo dpkg-reconfigure --frontend noninteractive tzdata
+- date
+- mkdir /opt/bin
+- curl -LSfs https://japaric.github.io/trust/install.sh | sh -s -- --git casey/just
+  --target x86_64-unknown-linux-musl --to /opt/bin/
+- export PATH=/opt/bin:$PATH
+- just version
+- mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
+- echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
+- echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
 script:
-  - just test
-  - just build
-  - just docker-build
-
+- just test
+- just build
+- just docker-release
 before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+- rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 cache:
   bundler: true
   directories:
-    - ${HOME}/.gradle/caches/
-    - ${HOME}/.gradle/wrapper/
-    - ${HOME}/.android/build-cache
+  - "${HOME}/.gradle/caches/"
+  - "${HOME}/.gradle/wrapper/"
+  - "${HOME}/.android/build-cache"
