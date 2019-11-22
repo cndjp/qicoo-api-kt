@@ -18,7 +18,7 @@ env:
     - REDIS_HOST="localhost"
     - REDIS_PORT="6379"
     - DOCKER_REPO='cndjp/qicoo-api-kt'
-    - secure: 'K9PIzQ1jB2iKuU+NZHLvIcpW+TDQE8BhI+3tKpBy+SFBtoCFoIITFj25SE1zqErKsuek0qk/7Ci0IojdGRrJjKjnUXlfofkXPNAEVs1ONafSrzc1ar5Iu9F0/6D15NGg45WZcWlSI8zMiuk7DP/PC1UImImXjsiLzDx7R5TgFk9QucRQbDLgKj6V2MRkqDTc8av2sPedNOJQSEckfq8sF3znUQCMo8WOj2DckDAmfrVK4Y5cgCYKbF9TwvXP82q+3Ror9LB7luI7RIr3NfXydN8Gsb0bNQ0qWuH73zblHEwFPVzMK+Sqj4c8SFZq3dNnNRR4lwB64qGEnGnVwNRePy2/1LWdfMY5o0NzXJOOPRCknD++6qgXziiIWrqHuYQnmtB2MUe1l2YTn5gRb01LdBVtGy2xWig5ecXF20DSM/MBW8GRaYi71I9R7G8zbiHRdJ8wz3mwoMc2CKe2T6Vpgy20ldR4gZzFv5DswkjdzpIkjSlSI22r7Gmo9rKXOy03zZP0pruM4sgxaMJED3F7pYPeGMM4pEDjn4Bqe6aP9+fuahp5ARF0DvWI1mCEpMNo51kzZgmBdEPcE8N0lTXVRx17gHt4GPlIMb4XJWyhNU2yWGHux+9kHW8elw7QUThP/OTHEeoTwMVk5ONPn64z2g9C3CFEyYzob2N4RzTwb+Q='
+    #- secure: 'K9PIzQ1jB2iKuU+NZHLvIcpW+TDQE8BhI+3tKpBy+SFBtoCFoIITFj25SE1zqErKsuek0qk/7Ci0IojdGRrJjKjnUXlfofkXPNAEVs1ONafSrzc1ar5Iu9F0/6D15NGg45WZcWlSI8zMiuk7DP/PC1UImImXjsiLzDx7R5TgFk9QucRQbDLgKj6V2MRkqDTc8av2sPedNOJQSEckfq8sF3znUQCMo8WOj2DckDAmfrVK4Y5cgCYKbF9TwvXP82q+3Ror9LB7luI7RIr3NfXydN8Gsb0bNQ0qWuH73zblHEwFPVzMK+Sqj4c8SFZq3dNnNRR4lwB64qGEnGnVwNRePy2/1LWdfMY5o0NzXJOOPRCknD++6qgXziiIWrqHuYQnmtB2MUe1l2YTn5gRb01LdBVtGy2xWig5ecXF20DSM/MBW8GRaYi71I9R7G8zbiHRdJ8wz3mwoMc2CKe2T6Vpgy20ldR4gZzFv5DswkjdzpIkjSlSI22r7Gmo9rKXOy03zZP0pruM4sgxaMJED3F7pYPeGMM4pEDjn4Bqe6aP9+fuahp5ARF0DvWI1mCEpMNo51kzZgmBdEPcE8N0lTXVRx17gHt4GPlIMb4XJWyhNU2yWGHux+9kHW8elw7QUThP/OTHEeoTwMVk5ONPn64z2g9C3CFEyYzob2N4RzTwb+Q='
 
 before_install:
   - export TZ=Asia/Tokyo
@@ -43,7 +43,7 @@ before_script:
 script:
   - just test
   - just build
-  - just docker-release
+  - just docker-build
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
