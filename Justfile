@@ -61,8 +61,8 @@ create_dotenv:
         echo 'MYSQL_DB="qicoo2db"' >> ./.env
         echo 'MYSQL_OPTS="prefer_socket=false&timeout=30s&parseTime=true&loc=Asia%2FTokyo"' >> ./.env
         echo 'DOCKERHUB_PASSWORD=' >> ./.env
-        echo 'REDIS_HOST="localhost" >> ./.env
-        echo 'REDIS_PORT="6379" >> ./.env
+        echo 'REDIS_HOST="localhost"' >> ./.env
+        echo 'REDIS_PORT="6379"' >> ./.env
     fi
 
 load_dotenv: create_dotenv
