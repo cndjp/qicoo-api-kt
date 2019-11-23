@@ -15,7 +15,6 @@ env:
   - REDIS_HOST="localhost"
   - REDIS_PORT="6379"
   - DOCKER_REPO='cndjp/qicoo-api-kt'
-  - secure: "G+7InfczZ3JX/y7QmOU4Kmhm6HTbEVuRe0UN5CL25tJAfGRfHcG4Dy8s3OCXrv5IlUaSUma46e8Bx++N6MjoNG/JkKWtOy1ydcNMH/AV8yckaW7iMogHreEcvY84adtEcnul31nk2sdM2PdPH3dEyd/zVatQB2cmXtdfG4xE0hkwqioWPSRMFyFRaF8a+WhcS6ysk2yIg8ElhOE8ijE4MlqeRzqaj0JVdyH9PtfeiFIDjy3a7Nz4Ep8PoA5qnZ0AASdJyD9JE1YXKKpdMkLbV9EzxdQ2+VjT4CwIXr7jFYSmcfzbBnlbtuWDfocOZv1Eu0d8v3gENFfez9XZk31dePq2en7j4kFRFo6YjzFfgAYY13B6vOZx58NJpT0XwaBHAYVII1hOOEH15bm/jorENqj1AjVgUYeNnzhQeocu4eOcNkS9nHy3/rcv8pQYeYbktsJVgWcJ4Zo2Z/AfyJO7qnZ3T70lIS2hRKWMFxO4KaUpWGepDRR/Ihjh5eHxtgYD3W095TKhcveJUx4qLa0fL+/E+y9maSeiNqStzIexApVoT/MH6QpmFjA0U5vzw7U0lTownhnJBXme52nivCP0R5wIZeTx/gwDcR/iS1OZ/toeEhjq4sdNIXsh6RD/tlptPTNK24GiJgHOJOeU7bI21AcTfjLb7cs6RnHwbDx5u2Y="
 before_install:
 - export TZ=Asia/Tokyo
 - curl -s api.sdkman.io | bash
