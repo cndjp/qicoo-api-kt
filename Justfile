@@ -48,7 +48,7 @@ docker-run: load_dotenv
     docker run --name {{ DOCKER_NAME }} -it --rm -p 8080:8080 {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} .
 
 docker-release: docker-build
-    docker login -u cndjpintegrate -p ${DOCKERHUB_PASSWORD}
+    echo ${DOCKERHUB_PASSWORD} | docker login -u cndjpintegrate --password-stdin
     docker tag {{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }} {{ DOCKER_REGISTORY }}/{{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }}
     docker push {{ DOCKER_REGISTORY }}/{{ DOCKER_IMAGE_NAME }}:{{ DOCKER_TAG }}
 

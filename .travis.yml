@@ -36,7 +36,6 @@ before_script:
 - echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DB}" | mysql -h${MYSQL_HOST} -uroot
 - echo 'set global time_zone = "Asia/Tokyo"' | mysql -h${MYSQL_HOST} -uroot
 script:
-- echo ${DOCKERHUB_PASSWORD}
 - just test
 - just build
 - just docker-release
