@@ -235,13 +235,13 @@ fun RepositorySpecSupport.insertDummyData() {
             q5like
         )))
         RedisContext.zadd(qicooGlobalJedisPool.resource, "reply_list:3", mapOf(Pair(
-            q3reply1+":${UUID.randomUUID()}",
+            q3reply1,
             q3reply1date
         ), Pair(
-            q3reply2+":${UUID.randomUUID()}",
+            q3reply2,
             q3reply2date
         ), Pair(
-            q3reply3+":${UUID.randomUUID()}",
+            q3reply3,
             q3reply3date
         )))
     }
