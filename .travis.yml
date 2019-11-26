@@ -39,7 +39,7 @@ before_script:
 script:
 - just test
 - just build
-- just docker-release
+- if [[ "${TRAVIS_BRANCH}" = "master" ]]; then just docker-release; else just docker-build; fi
 before_cache:
 - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
 - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
