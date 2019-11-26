@@ -12,13 +12,20 @@ import cndjp.qicoo.utils.getNowDateTimeJst
 import com.github.michaelbull.result.Err
 import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
+import java.util.UUID
 
 class ReplyRepositoryImpl: ReplyRepository {
     private fun keyFactory(id: Int): String =
         "reply_list:$id"
 
+    private fun uniqueCommentFactory(comment: String): String =
+        "$comment:${UUID.randomUUID()}"
+
+    private fun pureCommentFactory(comment: String): String =
+        comment.split(":")[0]
+
     override fun add(id: Int, comment: String): Result<Unit, QicooError> =
-        when (RedisContext.zadd(qicooGlobalJedisPool.resource, keyFactory(id), mapOf(Pair(comment, getNowDateTimeJst().millis.toDouble())))) {
+        when (RedisContext.zadd(qicooGlobalJedisPool.resource, keyFactory(id), mapOf(Pair(uniqueCommentFactory(comment), getNowDateTimeJst().millis.toDouble())))) {
             1L -> Ok(Unit)
             else -> Err(QicooError.CouldNotCreateEntityFailure.withLog())
         }
@@ -31,7 +38,7 @@ class ReplyRepositoryImpl: ReplyRepository {
                     Reply(
                         ReplyRow(
                             it.score,
-                            it.element
+                            pureCommentFactory(it.element)
                         )
                     )
                 }, total

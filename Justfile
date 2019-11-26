@@ -13,6 +13,7 @@ REDIS_VERSION := "5.0.0"
 DOCKER_REGISTORY := "docker.io"
 DOCKER_NAME := "qicoo-api-kt"
 DOCKER_IMAGE_NAME := "cndjp/qicoo-api-kt"
+WARM_IMAGE_NAME := "cndjp/warm-curl"
 DOCKER_TAG := `git rev-parse HEAD`
 
 version:
@@ -42,6 +43,13 @@ docker-image:
 docker-build: load_dotenv
     docker build -t {{ DOCKER_IMAGE_NAME }}:base -f base.Dockerfile .
     ./gradlew jibDockerBuild
+
+warm-docker-build: load_dotenv
+    docker build -t {{ WARM_IMAGE_NAME }}:{{ DOCKER_TAG }} -f warm.Dockerfile .
+
+warm-docker-release: warm-docker-build
+    docker tag {{ WARM_IMAGE_NAME }}:{{ DOCKER_TAG }} {{ DOCKER_REGISTORY }}/{{ WARM_IMAGE_NAME }}:{{ DOCKER_TAG }}
+    docker push {{ DOCKER_REGISTORY }}/{{ WARM_IMAGE_NAME }}:{{ DOCKER_TAG }}
 
 docker-run: load_dotenv
     #!/bin/bash
