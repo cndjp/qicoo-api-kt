@@ -9,4 +9,8 @@ RUN set -eux; \
         rm -rf /var/lib/apt/lists/*
 
 RUN cp /usr/share/zoneinfo/Asia/Tokyo /etc/localtime && \
-    echo "Asia/Tokyo" > /etc/timezone
+    echo Asia/Tokyo > /etc/timezone
+
+RUN groupadd --non-unique --gid 23456 cndjp
+RUN useradd --non-unique --system --uid 12345 --gid 23456 qicoo
+USER qicoo
