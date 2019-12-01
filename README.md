@@ -12,6 +12,13 @@ qicoo-apiのkotlinバージョン
 - Repository Pattern  
     ドメイン層のやりとりで、インフラ層の何を使っているか隠蔽し、柔軟性を保たせます
 
+# 開発ツール
+以下のソフトウェアを開発で使用するのでインストールをお願いします。
+- [Docker](https://github.com/moby/moby)
+- [Just](https://github.com/casey/just)
+- [OpenJDK11](https://openjdk.java.net/projects/jdk/11/)
+- [Kotlin 1.3.41](https://kotlinlang.org)
+
 # テスト環境
 
 ## デプロイ
