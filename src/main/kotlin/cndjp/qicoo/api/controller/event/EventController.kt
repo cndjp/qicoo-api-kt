@@ -1,7 +1,6 @@
 package cndjp.qicoo.api.controller.event
 
 import io.ktor.routing.Route
-import io.ktor.routing.delete
 import io.ktor.routing.get
 import io.ktor.routing.post
 import io.ktor.routing.put
@@ -44,7 +43,6 @@ fun Route.eventController(kodein: Kodein) {
                 put {
                     TODO() // JSONを受けてプログラムを更新する。↑で使うであろう時間系のバリデーションは引き継いでいいのかもしれない。
                 }
-
             }
         }
     }

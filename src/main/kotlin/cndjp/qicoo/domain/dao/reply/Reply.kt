@@ -6,7 +6,7 @@ import org.joda.time.DateTime
 
 typealias ReplyValue = String
 
-class Reply (row: ReplyRow) {
+class Reply(row: ReplyRow) {
     val created: DateTime
     val comment: String
 

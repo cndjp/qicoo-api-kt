@@ -92,7 +92,6 @@ class QuestionAggrRepositoryImpl : QuestionAggrRepository {
             .flatMap { Ok(it.toQuestionAggr()) }
         }
 
-
     override fun findByIds(ids: List<Int>): Result<QuestionAggrList, QicooError> = transaction {
         if (ids.isEmpty()) {
             return@transaction Err(QicooError.NotFoundEntityFailure.withLog())

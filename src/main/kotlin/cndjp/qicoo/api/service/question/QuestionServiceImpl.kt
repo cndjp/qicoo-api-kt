@@ -4,14 +4,9 @@ import cndjp.qicoo.api.QicooError
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetParameter
 import cndjp.qicoo.api.http_resource.paramater.question.QuestionGetSortParameter
 import cndjp.qicoo.api.withLog
-import cndjp.qicoo.domain.dao.like_count.LikeCount
 import cndjp.qicoo.domain.dao.like_count.LikeCountValue
-import cndjp.qicoo.domain.dao.question_aggr.QuestionAggr
 import cndjp.qicoo.domain.dto.question.QuestionDTO
 import cndjp.qicoo.domain.dto.question.QuestionListDTO
-import cndjp.qicoo.domain.dto.question_detail.QuestionDetailDTO
-import cndjp.qicoo.domain.dto.reply.ReplyDTO
-import cndjp.qicoo.domain.dto.reply.ReplyListDTO
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.reply.ReplyRepository
@@ -20,10 +15,6 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.get
-import com.github.michaelbull.result.getOr
-import com.github.michaelbull.result.mapBoth
-import com.github.michaelbull.result.mapEither
-import mu.KotlinLogging
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.generic.instance
@@ -123,7 +114,6 @@ class QuestionServiceImpl(override val kodein: Kodein) : QuestionService, Kodein
                             }
                     }
             }
-
 
     override fun incrLike(questionId: Int): Result<LikeCountValue, QicooError> =
         likeCountRepository.incr(questionId)

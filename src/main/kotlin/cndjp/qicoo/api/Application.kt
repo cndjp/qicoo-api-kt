@@ -5,12 +5,12 @@ import cndjp.qicoo.api.controller.question.questionController
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.service.question.QuestionServiceImpl
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
-import cndjp.qicoo.infrastructure.repository.LikeCountRepositoryImpl
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
-import cndjp.qicoo.infrastructure.repository.QuestionAggrRepositoryImpl
 import cndjp.qicoo.domain.repository.reply.ReplyRepository
-import cndjp.qicoo.infrastructure.repository.ReplyRepositoryImpl
 import cndjp.qicoo.infrastructure.rdb.client.initMysqlClient
+import cndjp.qicoo.infrastructure.repository.LikeCountRepositoryImpl
+import cndjp.qicoo.infrastructure.repository.QuestionAggrRepositoryImpl
+import cndjp.qicoo.infrastructure.repository.ReplyRepositoryImpl
 import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.application.Application
 import io.ktor.application.install

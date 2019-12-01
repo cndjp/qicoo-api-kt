@@ -26,7 +26,7 @@ class QuestionResponse(questionDTO: QuestionDTO) {
         this.comment = questionDTO.comment
         this.created = questionDTO.created.toFomatString()
         this.updated = questionDTO.updated.toFomatString()
-        this.reply_list = questionDTO.reply_list.map {ReplyResponse(it)}
+        this.reply_list = questionDTO.reply_list.map { ReplyResponse(it) }
         this.reply_total = questionDTO.reply_total
     }
 }

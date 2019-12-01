@@ -14,7 +14,7 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import java.util.UUID
 
-class ReplyRepositoryImpl: ReplyRepository {
+class ReplyRepositoryImpl : ReplyRepository {
     private fun keyFactory(id: Int): String =
         "reply_list:$id"
 
