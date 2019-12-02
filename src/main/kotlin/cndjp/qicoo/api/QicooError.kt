@@ -8,6 +8,7 @@ enum class QicooError {
     ParseRequestFailure,
     MismatchDataStoreFailure,
     CouldNotCreateEntityFailure,
+    AuthorizationFailure,
     NotFoundEntityFailure;
 }
 

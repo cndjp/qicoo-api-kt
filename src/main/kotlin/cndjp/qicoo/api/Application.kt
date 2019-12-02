@@ -2,6 +2,7 @@ package cndjp.qicoo.api
 
 import cndjp.qicoo.api.controller.healthcheck.healthCheckController
 import cndjp.qicoo.api.controller.question.questionController
+import cndjp.qicoo.api.http_resource.session.account.GitHubSession
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.service.question.QuestionServiceImpl
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
@@ -20,7 +21,11 @@ import io.ktor.features.ContentNegotiation
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
+import io.ktor.routing.Routing
 import io.ktor.routing.routing
+import io.ktor.sessions.SessionStorageMemory
+import io.ktor.sessions.Sessions
+import io.ktor.sessions.cookie
 import java.time.Duration
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -48,6 +53,9 @@ fun Application.main() {
         allowCredentials = true
         allowNonSimpleContentTypes = true
         maxAge = Duration.ofDays(1)
+    }
+    install(Sessions) {
+        cookie<GitHubSession>("GitHubSession", SessionStorageMemory())
     }
     val serviceKodein = Kodein {
         val repoKodein = Kodein {
