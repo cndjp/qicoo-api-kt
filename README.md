@@ -18,6 +18,7 @@ qicoo-apiのkotlinバージョン
 - [Just](https://github.com/casey/just)
 - [OpenJDK11](https://openjdk.java.net/projects/jdk/11/)
 - [Kotlin 1.3.41](https://kotlinlang.org)
+- [ktlint](https://ktlint.github.io)
 
 # テスト環境
 
