@@ -7,6 +7,6 @@ object linked_user : Table() {
     val user_id = (entityId("user_id",
         user
     ) references user.id).primaryKey()
-    val twitter_account_id = varchar("twitter_account_id", 255).default("")
-    val twitter_account_name = varchar("twitter_account_name", 255).default("")
+    val github_account_name = varchar("github_account_id", 255).default("").uniqueIndex()
+    val github_account_icon_url = varchar("github_account_icon_url", 255).default("")
 }

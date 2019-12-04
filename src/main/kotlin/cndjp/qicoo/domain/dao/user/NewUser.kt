@@ -1,12 +1,9 @@
 package cndjp.qicoo.domain.dao.user
 
-import cndjp.qicoo.domain.model.user.user
-import org.jetbrains.exposed.dao.EntityID
-import org.jetbrains.exposed.dao.IntEntity
-import org.jetbrains.exposed.dao.IntEntityClass
+import org.joda.time.DateTime
 
-class NewUser(id: EntityID<Int>) : IntEntity(id) {
-    companion object : IntEntityClass<NewUser>(user)
-
-    var created by user.created
-}
+data class NewUser(
+    val github_account_name: String,
+    val github_account_icon_url: String,
+    val created: DateTime
+)
