@@ -12,6 +12,7 @@ import cndjp.qicoo.domain.model.event.event
 import cndjp.qicoo.domain.model.program.program
 import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
+import cndjp.qicoo.infrastructure.logger.QicooLogger
 import cndjp.qicoo.utils.getNowDateTimeJst
 import cndjp.qicoo.utils.orWhere
 import com.github.michaelbull.result.Err
@@ -19,7 +20,6 @@ import com.github.michaelbull.result.Ok
 import com.github.michaelbull.result.Result
 import com.github.michaelbull.result.flatMap
 import com.github.michaelbull.result.toResultOr
-import mu.KotlinLogging
 import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.innerJoin
@@ -29,9 +29,7 @@ import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 
-class QuestionAggrRepositoryImpl : QuestionAggrRepository {
-    private val logger = KotlinLogging.logger {}
-
+class QuestionAggrRepositoryImpl : QuestionAggrRepository, QicooLogger() {
     override fun findAll(per: Int, page: Int, order: String): QuestionAggrList = transaction {
         val total = question.selectAll().count()
         QuestionAggrList(
