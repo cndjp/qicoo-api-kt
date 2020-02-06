@@ -4,7 +4,7 @@ import cndjp.qicoo.infrastructure.logger.QicooLogger
 import redis.clients.jedis.Jedis
 import redis.clients.jedis.Tuple
 
-object RedisContext: QicooLogger() {
+object RedisContext : QicooLogger() {
     fun setEx(context: Jedis, key: String, ttl: Int, value: String) = context.use {
         logger.debug("redis> SET $key $value EX $ttl")
         it.setex(key, ttl, value)
