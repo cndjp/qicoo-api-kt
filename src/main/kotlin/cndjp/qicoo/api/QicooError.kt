@@ -1,10 +1,9 @@
 package cndjp.qicoo.api
 
-import mu.KotlinLogging
+import cndjp.qicoo.infrastructure.logger.QicooLogger
 
 enum class QicooError {
     ArrayIndexOutOfBoundsFailure,
-    ParseParamaterFailure,
     ParseRequestFailure,
     MismatchDataStoreFailure,
     CouldNotCreateEntityFailure,
@@ -15,6 +14,6 @@ fun QicooError.withLog(reason: String = this.name): QicooError {
     var stackTrace = ""
     Thread.currentThread().stackTrace.forEach { stackTrace += it }
     return this.also {
-        KotlinLogging.logger {}.error("$reason - $stackTrace")
+        QicooLogger().logger.error("$reason - $stackTrace")
     }
 }
