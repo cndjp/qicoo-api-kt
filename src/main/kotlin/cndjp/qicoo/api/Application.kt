@@ -25,6 +25,7 @@ import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
 import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.transactions.transaction
 import java.time.Duration
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -34,11 +35,13 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.main() {
     initMysqlClient()
-    SchemaUtils.create(
-        question,
-        event,
-        program
-    )
+    transaction {
+        SchemaUtils.create(
+            question,
+            event,
+            program
+        )
+    }
     install(CallLogging)
     install(ContentNegotiation) {
         jackson {
