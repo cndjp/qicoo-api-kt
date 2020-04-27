@@ -4,6 +4,9 @@ import cndjp.qicoo.api.controller.healthcheck.healthCheckController
 import cndjp.qicoo.api.controller.question.questionController
 import cndjp.qicoo.api.service.question.QuestionService
 import cndjp.qicoo.api.service.question.QuestionServiceImpl
+import cndjp.qicoo.domain.model.event.event
+import cndjp.qicoo.domain.model.program.program
+import cndjp.qicoo.domain.model.question.question
 import cndjp.qicoo.domain.repository.like_count.LikeCountRepository
 import cndjp.qicoo.domain.repository.question_aggr.QuestionAggrRepository
 import cndjp.qicoo.domain.repository.reply.ReplyRepository
@@ -21,6 +24,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.jackson.jackson
 import io.ktor.routing.routing
+import org.jetbrains.exposed.sql.SchemaUtils
 import java.time.Duration
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
@@ -30,6 +34,11 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 fun Application.main() {
     initMysqlClient()
+    SchemaUtils.create(
+        question,
+        event,
+        program
+    )
     install(CallLogging)
     install(ContentNegotiation) {
         jackson {
